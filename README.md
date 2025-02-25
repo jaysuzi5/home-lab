@@ -28,7 +28,7 @@ I will make heavy use of AI to help answer questions that I have along the way, 
     </ul>
 </ul>
 
-### Thoughs and Decisions
+### Thoughts and Decisions
 <ul>
 <li> Cost was one of the main deciding factor, but still factor in the other needs
 <li> Wanted to use similar hardware across all so that I did not need to fight individual issues with repurposed machines that I had lying around.
