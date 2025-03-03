@@ -16,25 +16,44 @@ This documents the machine setup prior to starting with the initial Ansible setu
 <li>After install, update to make sure the machines have the latest updates:
 
        sudo apt update && sudo apt upgrade -y
+
+and install nano
+
+    sudo apt install nano
+
 </li>
 <li>Network Setup
     <ol>
     <li>Create Static IPs:  
 
-Edit /etc/netplan/01-netcfg.yaml.  Using IPs 200, 201, and 202
+Edit network config  
+
+    sudo nano /etc/netplan/01-netcfg.yaml
+
+Using IPs 200, 201, and 202
 
     network:
     version: 2
+    renderer: networkd
     ethernets:
         eno1:
+        dhcp4: no
         addresses:
-            - 192.168.86.200/24  
-        gateway4: 192.168.1.1
+            - 192.168.86.200/24
+        routes:
+            - to: default
+            via: 192.168.86.1
         nameservers:
             addresses: [8.8.8.8, 8.8.4.4]
+
+Important check if there are existing network configurations.  You can either edit those or create the above as new and remove the other, however having multiple can cause confusion on tracking down network issues.
+
+    cd /etc/netplan
+    ls
     
-apply with:
+change permission and apply:
     
+    sudo chmod 600 /etc/netplan/01-netcfg.yaml
     sudo netplan apply
 
 </li>
@@ -72,8 +91,8 @@ Check firewall and test SSH
 Generate an SSH key on the controller and copy it to the workers:
 
     ssh-keygen -t rsa -b 4096
-    ssh-copy-id labadmin@k8s-wrk1
-    ssh-copy-id labadmin@k8s-wrk2
+    ssh-copy-id jay@k8s-worker1
+    ssh-copy-id jay@k8s-worker2
 
 Test passwordless SSH: 
 
