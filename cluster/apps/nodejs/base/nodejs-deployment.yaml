@@ -15,9 +15,9 @@ spec:
     spec:
       containers:
         - name: nodejs
-          image: node:16  # Replace with your custom Node.js image if necessary
+          image: containous/whoami  # A simple HTTP server for testing
           ports:
-            - containerPort: 3000  # Assuming the Node.js app listens on port 3000
+            - containerPort: 80  # This image listens on port 80
           env:
             - name: NODE_ENV
               value: "production"
@@ -33,5 +33,5 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 3000
+      targetPort: 80  # Match the container port
   type: ClusterIP
