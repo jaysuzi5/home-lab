@@ -37,6 +37,4 @@ I will make heavy use of AI to help answer questions that I have along the way, 
 <li> Wanted to work with some LLM but hardware to run a decent size model and get good token per second rate is just too expensive.  I have therefore decided to work in a hybrid model of having some LLM for training and other experimenting, however will rely more on public models for most of the duties.  API usage cost will be a fraction of what it would cost to host a decent model
 </ul>
 
-My thought process for this was based upon a back and forth discussion with Grok 3 to weigh various pros and cons of the setup.  Details of the conversation can be found at:  https://x.com/i/grok/share/YmrGTiwFItV9iXhCGS4AzM5RH
-
 
