@@ -223,6 +223,15 @@ Note: Having compatibility issues with latest Flux and CentOS Kubernetes which i
 
 </li>
 
+<li>Flux install
+
+    flux install --namespace=flux-system
+</li>
+
+<li>Verify that it is running
+
+    kubectl get pods -n flux-system
+</li>
 
 <li>Bootstrap Flux
 
