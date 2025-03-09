@@ -1,2 +1,15 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: nodejs-apps
+  namespace: flux-system
+spec:
+  interval: 1m
+  path: ./apps/nodejs
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  targetNamespace: nodejs
 resources:
-  - deployment.yaml
+  - nodejs-deployment.yaml
