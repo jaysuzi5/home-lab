@@ -143,11 +143,97 @@ Finally, test passwordless SSH with the alias:
 </ol>
 </li>
 <li>Updating developer machine to manage cluster.  This will be done on my Mac Mini
-</li>
-<li>Installation of Kubernetes Dashboard
+<ol>
+<li>Setup SSH to the nodes
 
-Note: This may be redone once working with GitOps
+    ssh-keygen -t rsa -b 4096
+    ssh-copy-id jay@k8s-controller
+    ssh-copy-id jay@k8s-worker1
+    ssh-copy-id jay@k8s-worker2
+
+
+Simplifying access:
+
+    nano ~/.ssh/config
+
+Copy the file to the config:
+
+    Host controller
+    HostName k8s-controller
+    User jay
+    Port 22
+
+    Host worker1
+        HostName k8s-worker1
+        User jay
+        Port 22
+
+    Host wrk2
+        HostName k8s-worker2
+        User jay
+        Port 22
+
+
+Make sure files have the proper permissions
+
+    chmod 600 ~/.ssh/id_rsa
+    chmod 644 ~/.ssh/id_rsa.pub
+    chmod 644 ~/.ssh/config
+
 </li>
-<li>Install Flex to start GitOps Management
+<li>Set alias for kubectl
+
+    echo "alias k='kubectl'" >> ~/.bashrc
+    source ~/.bashrc
+</li>
+</ol>
+</li>
+<li>Install Kubernetes Dashboard</li>
+<ol>
+<li>Deployment
+    kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
+</li>
+<li>Set Admin account
+
+    kubectl create serviceaccount dashboard-admin-sa
+    kubectl create clusterrolebinding dashboard-admin-sa --clusterrole=cluster-admin --serviceaccount=default:dashboard-admin-sa
+</li>
+<li>Retrieve the token for the admin
+
+    kubectl get secret $(kubectl get serviceaccount dashboard-admin-sa -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" | base64 --decode
+</li>
+<li>Start up the dashboard
+
+    kubectl proxy
+</li>
+
+Note: This may be redone once I get GitOps fully running
+</ol>
+<li>Install Flux to start GitOps Management
+<ol>
+<li>Install Flux CLI on the conroller:
+
+    curl -s https://fluxcd.io/install.sh | sudo bash
+
+</li>
+<li>Bootstrap Flux
+
+    flux bootstrap github \
+    --owner=jaysuzi5 \
+    --repository=home-lab \
+    --branch=main \
+    --path=cluster \
+    --personal
+</li>
+<li>Check Flux
+
+    flux check
+
+    kubectl get pods -n flux-system
+
+</li>
+<li></li>
+<li></li>
+</ol>
 </li>
 </ol>
