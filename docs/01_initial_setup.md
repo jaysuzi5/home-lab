@@ -213,9 +213,17 @@ Note: This may be redone once I get GitOps fully running
 <ol>
 <li>Install Flux CLI on the conroller:
 
-    curl -s https://fluxcd.io/install.sh | sudo bash
+
+Note: Having compatibility issues with latest Flux and CentOS Kubernetes which is v1.28.15 as the latest, so I want to force an install of v2.4.0
+
+
+    curl -LO https://github.com/fluxcd/flux2/releases/download/v2.4.0/flux_2.4.0_linux_amd64.tar.gz
+    tar -xzf flux_2.4.0_linux_amd64.tar.gz
+    sudo mv flux /usr/local/bin/
 
 </li>
+
+
 <li>Bootstrap Flux
 
     flux bootstrap github \
@@ -224,16 +232,17 @@ Note: This may be redone once I get GitOps fully running
     --branch=main \
     --path=cluster \
     --personal
+
+
 </li>
 <li>Check Flux
 
     flux check
 
     kubectl get pods -n flux-system
-
 </li>
-<li></li>
-<li></li>
+
+<li>Create my first application which will be redis.  See yamls under clsuter/apps/redis</li>
 </ol>
 </li>
 </ol>
