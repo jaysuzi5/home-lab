@@ -4,7 +4,7 @@ metadata:
   name: nodejs-deployment
   namespace: default
 spec:
-  replicas: 6
+  replicas: 0
   selector:
     matchLabels:
       app: nodejs
