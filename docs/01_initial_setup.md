@@ -1,4 +1,4 @@
-# home-lab: pre-setup
+# home-lab: Initial Setup
 This documents the machine setup prior and high level details detaisl for setting up Kubernetes.
 <hr/>
 
@@ -251,7 +251,48 @@ Note: Having compatibility issues with latest Flux and CentOS Kubernetes which i
     kubectl get pods -n flux-system
 </li>
 
-<li>Create my first application which will be redis.  See yamls under clsuter/apps/redis</li>
+<li>Create my first application which will be nodejs-whoami.  See yamls under cluster/apps/nodejs
+
+Note: This may be removed at some point or at least renamed as this was just to test that the setup was working.
+</li>
 </ol>
+</li>
+<li>
+At this point, a secrets manager will be important.  Since I will be pushing all of my deployments to GitHub, I cannot maintain raw secrets in these files, nor is that best practice even locally.  I have decided to try Sealed Secret as it seems like an easy solution that integrates well with Kubernetes.
+<ol>
+<li>Install Sealed Secret:
+
+    kubectl apply -f https://github.com/bitnami-labs/sealed-secrets/releases/latest/download/controller.yaml
+</li>
+<li>Verify installation
+
+    kubectl get pods -n kube-system | grep sealed-secrets
+</li>
+<li>Install kubeseal CLI
+
+    wget https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.18.0/kubeseal-0.18.0-linux-amd64.tar.gz
+    tar -xvzf kubeseal-0.18.0-linux-amd64.tar.gz kubeseal
+    sudo install -m 755 kubeseal /usr/local/bin/kubeseal
+</li>
+<li>Verify installation
+
+    kubeseal --version
+</li>
+<li>Create a Kubrenetes secret
+
+    kubectl create secret generic api-secret --from-literal=API_KEY="my-secret-api-key" --dry-run=client -o yaml > api-secret.yaml
+</li>
+<li>Encrypt the secret with kubeseal
+
+    kubeseal < api-secret.yaml --format=yaml > sealed-api-secret.yaml
+</li>
+<li>Apply the sealed secret to Kubernetes
+
+    kubectl apply -f sealed-api-secret.yaml
+</li>
+<li>Retrieve the sealed secret from sealed-api-secret.yaml and use in your deployment</li>
+</ol>
+</li>
+<li>At this time it would be good to create another Clonezilla clone of your cluster.
 </li>
 </ol>
