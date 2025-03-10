@@ -1,4 +1,13 @@
-apiVersion: kustomize.config.k8s.io/v1beta1
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
-resources:
-  - nodejs-deployment.yaml
+metadata:
+  name: nodejs
+  namespace: flux-system
+spec:
+  interval: 1m
+  path: ./apps/nodejs
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  targetNamespace: default  
