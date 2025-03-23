@@ -20,10 +20,14 @@ spec:
     initdb:
       database: homelab
       owner: jcurtis
-  secrets:
-    users:
-      - name: jcurtis
-        secret: postgres-homelab-credentials
+  users:
+    - name: jcurtis
+      secret:
+        name: postgres-homelab-credentials
+  # secrets:
+  #   users:
+  #     - name: jcurtis
+  #       secret: postgres-homelab-credentials
   # externalClusters:
   #   - name: clusterBackup
   #     barmanObjectStore:
