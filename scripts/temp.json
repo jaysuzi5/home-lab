@@ -1,0 +1,257 @@
+{
+    "name": "flux-system",
+    "namespace": "flux-system"
+},
+"namespace": "flux-system",
+"name": "flux-system",
+"reconcileID": "30477bdb-3c4b-413a-9494-14467d8154e9",
+"output": {
+    "CustomResourceDefinition/alerts.notification.toolkit.fluxcd.io": "unchanged",
+    "CustomResourceDefinition/buckets.source.toolkit.fluxcd.io": "unchanged",
+    "CustomResourceDefinition/gitrepositories.source.toolkit.fluxcd.io": "unchanged",
+    "CustomResourceDefinition/helmcharts.source.toolkit.fluxcd.io": "unchanged",
+    "CustomResourceDefinition/helmreleases.helm.toolkit.fluxcd.io": "unchanged",
+    "CustomResourceDefinition/helmrepositories.source.toolkit.fluxcd.io": "unchanged",
+    "CustomResourceDefinition/kustomizations.kustomize.toolkit.fluxcd.io": "unchanged",
+    "CustomResourceDefinition/ocirepositories.source.toolkit.fluxcd.io": "unchanged",
+    "CustomResourceDefinition/providers.notification.toolkit.fluxcd.io": "unchanged",
+    "CustomResourceDefinition/receivers.notification.toolkit.fluxcd.io": "unchanged",
+    "Namespace/flux-system": "unchanged"
+}
+}
+{
+"level": "info",
+"ts": "2025-03-23T12:31:05.709Z",
+"msg": "server-side apply completed",
+"controller": "kustomization",
+"controllerGroup": "kustomize.toolkit.fluxcd.io",
+"controllerKind": "Kustomization",
+"Kustomization": {
+    "name": "flux-system",
+    "namespace": "flux-system"
+},
+"namespace": "flux-system",
+"name": "flux-system",
+"reconcileID": "30477bdb-3c4b-413a-9494-14467d8154e9",
+"output": {
+    "ClusterRole/crd-controller-flux-system": "unchanged",
+    "ClusterRole/flux-edit-flux-system": "unchanged",
+    "ClusterRole/flux-view-flux-system": "unchanged",
+    "ClusterRoleBinding/cluster-reconciler-flux-system": "unchanged",
+    "ClusterRoleBinding/crd-controller-flux-system": "unchanged",
+    "Deployment/default/nodejs-deployment": "unchanged",
+    "Deployment/flux-system/helm-controller": "unchanged",
+    "Deployment/flux-system/kustomize-controller": "unchanged",
+    "Deployment/flux-system/notification-controller": "unchanged",
+    "Deployment/flux-system/source-controller": "unchanged",
+    "GitRepository/flux-system/flux-system": "unchanged",
+    "Kustomization/flux-system/flux-system": "unchanged",
+    "NetworkPolicy/flux-system/allow-egress": "unchanged",
+    "NetworkPolicy/flux-system/allow-scraping": "unchanged",
+    "NetworkPolicy/flux-system/allow-webhooks": "unchanged",
+    "PersistentVolume/nfs": "unchanged",
+    "ResourceQuota/flux-system/critical-pods-flux-system": "unchanged",
+    "Service/default/nodejs-service": "unchanged",
+    "Service/flux-system/notification-controller": "unchanged",
+    "Service/flux-system/source-controller": "unchanged",
+    "Service/flux-system/webhook-receiver": "unchanged",
+    "ServiceAccount/flux-system/helm-controller": "unchanged",
+    "ServiceAccount/flux-system/kustomize-controller": "unchanged",
+    "ServiceAccount/flux-system/notification-controller": "unchanged",
+    "ServiceAccount/flux-system/source-controller": "unchanged"
+},
+"revision": "main@sha1:66bcb9563ef10cdbef1dbd4e790f8135f220db9b"
+}
+{
+"level": "info",
+"ts": "2025-03-23T12:31:05.723Z",
+"msg": "Reconciliation finished in 604.230038ms, next run in 10m0s",
+"controller": "kustomization",
+"controllerGroup": "kustomize.toolkit.fluxcd.io",
+"controllerKind": "Kustomization",
+"Kustomization": {
+    "name": "flux-system",
+    "namespace": "flux-system"
+},
+"namespace": "flux-system",
+"name": "flux-system",
+"reconcileID": "30477bdb-3c4b-413a-9494-14467d8154e9",
+"revision": "main@sha1:66bcb9563ef10cdbef1dbd4e790f8135f220db9b"
+}
+{
+"level": "info",
+"ts": "2025-03-23T12:31:06.147Z",
+"msg": "server-side apply for cluster definitions completed",
+"controller": "kustomization",
+"controllerGroup": "kustomize.toolkit.fluxcd.io",
+"controllerKind": "Kustomization",
+"Kustomization": {
+    "name": "flux-system",
+    "namespace": "flux-system"
+},
+"namespace": "flux-system",
+"name": "flux-system",
+"reconcileID": "df41ae30-b4a7-4e76-b141-ebfbb4a62096",
+"output": {
+    "CustomResourceDefinition/alerts.notification.toolkit.fluxcd.io": "unchanged",
+    "CustomResourceDefinition/buckets.source.toolkit.fluxcd.io": "unchanged",
+    "CustomResourceDefinition/gitrepositories.source.toolkit.fluxcd.io": "unchanged",
+    "CustomResourceDefinition/helmcharts.source.toolkit.fluxcd.io": "unchanged",
+    "CustomResourceDefinition/helmreleases.helm.toolkit.fluxcd.io": "unchanged",
+    "CustomResourceDefinition/helmrepositories.source.toolkit.fluxcd.io": "unchanged",
+    "CustomResourceDefinition/kustomizations.kustomize.toolkit.fluxcd.io": "unchanged",
+    "CustomResourceDefinition/ocirepositories.source.toolkit.fluxcd.io": "unchanged",
+    "CustomResourceDefinition/providers.notification.toolkit.fluxcd.io": "unchanged",
+    "CustomResourceDefinition/receivers.notification.toolkit.fluxcd.io": "unchanged",
+    "Namespace/flux-system": "unchanged"
+}
+}
+{
+"level": "info",
+"ts": "2025-03-23T12:31:06.240Z",
+"msg": "server-side apply completed",
+"controller": "kustomization",
+"controllerGroup": "kustomize.toolkit.fluxcd.io",
+"controllerKind": "Kustomization",
+"Kustomization": {
+    "name": "flux-system",
+    "namespace": "flux-system"
+},
+"namespace": "flux-system",
+"name": "flux-system",
+"reconcileID": "df41ae30-b4a7-4e76-b141-ebfbb4a62096",
+"output": {
+    "ClusterRole/crd-controller-flux-system": "unchanged",
+    "ClusterRole/flux-edit-flux-system": "unchanged",
+    "ClusterRole/flux-view-flux-system": "unchanged",
+    "ClusterRoleBinding/cluster-reconciler-flux-system": "unchanged",
+    "ClusterRoleBinding/crd-controller-flux-system": "unchanged",
+    "Deployment/default/nodejs-deployment": "unchanged",
+    "Deployment/flux-system/helm-controller": "unchanged",
+    "Deployment/flux-system/kustomize-controller": "unchanged",
+    "Deployment/flux-system/notification-controller": "unchanged",
+    "Deployment/flux-system/source-controller": "unchanged",
+    "GitRepository/flux-system/flux-system": "unchanged",
+    "Kustomization/flux-system/flux-system": "unchanged",
+    "NetworkPolicy/flux-system/allow-egress": "unchanged",
+    "NetworkPolicy/flux-system/allow-scraping": "unchanged",
+    "NetworkPolicy/flux-system/allow-webhooks": "unchanged",
+    "PersistentVolume/nfs": "unchanged",
+    "ResourceQuota/flux-system/critical-pods-flux-system": "unchanged",
+    "Service/default/nodejs-service": "unchanged",
+    "Service/flux-system/notification-controller": "unchanged",
+    "Service/flux-system/source-controller": "unchanged",
+    "Service/flux-system/webhook-receiver": "unchanged",
+    "ServiceAccount/flux-system/helm-controller": "unchanged",
+    "ServiceAccount/flux-system/kustomize-controller": "unchanged",
+    "ServiceAccount/flux-system/notification-controller": "unchanged",
+    "ServiceAccount/flux-system/source-controller": "unchanged"
+},
+"revision": "main@sha1:66bcb9563ef10cdbef1dbd4e790f8135f220db9b"
+}
+{
+"level": "info",
+"ts": "2025-03-23T12:31:06.253Z",
+"msg": "Reconciliation finished in 528.674161ms, next run in 10m0s",
+"controller": "kustomization",
+"controllerGroup": "kustomize.toolkit.fluxcd.io",
+"controllerKind": "Kustomization",
+"Kustomization": {
+    "name": "flux-system",
+    "namespace": "flux-system"
+},
+"namespace": "flux-system",
+"name": "flux-system",
+"reconcileID": "df41ae30-b4a7-4e76-b141-ebfbb4a62096",
+"revision": "main@sha1:66bcb9563ef10cdbef1dbd4e790f8135f220db9b"
+}
+{
+"level": "info",
+"ts": "2025-03-23T12:38:56.556Z",
+"msg": "server-side apply for cluster definitions completed",
+"controller": "kustomization",
+"controllerGroup": "kustomize.toolkit.fluxcd.io",
+"controllerKind": "Kustomization",
+"Kustomization": {
+    "name": "flux-system",
+    "namespace": "flux-system"
+},
+"namespace": "flux-system",
+"name": "flux-system",
+"reconcileID": "d50f4ae1-3564-4c88-af6e-8891fbf3a56d",
+"output": {
+    "CustomResourceDefinition/alerts.notification.toolkit.fluxcd.io": "unchanged",
+    "CustomResourceDefinition/buckets.source.toolkit.fluxcd.io": "unchanged",
+    "CustomResourceDefinition/gitrepositories.source.toolkit.fluxcd.io": "unchanged",
+    "CustomResourceDefinition/helmcharts.source.toolkit.fluxcd.io": "unchanged",
+    "CustomResourceDefinition/helmreleases.helm.toolkit.fluxcd.io": "unchanged",
+    "CustomResourceDefinition/helmrepositories.source.toolkit.fluxcd.io": "unchanged",
+    "CustomResourceDefinition/kustomizations.kustomize.toolkit.fluxcd.io": "unchanged",
+    "CustomResourceDefinition/ocirepositories.source.toolkit.fluxcd.io": "unchanged",
+    "CustomResourceDefinition/providers.notification.toolkit.fluxcd.io": "unchanged",
+    "CustomResourceDefinition/receivers.notification.toolkit.fluxcd.io": "unchanged",
+    "Namespace/flux-system": "unchanged"
+}
+}
+{
+"level": "error",
+"ts": "2025-03-23T12:38:56.637Z",
+"msg": "Reconciliation failed after 535.747428ms, next try in 10m0s",
+"controller": "kustomization",
+"controllerGroup": "kustomize.toolkit.fluxcd.io",
+"controllerKind": "Kustomization",
+"Kustomization": {
+    "name": "flux-system",
+    "namespace": "flux-system"
+},
+"namespace": "flux-system",
+"name": "flux-system",
+"reconcileID": "d50f4ae1-3564-4c88-af6e-8891fbf3a56d",
+"revision": "main@sha1:9be70a480f0ab04bdc818ebc1fb0193f12b1e533",
+"error": "PersistentVolumeClaim/nfs namespace not specified: the server could not find the requested resource\n"
+}
+{
+"level": "info",
+"ts": "2025-03-23T12:40:48.794Z",
+"msg": "server-side apply for cluster definitions completed",
+"controller": "kustomization",
+"controllerGroup": "kustomize.toolkit.fluxcd.io",
+"controllerKind": "Kustomization",
+"Kustomization": {
+    "name": "flux-system",
+    "namespace": "flux-system"
+},
+"namespace": "flux-system",
+"name": "flux-system",
+"reconcileID": "407ae2f3-0138-4dc8-956f-31366387a2d2",
+"output": {
+    "CustomResourceDefinition/alerts.notification.toolkit.fluxcd.io": "unchanged",
+    "CustomResourceDefinition/buckets.source.toolkit.fluxcd.io": "unchanged",
+    "CustomResourceDefinition/gitrepositories.source.toolkit.fluxcd.io": "unchanged",
+    "CustomResourceDefinition/helmcharts.source.toolkit.fluxcd.io": "unchanged",
+    "CustomResourceDefinition/helmreleases.helm.toolkit.fluxcd.io": "unchanged",
+    "CustomResourceDefinition/helmrepositories.source.toolkit.fluxcd.io": "unchanged",
+    "CustomResourceDefinition/kustomizations.kustomize.toolkit.fluxcd.io": "unchanged",
+    "CustomResourceDefinition/ocirepositories.source.toolkit.fluxcd.io": "unchanged",
+    "CustomResourceDefinition/providers.notification.toolkit.fluxcd.io": "unchanged",
+    "CustomResourceDefinition/receivers.notification.toolkit.fluxcd.io": "unchanged",
+    "Namespace/flux-system": "unchanged"
+}
+}
+{
+"level": "error",
+"ts": "2025-03-23T12:40:48.879Z",
+"msg": "Reconciliation failed after 526.050136ms, next try in 10m0s",
+"controller": "kustomization",
+"controllerGroup": "kustomize.toolkit.fluxcd.io",
+"controllerKind": "Kustomization",
+"Kustomization": {
+    "name": "flux-system",
+    "namespace": "flux-system"
+},
+"namespace": "flux-system",
+"name": "flux-system",
+"reconcileID": "407ae2f3-0138-4dc8-956f-31366387a2d2",
+"revision": "main@sha1:9be70a480f0ab04bdc818ebc1fb0193f12b1e533",
+"error": "PersistentVolumeClaim/nfs namespace not specified: the server could not find the requested resource\n"
+}
