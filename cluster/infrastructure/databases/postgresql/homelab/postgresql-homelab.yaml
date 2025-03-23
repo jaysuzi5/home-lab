@@ -16,10 +16,10 @@ spec:
   storage:
     size: 3Gi
     storageClass: postgresql-homelab-storage
-  bootstrap:
-    initdb:
-      database: homelab
-      owner: jcurtis
+  # bootstrap:
+  #   initdb:
+  #     database: homelab
+  #     owner: jcurtis
   # users:
   #   - name: jcurtis
   #     secret:
