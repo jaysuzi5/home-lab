@@ -7,10 +7,10 @@ spec:
     storage: 100Mi
   accessModes:
     - ReadWriteMany
-  storageClassName: nfs
+  storageClassName: nginx-pvc-demo-storage
   nfs:
     server: 192.168.86.210
-    path: "/volume2/k8s-data"    
+    path: "/volume2/k8s-data/nginx-pvc-demo-storage"    
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
