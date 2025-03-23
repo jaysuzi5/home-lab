@@ -10,20 +10,20 @@ spec:
   storageClassName: nfs
   nfs:
     server: 192.168.86.210
-    path: "/volume2/k8s-data"
+    path: "/volume2/k8s-data"    
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: nginx-pvc-demo-storage
   namespace: default
-spec:
+spec: 
   accessModes:
     - ReadWriteMany
   storageClassName: nfs
   resources:
     requests:
-      storage: 100Mi
+      storage: 100Mi      
 ---
 apiVersion: apps/v1
 kind: Deployment
