@@ -20,7 +20,7 @@ metadata:
 spec: 
   accessModes:
     - ReadWriteMany
-  storageClassName: nfs
+  storageClassName: nginx-pvc-demo-storage
   resources:
     requests:
       storage: 100Mi      
