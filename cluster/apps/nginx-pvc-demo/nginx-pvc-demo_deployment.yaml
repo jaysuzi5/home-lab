@@ -29,6 +29,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx-pvc-demo
+  namespace: default
 spec:
   replicas: 1
   selector:
