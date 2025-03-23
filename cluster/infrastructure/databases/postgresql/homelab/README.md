@@ -37,6 +37,36 @@ Additional Documentation for CloudNativePG:  https://cloudnative-pg.io/documenta
 └── kustomization_flux.yaml
 ```
 
+### Monitor installation and debug issues
+Validate that the Custom Resource is available
+```bash
+kubectl get crd
+```
+
+Validate that the reconcilliation started:
+```bash
+flux logs
+```
+
+See status of the reconcilliation:
+```bash
+kubectl get kustomization -n flux-system
+```
+
+Check if namespace was created
+```bash
+kubectl get ns
+```
+
+Switch to the namespace to make other commands simplier
+```bash
+kubectl config set-context --current --namespace=postgresql-homelab
+```
+
+Review logs.  This can take some time for these to full provision
+```bash
+kubectl get pods
+```
 
 ### Next Steps:
 I need to setup a scheduled backup and define a location to back up the files.
