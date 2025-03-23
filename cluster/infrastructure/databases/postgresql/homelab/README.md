@@ -37,6 +37,12 @@ Additional Documentation for CloudNativePG:  https://cloudnative-pg.io/documenta
 └── kustomization_flux.yaml
 ```
 
+### Sealing the secrets
+
+```bash
+kubeseal --controller-namespace kube-system --format yaml < secrets.yaml > sealed-postgres-secret.yaml
+```
+
 ### Monitor installation and debug issues
 Validate that the Custom Resource is available
 ```bash
