@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - nfs-test-pv.yaml
   - nfs-test-pvc.yaml
+  - nfs-test2-pvc.yaml
