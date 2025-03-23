@@ -10,4 +10,4 @@ spec:
   storageClassName: nfs
   nfs:
     server: 192.168.86.210
-    path: "/test_nfs"
+    path: "/volume2/k8s-data"
