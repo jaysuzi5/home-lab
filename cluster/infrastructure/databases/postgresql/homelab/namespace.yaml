@@ -1,6 +1,4 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: postgresql-homelab2
-  labels:
-    name: postgresql-homelab2
+  name: postgresql-homelab
