@@ -5,23 +5,17 @@ This will be a shared database by multiple small applications that I run in my h
 Will be defined as an NFS storage class that will live on my Synology NAS.  This was setup first with the following
 
 ```bash
-helm repo add nfs-subdir-external-provisioner https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner/
-helm repo update
-helm install nfs-provisioner nfs-subdir-external-provisioner/nfs-subdir-external-provisioner   --set nfs.server=192.168.86.210   --set nfs.path=/volume2/k8s-data/postgresql-homelab-storage   --set storageClass.name=postgresql-homelab-storage   --set storageClass.reclaimPolicy=Retain
-```
-and can be confirmed with
-
-```bash
-kubectl get storageclass
+helm install nfs-client nfs-subdir-external-provisioner/nfs-subdir-external-provisioner \
+--set nfs.server="192.168.86.210" \
+--set nfs.path="/volume2/k8s-data" -n default
 ```
 
 ### CloudNativePG
-I am using CloudNativePG to setup a cluster for the database
+I am using CloudNativePG controller to setup a cluster for the database
 
 Installation:
 ```bash
-kubectl apply --server-side -f \
-  https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/release-1.25/releases/cnpg-1.25.1.yaml
+helm install cloudnative-pg cloudnative-pg/cloudnative-pg -n cloudnative-pg
 ```
 
 Additional Documentation for CloudNativePG:  https://cloudnative-pg.io/documentation/current/#
