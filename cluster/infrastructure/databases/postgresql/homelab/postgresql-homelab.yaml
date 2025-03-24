@@ -41,6 +41,7 @@ spec:
   ports:
     - port: 5432
       targetPort: 5432
+      nodePort: 30000
   selector:
     cnpg.io/cluster: postgresql-cluster
     cnpg.io/instanceRole: primary

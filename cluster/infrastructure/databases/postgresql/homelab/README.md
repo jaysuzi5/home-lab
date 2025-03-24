@@ -46,13 +46,17 @@ kubectl get crd
 Validate that the reconcilliation started:
 ```bash
 flux logs
-``
+```
+
+See details of kustomization logs
+```bash
+flux logs --kind=Kustomization --name=flux-system -n flux-system
+```
 
 
 See status of the reconcilliation:
 ```bash
 kubectl get kustomization -n flux-system
-flux logs --kind=Kustomization --name=flux-system -n flux-system
 ```
 
 Check if namespace was created
