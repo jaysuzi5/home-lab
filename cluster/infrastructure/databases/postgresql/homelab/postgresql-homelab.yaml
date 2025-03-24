@@ -19,15 +19,15 @@ spec:
   bootstrap:
     initdb:
       database: homelab
-      owner: jcurti
-  users:
-    - name: jcurtis
-      secret:
-        name: postgres-homelab-credentials
-  secrets:
-    users:
-      - name: jcurtis
-        secret: postgres-homelab-credentials      
+  #     owner: jcurtis
+  # users:
+  #   - name: jcurtis
+  #     secret:
+  #       name: postgres-homelab-credentials
+  # secrets:
+  #   users:
+  #     - name: jcurtis
+  #       secret: postgres-homelab-credentials      
 ---
 apiVersion: v1
 kind: Service
