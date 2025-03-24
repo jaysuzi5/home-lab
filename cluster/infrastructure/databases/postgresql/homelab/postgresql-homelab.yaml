@@ -1,21 +1,48 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: nfs-client
+provisioner: cluster.local/nfs-client-provisioner
+reclaimPolicy: Retain
+volumeBindingMode: Immediate
+---
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: postgresql-homelab-cluster
+  name: postgresql-cluster
   namespace: postgresql-homelab
 spec:
-  description: Postgres cluster for the homelab database
-  imageName: quay.io/enterprisedb/postgresql:16.1
   instances: 3
-  inheritedMetadata:
-    labels:
-      app: homelab-database
-      policy-type: "database"
-  monitoring:
-    enablePodMonitor: true
   storage:
-    size: 4Gi
-    storageClass: postgresql-homelab-storage
+    storageClass: "nfs-client"
+    size: 10Gi
+  bootstrap:
+    initdb:
+      database: homelab
+      owner: jcurti
+  users:
+    - name: jcurtis
+      secret:
+        name: postgres-homelab-credentials
+  secrets:
+    users:
+      - name: jcurtis
+        secret: postgres-homelab-credentials      
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgresql-cluster-external
+  labels:
+    app: postgresql-cluster
+spec:
+  type: NodePort
+  ports:
+    - port: 5432
+      targetPort: 5432
+  selector:
+    cnpg.io/cluster: postgresql-cluster
+    cnpg.io/instanceRole: primary
   # bootstrap:
   #   initdb:
   #     database: homelab
