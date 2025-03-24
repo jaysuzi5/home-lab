@@ -3,5 +3,5 @@ kind: Kustomization
 namespace: postgresql-homelab
 resources:
   - namespace.yaml
-  - secrets.yaml
+  # - secrets.yaml
   - postgresql-homelab.yaml
