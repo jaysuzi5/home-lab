@@ -78,5 +78,11 @@ Review logs.  This can take some time for these to full provision
 kubectl get pods
 ```
 
+When using the default password, you can retrieve the password with the following:
+```bash
+kubectl get secret postgresql-cluster-app -n postgresql-homelab -o jsonpath='{.data.password}' | base64 --decode
+```
+
+
 ### Next Steps:
 I need to setup a scheduled backup and define a location to back up the files.
