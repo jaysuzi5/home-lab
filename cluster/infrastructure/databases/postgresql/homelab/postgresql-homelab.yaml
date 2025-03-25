@@ -20,7 +20,7 @@ spec:
 #     users:
 #       - name: jcurtis
 #         secret: postgres-homelab-credentials      
-# ---
+---
 apiVersion: v1
 kind: Service
 metadata:
