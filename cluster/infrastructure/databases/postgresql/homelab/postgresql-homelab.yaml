@@ -12,15 +12,15 @@ spec:
     initdb:
       database: homelab
       owner: jcurtis
-  users:
-    - name: jcurtis
-      secret:
-        name: postgres-homelab-credentials
-  secrets:
-    users:
-      - name: jcurtis
-        secret: postgres-homelab-credentials      
----
+#   users:
+#     - name: jcurtis
+#       secret:
+#         name: postgres-homelab-credentials
+#   secrets:
+#     users:
+#       - name: jcurtis
+#         secret: postgres-homelab-credentials      
+# ---
 apiVersion: v1
 kind: Service
 metadata:
