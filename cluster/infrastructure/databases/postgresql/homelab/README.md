@@ -27,9 +27,13 @@ Additional Documentation for CloudNativePG:  https://cloudnative-pg.io/documenta
 ├── namespace.yaml
 ├── postgresql-homelab.yaml
 ├── secrets.yaml
+├── storageclass.yaml
 ├── kustomization.yaml
 └── kustomization_flux.yaml
 ```
+
+Note: Flux is having issues trying to reconcile storage class, so it is just here for documentation incase I need to
+create it again, but it is set to skip and is not included in the kustomization file.
 
 ### Sealing the secrets
 

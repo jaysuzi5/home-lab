@@ -1,11 +1,3 @@
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata:
-  name: nfs-client
-provisioner: cluster.local/nfs-client-provisioner
-reclaimPolicy: Retain
-volumeBindingMode: Immediate
----
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
