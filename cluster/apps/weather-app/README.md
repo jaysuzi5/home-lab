@@ -60,11 +60,14 @@ Monitor flux job to see that it was picked up:
  k get pods -n weather-app
  ```
 
- If pod is crashing first check the details of the pod:
+ If pod is crashing first check the details of the pod (update with specific pod name):
  ```bash
  k describe pod weather-collector-6d85df7d59-8p5p9 -n weather-app
  ```
 
- Next look at the logs
+ Next look at the logs (update with specific pod name):
  ```bash
+ kubectl logs weather-collector-6bc8b468c6-qtddk  -n weather-app
  ```
+
+ 
