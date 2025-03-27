@@ -11,4 +11,5 @@ helm repo update
 helm install ingress-nginx ingress-nginx/ingress-nginx --namespace kube-system
 ```
 
-I then created the ingress.yaml manifest
+I then created the ingress.yaml manifest, but I need to use a fake DNS (not IP) of grafana.local
+and then edit my local host file with the mapping
