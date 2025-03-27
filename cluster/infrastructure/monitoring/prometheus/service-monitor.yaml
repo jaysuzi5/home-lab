@@ -2,7 +2,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: prometheus
-  namespace: observability
+  namespace: monitoring
 spec:
   selector:
     matchLabels:
