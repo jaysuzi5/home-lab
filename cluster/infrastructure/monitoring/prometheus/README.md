@@ -27,3 +27,8 @@ Access Grafana local instance:
   kubectl --namespace monitoring port-forward $POD_NAME 3000
 ```
 
+I updated the installation to use my NFS as the persistant data with the values.yaml and then upgrading via helm
+
+```bash
+helm upgrade prometheus-operator prometheus-community/kube-prometheus-stack -n monitoring -f values.yaml
+```
