@@ -3,18 +3,11 @@ kind: Ingress
 metadata:
   name: grafana-ingress
   namespace: monitoring
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
-  ingressClassName: nginx
   rules:
   - host: grafana.local
     http:
       paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: prometheus-operator-grafana
-            port:
-              number: 80
+      - backend:
+          serviceName: prometheus-operator-grafana
+          servicePort: 80
