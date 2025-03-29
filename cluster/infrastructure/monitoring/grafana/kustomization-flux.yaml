@@ -1,0 +1,13 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: grafana
+  namespace: flux-system
+spec:
+  targetNamespace: monitoring
+  interval: 1m0s
+  path: "./infrastructure/monitoring/grafana"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-cluster
