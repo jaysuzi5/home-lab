@@ -6,5 +6,5 @@ I was able to access Grafana locally by running a port forwarder.  However, I wa
 the helm installation to change the service to a nodePort
 
 ```bash
-kubectl patch svc prometheus-operator-grafana -n monitoring -p '{"spec": {"type": "NodePort"}}'
+kubectl patch svc prometheus-operator-grafana -n monitoring -p '{"spec": {"type": "ClusterIP"}}'
 ```
