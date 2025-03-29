@@ -32,3 +32,5 @@ I updated the installation to use my NFS as the persistant data with the values.
 ```bash
 helm upgrade prometheus-operator prometheus-community/kube-prometheus-stack -n monitoring -f values.yaml
 ```
+
+I am storing the values.yaml here for consistency with other infrastructure that is released by Flux, however, I will use an empty kustomization file to ignore this file
