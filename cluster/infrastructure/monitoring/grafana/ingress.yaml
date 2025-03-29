@@ -5,9 +5,13 @@ metadata:
   namespace: monitoring
 spec:
   rules:
-  - host: grafana.local
-    http:
-      paths:
-      - backend:
-          serviceName: prometheus-operator-grafana
-          servicePort: 80
+    - host: grafana.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: prometheus-operator-grafana
+                port:
+                  number: 80
