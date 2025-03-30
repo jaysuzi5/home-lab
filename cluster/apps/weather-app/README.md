@@ -30,15 +30,39 @@ cluster/
   │   │   
 ```
 
-Seal the secret with:
-```bash
-kubeseal --cert sealed-secrets-cert.pem -o yaml < temp.yaml > secrets.yaml
-```
 
-If needed, you can retrieve the secret with:
+I ran the following on the controller, although this does not have to be.
+Retrieved the certificate with:
 ```bash
 kubectl get secret -n kube-system sealed-secrets-keyhhjt6 -o jsonpath='{.data.tls\.crt}' | base64 --decode > sealed-secrets-cert.pem
 ```
+
+Created a secrets file with the values encoded
+```bash
+apiVersion: v1
+kind: Secret
+metadata:
+  name: weather-secrets
+  namespace: weather-app
+type: Opaque
+data:
+  LATITUDE: <base64-encoded-latitude>
+  LONGITUDE: <base64-encoded-longitude>
+  OPENWEATHER_API_KEY: <base64-encoded-api-key>
+  POSTGRES_PASSWORD: <base64-encoded-postgres-password>
+  POSTGRES_USER: <base64-encoded-postgres-user>
+```
+
+encoded the values with:
+```bash
+echo -n "<actual value>" | base64 
+```
+
+Then sealed the secret with:
+```bash
+kubeseal --cert sealed-secrets-cert.pem -o yaml < secret.yaml > sealed-secret.yaml
+vd```
+
 
 Monitor flux job to see that it was picked up:
 ```bash
