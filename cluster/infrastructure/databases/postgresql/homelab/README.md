@@ -7,8 +7,15 @@ See nfs folder for setup of NFS which this installation is expecting
 ### CloudNativePG
 I am using CloudNativePG controller to setup a cluster for the database
 
+Need to manually create the namespace before installation
+```bash
+kubectl create namespace cloudnative-pg 
+```
+
 Installation:
 ```bash
+helm repo add cloudnative-pg https://cloudnative-pg.github.io/charts
+helm repo update
 helm install cloudnative-pg cloudnative-pg/cloudnative-pg -n cloudnative-pg
 ```
 
@@ -21,7 +28,6 @@ Additional Documentation for CloudNativePG:  https://cloudnative-pg.io/documenta
 ├── namespace.yaml
 ├── postgresql-homelab.yaml
 ├── secrets.yaml
-├── storageclass.yaml
 ├── kustomization.yaml
 └── kustomization_flux.yaml
 ```
@@ -34,6 +40,7 @@ create it again, but it is set to skip and is not included in the kustomization 
 ```bash
 kubeseal --controller-namespace kube-system --format yaml < secrets.yaml > sealed-postgres-secret.yaml
 ```
+
 
 ### Monitor installation and debug issues
 Validate that the Custom Resource is available
