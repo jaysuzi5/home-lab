@@ -2,13 +2,7 @@
 This will be a shared database by multiple small applications that I run in my homelab.  For convience, I want to have one database instead of a number of smaller databases that I would need to setup, monitor, and backup separately.  
 
 ### Storage
-Will be defined as an NFS storage class that will live on my Synology NAS.  This was setup first with the following
-
-```bash
-helm install nfs-client nfs-subdir-external-provisioner/nfs-subdir-external-provisioner \
---set nfs.server="192.168.86.210" \
---set nfs.path="/volume2/k8s-data" -n default
-```
+See nfs folder for setup of NFS which this installation is expecting
 
 ### CloudNativePG
 I am using CloudNativePG controller to setup a cluster for the database
