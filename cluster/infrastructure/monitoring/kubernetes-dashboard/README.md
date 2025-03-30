@@ -14,3 +14,11 @@ kubectl create secret tls dashboard-tls \
   --cert=dashboard.crt \
   --key=dashboard.key
   ```
+
+After having issues with metalLB, I have decided just to run using NodePort, but needed to patch the Grafana service from ClusterIP to NodePort
+
+```bash
+kubectl patch svc kubernetes-dashboard -n kubernetes-dashboard -p '{"spec": {"type": "NodePort"}}'
+```
+
+I then setup an ingress rule (ingress.yaml)
