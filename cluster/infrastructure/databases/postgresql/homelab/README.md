@@ -91,19 +91,15 @@ kubectl get secret postgresql-cluster-app -n postgresql-homelab -o jsonpath='{.d
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
 helm install pg-exporter prometheus-community/prometheus-postgres-exporter \
-  --set config.datasource.host="your-postgres-service" \
+  --set config.datasource.host="postgresql-cluster-rw" \
   --set config.datasource.user="your-username" \
   --set config.datasource.password="your-password" \
-  --set config.datasource.database="your-database" \
+  --set config.datasource.database="homelab" \
   --set config.datasource.sslmode="disable"
 ```
 
-Then update the service as a NodePort so that it can be reached from my development machine
+Since I exposing as a NodePort, I had issue trying to patch, so I exported the manifest, manually updated it, removed the old one and recreated.  For documenting, I have the service.yaml checked in but will NOT deploy through Flux
 
-```bash
-kubectl patch svc pg-exporter-prometheus-postgres-exporter -n default \
-  -p '{"spec":{"type":"NodePort","ports":[{"port":9187,"targetPort":80,"nodePort":30918}]}}'
-```
 
 ### Next Steps:
 I need to setup a scheduled backup and define a location to back up the files.
