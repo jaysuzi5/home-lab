@@ -8,8 +8,6 @@ After having issues with metalLB, I have decided just to run using NodePort, but
 kubectl patch svc kubernetes-dashboard -n kubernetes-dashboard -p '{"spec": {"type": "NodePort"}}'
 ```
 
-I then setup an ingress rule (ingress.yaml)
-
 
 Creating a local CA and signed certificate:
 

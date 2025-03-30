@@ -6,16 +6,9 @@ See the prometheus for details on the helm installation
 
 I was able to access Grafana locally by running a port forwarder.  However, I wanted to make access a bit easier.
 
-First, I setup nginx ingress (see ingress-nginx folder for additiona details)
-
-I then setup an ingress rule (ingress.yaml)
-
-After having issues with metalLB, I have decided just to run using NodePort, but needed to patch the Grafana service from ClusterIP to NodePort
-
 ```bash
 kubectl patch svc prometheus-operator-grafana -n monitoring -p '{"spec": {"type": "NodePort"}}'
 ```
-
 
 
 Get Grafana 'admin' user password by running:
