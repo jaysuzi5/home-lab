@@ -1,9 +1,0 @@
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata:
-  name: nfs-client
-  annotations:
-    kustomize.toolkit.fluxcd.io/skip: "true"
-provisioner: cluster.local/nfs-client-provisioner
-reclaimPolicy: Retain
-volumeBindingMode: Immediate

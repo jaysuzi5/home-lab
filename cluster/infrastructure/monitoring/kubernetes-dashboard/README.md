@@ -45,7 +45,6 @@ kubectl create secret tls dashboard-tls \
   --dry-run=client -o yaml | kubectl apply -f -
 ```
 
-Created a service account and cluster role binding.  See service-account.yaml and cluster-role-binding for further details
+Retrieve the Token:
+kubectl create token dashboard-admin-sa --namespace=kube-system
 
-This allows the ability to retrieve a token for this role with:
-kubectl -n kube-system get secret $(kubectl -n kube-system get sa/dashboard-admin-sa -o jsonpath="{.status.secrets[0].name}") -o jsonpath="{.data.token}" | base64 --decode

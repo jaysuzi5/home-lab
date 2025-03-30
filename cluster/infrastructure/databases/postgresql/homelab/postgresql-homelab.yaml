@@ -1,0 +1,31 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgresql-cluster
+  namespace: postgresql-homelab
+spec:
+  instances: 3
+  storage:
+    storageClass: "nfs-client"
+    size: 10Gi
+  bootstrap:
+    initdb:
+      database: homelab
+      owner: jcurtis
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgresql-cluster-external
+  namespace: postgresql-homelab
+  labels:
+    app: postgresql-cluster
+spec:
+  type: NodePort
+  ports:
+    - port: 5432
+      targetPort: 5432
+      nodePort: 30000
+  selector:
+    cnpg.io/cluster: postgresql-cluster
+    cnpg.io/instanceRole: primary
