@@ -85,5 +85,25 @@ kubectl get secret postgresql-cluster-app -n postgresql-homelab -o jsonpath='{.d
 ```
 
 
+## Setup Prometheus Exporter
+
+```bash
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+helm install pg-exporter prometheus-community/prometheus-postgres-exporter \
+  --set config.datasource.host="your-postgres-service" \
+  --set config.datasource.user="your-username" \
+  --set config.datasource.password="your-password" \
+  --set config.datasource.database="your-database" \
+  --set config.datasource.sslmode="disable"
+```
+
+Then update the service as a NodePort so that it can be reached from my development machine
+
+```bash
+kubectl patch svc pg-exporter-prometheus-postgres-exporter -n default \
+  -p '{"spec":{"type":"NodePort","ports":[{"port":9187,"targetPort":80,"nodePort":30918}]}}'
+```
+
 ### Next Steps:
 I need to setup a scheduled backup and define a location to back up the files.
