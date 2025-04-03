@@ -27,7 +27,7 @@ prometheus:
         static_configs:
           - targets: 
               - 'otel-collector-collector-monitoring.monitoring.svc.cluster.local:8888'
-              - 'otel-collector-collector-monitoring.monitoring.svc.cluster.local:9090'
+              - 'otel-collector-collector-monitoring.monitoring.svc.cluster.local:9464'
 
 alertmanager:
   alertmanagerSpec:
