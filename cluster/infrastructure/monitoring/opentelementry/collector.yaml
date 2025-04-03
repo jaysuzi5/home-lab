@@ -18,10 +18,18 @@ spec:
     exporters:
       prometheus:
         endpoint: "0.0.0.0:8889"
+      prometheus_9464:
+        endpoint: "0.0.0.0:9464"
 
     service:
       pipelines:
         metrics:
           receivers: [otlp]
           processors: [batch]
-          exporters: [prometheus]
+          exporters: [prometheus, prometheus_9464]
+  # Expose port 9464
+  ports:
+    - name: prometheus-8889
+      containerPort: 8889
+    - name: prometheus-9464
+      containerPort: 9464
