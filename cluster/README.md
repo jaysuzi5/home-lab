@@ -17,3 +17,19 @@ flux logs
 ```bash
 flux get kustomizations
 ```
+
+grep for specific details across all logs:
+
+```bash
+flux logs --all-namespaces | grep opentelemetry
+```
+
+force reconcillation:
+
+```bash
+flux reconcile kustomization flux-system
+```
+
+
+http://prometheus-operator-kube-p-prometheus.monitoring:9090/
+       prometheus-operator-kube-p-prometheus
