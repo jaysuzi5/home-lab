@@ -14,7 +14,7 @@ data:
       batch: {}
     exporters:
       prometheus:
-        endpoint: "0.0.0.0:9464"
+        endpoint: "0.0.0.0:8888"
       debug: {}
     service:
       pipelines:
