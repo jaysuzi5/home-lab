@@ -22,7 +22,7 @@ spec:
                 name: weather-config
           env:
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
-              value: "http://localhost:4317"  # Sends data to the sidecar
+              value: "http://localhost:4317"
             - name: OPENWEATHER_API_KEY
               valueFrom:
                 secretKeyRef:
@@ -55,3 +55,7 @@ spec:
             - name: otel-config
               mountPath: /etc/otel-collector-config.yaml
               subPath: otel-collector-config.yaml
+      volumes:
+        - name: otel-config
+          configMap:
+            name: otel-collector-config
