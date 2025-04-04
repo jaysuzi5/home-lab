@@ -13,8 +13,6 @@ spec:
             endpoint: "0.0.0.0:4317"
           http:
             endpoint: "0.0.0.0:4318"
-      k8s_cluster:
-        collection_interval: 10s
     processors:
       batch:
     exporters:
@@ -23,8 +21,12 @@ spec:
       debug:
         verbosity: detailed
     service:
+      telemetry:
+        metrics:
+          level: detailed  # Enable detailed self-metrics
+          address: "0.0.0.0:8889"  # Separate port for self-metrics
       pipelines:
         metrics:
-          receivers: [otlp, k8s_cluster]
+          receivers: [otlp]
           processors: [batch]
           exporters: [prometheus, debug]
