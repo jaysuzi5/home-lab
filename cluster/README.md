@@ -30,6 +30,9 @@ force reconcillation:
 flux reconcile kustomization flux-system
 ```
 
+Port forwarding to 9090 for Prometheus Dashboard:
 
-http://prometheus-operator-kube-p-prometheus.monitoring:9090/
-       prometheus-operator-kube-p-prometheus
+```bash
+kubectl port-forward -n monitoring svc/prometheus-operator-kube-p-prometheus 9090  
+```
+http://localhost:9090/targets
