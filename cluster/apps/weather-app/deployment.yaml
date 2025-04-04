@@ -22,7 +22,7 @@ spec:
                 name: weather-config
           env:
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
-              value: "http://otel-collector.monitoring.svc.cluster.local:4317"
+              value: "http://otel-collector-collector.monitoring.svc.cluster.local:4317"
             - name: OPENWEATHER_API_KEY
               valueFrom:
                 secretKeyRef:
