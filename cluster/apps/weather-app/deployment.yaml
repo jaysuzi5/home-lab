@@ -16,13 +16,13 @@ spec:
       restartPolicy: Always
       containers:
         - name: weather-collector
-          image: ghcr.io/jaysuzi5/weather-collector:v0.2.0
+          image: ghcr.io/jaysuzi5/weather-collector:v0.2.1
           envFrom:
             - configMapRef:
                 name: weather-config
           env:
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
-              value: "http://localhost:4317"
+              value: "http://otel-collector.monitoring.svc.cluster.local:4317"
             - name: OPENWEATHER_API_KEY
               valueFrom:
                 secretKeyRef:
@@ -48,13 +48,6 @@ spec:
                 secretKeyRef:
                   name: weather-secrets
                   key: LONGITUDE
-        - name: otel-collector
-          image: otel/opentelemetry-collector-contrib:latest
-          args: ["--config=/etc/otel-collector-config.yaml"]
-          volumeMounts:
-            - name: otel-config
-              mountPath: /etc/otel-collector-config.yaml
-              subPath: otel-collector-config.yaml
       volumes:
         - name: otel-config
           configMap:
