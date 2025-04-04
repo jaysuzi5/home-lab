@@ -17,7 +17,7 @@ spec:
       batch:
     exporters:
       prometheus:
-        endpoint: "0.0.0.0:8888"
+        endpoint: "0.0.0.0:8890"
       debug:
         verbosity: detailed
     service:
