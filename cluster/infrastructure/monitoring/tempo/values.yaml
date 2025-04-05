@@ -1,0 +1,24 @@
+tempo:
+  compactor:
+    compaction:
+      block_retention: "336h"
+  storage:
+    trace:
+      backend: local
+      local:
+        path: /var/tempo
+  persistence:
+    enabled: true
+    volumeClaimTemplate:
+      spec:
+        storageClassName: nfs-client
+        accessModes:
+          - ReadWriteMany
+        resources:
+          requests:
+            storage: 2Gi
+  service:
+    type: ClusterIP
+    port: 3100
+  serviceAccount:
+    create: true
