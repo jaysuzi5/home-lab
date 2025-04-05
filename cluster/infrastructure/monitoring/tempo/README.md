@@ -14,6 +14,9 @@ helm repo update
 helm install tempo grafana/tempo -n monitoring -f values.yaml
 ```
 
+Note:  storing the values file here, however need to have an empty kustomizaiton file so that flux reconcilation does not fail and try to bring this in
+
+
 reapply the values.yaml on update
 
 ```bash
