@@ -18,8 +18,10 @@ spec:
     exporters:
       prometheus:
         endpoint: "0.0.0.0:8890"
-      debug:
-        verbosity: detailed
+      otlp:
+        endpoint: "tempo.monitoring.svc.cluster.local:4317" 
+        tls:
+          insecure: true
     service:
       telemetry:
         metrics:
@@ -29,4 +31,8 @@ spec:
         metrics:
           receivers: [otlp]
           processors: [batch]
-          exporters: [prometheus, debug]
+          exporters: [prometheus]
+        traces:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [otlp]
