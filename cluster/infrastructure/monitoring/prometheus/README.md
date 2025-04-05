@@ -10,7 +10,7 @@ helm repo add prometheus-community https://prometheus-community.github.io/helm-c
 helm repo update
 helm install prometheus-operator prometheus-community/kube-prometheus-stack -n monitoring --create-namespace -f values.yaml
 ```
-
+Note:  storing the values file here, however need to have an empty kustomizaiton file so that flux reconcilation does not fail and try to bring this in
 
 NOTES:
 Check the status:
@@ -29,7 +29,7 @@ Check the PV:
 kubectl get pv
 ```
 
-I am storing the values.yaml here for consistency with other infrastructure that is released by Flux, however, I will use an empty kustomization file to ignore this file
+
 
 I have updated the values for the pg-exporter-prometheus-postgres-exporter.default.svc.cluster.local:9187 and applied it with:
 
