@@ -1,8 +1,15 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: otel-collector
 spec:
-  mode: deployment
-  env:
-    - name: SPLUNK_HEC_TOKEN
-      valueFrom:
-        secretKeyRef:
-          name: otel-collector-secrets
-          key: SPLUNK_HEC_TOKEN
+  template:
+    spec:
+      containers:
+      - name: otel-collector
+        env:
+        - name: SPLUNK_HEC_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: otel-collector-secrets
+              key: SPLUNK_HEC_TOKEN
