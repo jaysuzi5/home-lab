@@ -28,11 +28,6 @@ kubeseal --controller-namespace kube-system --format yaml < temp.yaml > secret.y
 
 
 ### Monitor installation and debug issues
-Validate that the Custom Resource is available
-```bash
-kubectl get crd
-```
-
 Validate that the reconcilliation started:
 ```bash
 flux logs
@@ -40,7 +35,7 @@ flux logs
 
 See details of kustomization logs
 ```bash
-flux logs --kind=Kustomization --name=flux-system -n flux-system
+flux logs --kind=Kustomization --name=flux-system -n flux-system  --tail=10
 ```
 
 
@@ -54,20 +49,18 @@ Check if namespace was created
 kubectl get ns
 ```
 
-Switch to the namespace to make other commands simplier
+Review logs.  This can take some time for these to full provision
 ```bash
-kubectl config set-context --current --namespace=postgresql-homelab
+kubectl get pods -n splunk
 ```
 
 Review logs.  This can take some time for these to full provision
 ```bash
-kubectl get pods
+kubectl get svc -n splunk
 ```
 
-When using the default password, you can retrieve the password with the following:
-```bash
-kubectl get secret postgresql-cluster-app -n postgresql-homelab -o jsonpath='{.data.password}' | base64 --decode
-```
+Go to Splunk front-end after updating the host file
+http://splunk.local:30080
 
 ### Next Steps:
 I need to setup a scheduled backup and define a location to back up the files.

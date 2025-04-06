@@ -1,0 +1,8 @@
+spec:
+  mode: deployment
+  env:
+    - name: SPLUNK_HEC_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: otel-collector-secrets
+          key: SPLUNK_HEC_TOKEN
