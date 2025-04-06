@@ -5,6 +5,7 @@ metadata:
   namespace: monitoring
 spec:
   mode: deployment
+  image: otel/opentelemetry-collector-contrib:latest
   env:
   - name: SPLUNK_HEC_TOKEN
     valueFrom:
@@ -29,7 +30,7 @@ spec:
         tls:
           insecure: true
       splunk_hec:
-        token: "${SPLUNK_HEC_TOKEN}"  # Populated by the env var
+        token: "${SPLUNK_HEC_TOKEN}"
         endpoint: "http://splunk.splunk.svc.cluster.local:8088/services/collector"
         source: "otel"
         sourcetype: "_json"
