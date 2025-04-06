@@ -35,7 +35,6 @@ spec:
         source: "otel"
         sourcetype: "otel:logs"
         index: "otel_logging"
-        max_connections: 20
         disable_compression: false
         timeout: 10s
         tls:
