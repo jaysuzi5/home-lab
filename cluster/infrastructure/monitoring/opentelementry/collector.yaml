@@ -31,7 +31,7 @@ spec:
           insecure: true
       splunk_hec:
         token: "${SPLUNK_HEC_TOKEN}"
-        endpoint: "http://splunk.splunk.svc.cluster.local:8088/services/collector"
+        endpoint: "https://splunk.splunk.svc.cluster.local:8088/services/collector"
         source: "otel"
         sourcetype: "_json"
         index: "main"
