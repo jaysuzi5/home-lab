@@ -5,6 +5,12 @@ metadata:
   namespace: monitoring
 spec:
   mode: deployment
+  env:
+  - name: SPLUNK_HEC_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: otel-collector-secrets
+        key: SPLUNK_HEC_TOKEN
   config: |
     receivers:
       otlp:
@@ -15,7 +21,6 @@ spec:
             endpoint: "0.0.0.0:4318"
     processors:
       batch:
-
     exporters:
       prometheus:
         endpoint: "0.0.0.0:8890"
@@ -24,13 +29,12 @@ spec:
         tls:
           insecure: true
       splunk_hec:
-        token: "${SPLUNK_HEC_TOKEN}"  # Secret or env var
+        token: "${SPLUNK_HEC_TOKEN}"  # Populated by the env var
         endpoint: "http://splunk.splunk.svc.cluster.local:8088/services/collector"
         source: "otel"
         sourcetype: "_json"
         index: "main"
         insecure_skip_verify: true
-
     service:
       telemetry:
         metrics:

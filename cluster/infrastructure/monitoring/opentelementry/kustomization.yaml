@@ -4,5 +4,3 @@ resources:
   - https://github.com/cert-manager/cert-manager/releases/latest/download/cert-manager.yaml
   - https://github.com/open-telemetry/opentelemetry-operator/releases/latest/download/opentelemetry-operator.yaml
   - collector.yaml
-patches:
-  - path: deployment-env-variables.yaml
