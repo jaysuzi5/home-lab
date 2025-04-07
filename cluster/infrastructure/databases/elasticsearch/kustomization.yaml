@@ -6,5 +6,7 @@ resources:
   - namespace.yaml
   - helmrepository.yaml
   - elasticsearch-values.yaml
+  - kibana-values.yaml
   - elasticsearch-release.yaml
+  - kibana-release.yaml
   - secret.yaml
