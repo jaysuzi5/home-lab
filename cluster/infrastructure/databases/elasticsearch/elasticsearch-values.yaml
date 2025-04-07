@@ -28,11 +28,3 @@ data:
     esConfig:
       elasticsearch.yml: |
         xpack.security.enabled: true
-
-    extraEnvs:
-      - name: ELASTIC_PASSWORD
-        valueFrom:
-          secretKeyRef:
-            name: elastic-credentials
-            key: password
-
