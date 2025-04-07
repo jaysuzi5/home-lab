@@ -16,3 +16,4 @@ spec:
   valuesFrom:
     - kind: ConfigMap
       name: elasticsearch-values
+      valuesKey: values.yaml
