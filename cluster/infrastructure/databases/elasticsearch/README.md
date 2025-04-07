@@ -32,35 +32,3 @@ kubectl create secret generic elastic-credentials \
 ```
 
 
-Flux was having difficulty in the order of operations, so created first with the following:
-```bash
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-namespace: elasticsearch
-
-resources:
-  - namespace.yaml
-  - secret.yaml
-
-configMapGenerator:
-  - name: elasticsearch-values
-    files:
-      - elasticsearch-values.yaml
-  - name: kibana-values
-    files:
-      - kibana-values.yaml
-
-generatorOptions:
-  disableNameSuffixHash: true
-```
-
-Then updated to:
-```bash
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-namespace: elasticsearch
-
-resources:
-  - elasticsearch-release.yaml
-  - kibana-release.yaml
-```
