@@ -3,16 +3,6 @@ kind: Kustomization
 namespace: elasticsearch
 
 resources:
-  - namespace.yaml
-  - secret.yaml
+  - elasticsearch-release.yaml
+  - kibana-release.yaml
 
-configMapGenerator:
-  - name: elasticsearch-values
-    files:
-      - elasticsearch-values.yaml
-  - name: kibana-values
-    files:
-      - kibana-values.yaml
-
-generatorOptions:
-  disableNameSuffixHash: true
