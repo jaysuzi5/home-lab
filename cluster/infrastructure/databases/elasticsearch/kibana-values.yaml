@@ -13,18 +13,15 @@ data:
         existingSecret: elastic-credentials
       ssl:
         verificationMode: none
-
     service:
       type: NodePort
       nodePort: 31601
-
     persistence:
       enabled: true
       accessModes:
         - ReadWriteOnce
       storageClassName: nfs-client
       size: 5Gi
-
     resources:
       requests:
         cpu: "200m"
