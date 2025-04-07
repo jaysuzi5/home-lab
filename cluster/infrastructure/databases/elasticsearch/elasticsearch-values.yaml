@@ -1,0 +1,30 @@
+replicas: 2
+
+volumeClaimTemplate:
+  accessModes: ["ReadWriteOnce"]
+  storageClassName: nfs-client
+  resources:
+    requests:
+      storage: 10Gi
+
+persistence:
+  enabled: true
+
+resources:
+  requests:
+    cpu: "500m"
+    memory: "2Gi"
+  limits:
+    cpu: "1"
+    memory: "4Gi"
+
+esConfig:
+  elasticsearch.yml: |
+    xpack.security.enabled: true
+
+extraEnvs:
+  - name: ELASTIC_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: elastic-credentials
+        key: password
