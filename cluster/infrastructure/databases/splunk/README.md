@@ -1,4 +1,4 @@
-## Homelab Splunk
+# Splunk
 Using Splunk primarily at this time to store logs
 
 ### Storage
