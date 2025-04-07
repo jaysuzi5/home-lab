@@ -9,4 +9,3 @@ resources:
   - kibana-values.yaml
   - elasticsearch-release.yaml
   - kibana-release.yaml
-  - secret.yaml
