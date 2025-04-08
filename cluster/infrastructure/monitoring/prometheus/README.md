@@ -41,5 +41,5 @@ Whenever the upgrade is applied it will change the grafana service back to a clu
 patched as well, but will leave it as dynamic at this time.
 
 ```bash
-kubectl patch svc prometheus-operator-grafana -n monitoring -p '{"spec": {"type": "NodePort"}}'
+kubectl patch svc prometheus-operator-grafana -n monitoring -p '{"spec": {"type": "LoadBalancer"}}'
 ```
