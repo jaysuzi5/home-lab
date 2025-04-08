@@ -6,7 +6,7 @@ metadata:
 spec:
   selector:
     app: splunk
-  type: NodePort
+  type: LoadBalancer
   ports:
     - name: web
       port: 8000
