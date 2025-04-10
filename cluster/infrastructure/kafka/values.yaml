@@ -1,0 +1,35 @@
+# ZooKeeper configuration (still included as per your original config)
+zookeeper:
+  enabled: true
+  replicaCount: 3
+  persistence:
+    enabled: true
+    storageClass: "nfs-client"
+    size: 1Gi
+
+# Kafka configuration
+replicaCount: 3
+kraft:
+  enabled: true  # Ensure KRaft mode is explicit
+  controller:
+    replicaCount: 3
+    persistence:
+      enabled: true
+      storageClass: "nfs-client"
+      size: 2Gi
+
+# Fallback for broker role (since your pods run both controller and broker roles)
+broker:
+  persistence:
+    enabled: true
+    storageClass: "nfs-client"
+    size: 2Gi
+
+# Root-level persistence (optional, as a fallback)
+persistence:
+  enabled: true
+  storageClass: "nfs-client"
+  size: 2Gi
+logRetentionHours: 168
+defaultReplicationFactor: 2
+minInsyncReplicas: 1
