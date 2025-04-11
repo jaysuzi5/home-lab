@@ -104,3 +104,50 @@ http://splunk.local:30080
 
 ### Next Steps:
 I need to setup a scheduled backup and define a location to back up the files.
+
+
+
+
+Step 3: Install with values.yaml
+bash
+Copy
+helm install kafka bitnami/kafka -n kafka -f kafka-values.yaml
+Verification Steps
+Check pod status (wait for all to be Running):
+
+bash
+Copy
+kubectl get pods -n kafka -w
+Verify persistent volumes:
+
+bash
+Copy
+kubectl get pvc -n kafka
+Check controller logs:
+
+bash
+Copy
+kubectl logs kafka-controller-0 -n kafka
+Important Notes
+Client Configuration: You'll need to configure clients with SASL credentials. Here's a sample client properties file:
+
+Copy
+security.protocol=SASL_PLAINTEXT
+sasl.mechanism=PLAIN
+sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required \
+  username="user" \
+  password="bitnami";
+Default Credentials: The Bitnami chart automatically creates these credentials:
+
+Username: user
+
+Password: Randomly generated (check with kubectl get secret kafka-passwords -n kafka -o jsonpath='{.data.client-passwords}' | base64 -d)
+
+Custom Credentials: To set your own credentials, add to values.yaml:
+
+yaml
+Copy
+auth:
+  clientUser: myuser
+  clientPassword: mypassword
+Would you like me to provide any additional details about the configuration or suggest any modifications based on your specific requirements?
