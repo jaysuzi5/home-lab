@@ -1,35 +1,49 @@
-# ZooKeeper configuration (still included as per your original config)
-zookeeper:
-  enabled: true
-  replicaCount: 3
-  persistence:
-    enabled: true
-    storageClass: "nfs-client"
-    size: 1Gi
+# kafka-values.yaml
+global:
+  storageClass: "nfs-client"
 
-# Kafka configuration
-replicaCount: 3
+# KRaft Mode Configuration
 kraft:
-  enabled: true  # Ensure KRaft mode is explicit
-  controller:
-    replicaCount: 3
-    persistence:
-      enabled: true
-      storageClass: "nfs-client"
-      size: 2Gi
+  enabled: true
 
-# Fallback for broker role (since your pods run both controller and broker roles)
-broker:
-  persistence:
-    enabled: true
-    storageClass: "nfs-client"
-    size: 2Gi
+# Controller Configuration
+controllerReplicaCount: 3
+processRoles: "controller,broker"
 
-# Root-level persistence (optional, as a fallback)
+# Persistence Configuration
 persistence:
   enabled: true
   storageClass: "nfs-client"
-  size: 2Gi
-logRetentionHours: 168
-defaultReplicationFactor: 2
-minInsyncReplicas: 1
+  size: 5Gi
+  accessModes:
+    - ReadWriteOnce
+
+# Authentication Configuration
+auth:
+  clientProtocol: sasl
+  interBrokerProtocol: sasl
+  saslMechanisms: ["PLAIN"]
+  saslAllowedMechanisms: ["PLAIN"]
+
+# Resource Configuration
+resources:
+  requests:
+    memory: 2Gi
+    cpu: 1000m
+  limits:
+    memory: 4Gi
+    cpu: 2000m
+
+# Controller Quorum Settings
+controller:
+  quorum:
+    electionTimeoutMs: 10000  # Increased from default 1000ms
+    fetchTimeoutMs: 10000     # Increased from default 2000ms
+
+# Networking Configuration
+service:
+  type: ClusterIP
+  ports:
+    client: 9092
+    internal: 9094
+    controller: 9093
