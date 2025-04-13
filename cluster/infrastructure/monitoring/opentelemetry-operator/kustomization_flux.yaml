@@ -12,3 +12,4 @@ spec:
     name: flux-system
   targetNamespace: opentelemetry-operator-system
   timeout: 2m
+  wait: true
