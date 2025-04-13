@@ -13,13 +13,13 @@ spec:
         kind: HelmRepository
         name: jetstack
         namespace: flux-system
+  targetNamespace: cert-manager  
   install:
-    createNamespace: true
-    namespace: cert-manager
+    createNamespace: true  
     remediation:
       retries: 3
   upgrade:
     remediation:
       remediateLastFailure: true
   values:
-    installCRDs: true  # Critical! Installs required CRDs
+    installCRDs: true  # Required for cert-manager to work
