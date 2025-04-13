@@ -7,7 +7,7 @@ See more at:  https://github.com/provectus/kafka-ui
 ### GitOps Structure
 Using a GitOps installation via Flux/Kustomization.  Using a sealed secret for the UI user with basic authentication.
 
-Setting up the namespace manually first, so this will NOT be part of the kustomaization file
+Setting up the namespace and secret first manually, so this will NOT be part of the kustomaization file
 
 ```bash
 .
