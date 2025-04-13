@@ -7,10 +7,11 @@ spec:
   interval: 1m
   path: ./infrastructure/monitoring/opentelemetry-collector
   prune: true
-  dependsOn:
-    - name: opentelemetry-operator
   sourceRef:
     kind: GitRepository
     name: flux-system
-  targetNamespace: monitoring
+  dependsOn:
+    - name: opentelemetry-operator
+  targetNamespace: opentelemetry-operator-system
   timeout: 2m
+  wait: true
