@@ -7,14 +7,16 @@ See more at:  https://github.com/provectus/kafka-ui
 ### GitOps Structure
 Using a GitOps installation via Flux/Kustomization.  Using a sealed secret for the UI user with basic authentication.
 
+Setting up the namespace manually first, so this will NOT be part of the kustomaization file
+
 ```bash
 .
 ├── namespace.yaml          # define and created manually
-├── namespace.yaml          # define and created manually
-├── namespace.yaml          # define and created manually
-├── namespace.yaml          # define and created manually
-├── namespace.yaml          # define and created manually
-└── kustomization.yaml      # defined as blank so no reconcilation will happen
+├── helmrelease.yaml          
+├── values.yaml          
+├── secret.yaml          
+├── kustomization_flux.yaml          # flux specific to control monitoring of the directory
+└── kustomization.yaml      
 ```
 
 ### Creating the sealed secret
