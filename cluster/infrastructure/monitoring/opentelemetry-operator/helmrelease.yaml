@@ -2,7 +2,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: opentelemetry-operator
-  namespace: opentelemetry-operator-system
+  namespace: opentelemetry
 spec:
   interval: 5m
   install:
