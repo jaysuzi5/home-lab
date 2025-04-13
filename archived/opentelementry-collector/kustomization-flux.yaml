@@ -1,15 +1,13 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: opentelemetry-operator
+  name: otel-collector
   namespace: flux-system
 spec:
   interval: 1m
-  path: ./infrastructure/monitoring/opentelemetry-operator
+  path: ./infrastructure/monitoring/opentelemetry-collector
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
-  targetNamespace: opentelemetry-operator-system
-  timeout: 2m
-  wait: true
+  targetNamespace: default  
