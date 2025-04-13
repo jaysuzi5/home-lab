@@ -1,12 +1,12 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - helmrepository.yaml
-  - helmrelease.yaml
-namespace: kafka-ui
-configMapGenerator:
-  - name: kafka-ui-values
-    files:
-      - values.yaml
-    options:
-      disableNameSuffixHash: true
+#   - helmrepository.yaml
+#   - helmrelease.yaml
+# namespace: kafka-ui
+# configMapGenerator:
+#   - name: kafka-ui-values
+#     files:
+#       - values.yaml
+#     options:
+#       disableNameSuffixHash: true
