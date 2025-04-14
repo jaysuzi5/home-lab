@@ -23,8 +23,6 @@ spec:
     processors:
       batch:
     exporters:
-      logging:
-        verbosity: detailed    
       prometheus:
         endpoint: "0.0.0.0:8890"
       otlp:
@@ -59,4 +57,4 @@ spec:
         logs:
           receivers: [otlp]
           processors: [batch]
-          exporters: [splunk_hec, logging]
+          exporters: [splunk_hec]
