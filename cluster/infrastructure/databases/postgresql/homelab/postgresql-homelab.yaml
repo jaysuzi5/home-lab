@@ -21,11 +21,11 @@ metadata:
   labels:
     app: postgresql-cluster
 spec:
-  type: LoadBalancer
+  type: NodePort
   ports:
     - port: 5432
       targetPort: 5432
-      protocol: TCP
+      nodePort: 30000
   selector:
     cnpg.io/cluster: postgresql-cluster
     cnpg.io/instanceRole: primary
