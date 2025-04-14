@@ -61,7 +61,7 @@ echo -n "<actual value>" | base64
 Then sealed the secret with:
 ```bash
 kubeseal --cert sealed-secrets-cert.pem -o yaml < secret.yaml > sealed-secret.yaml
-vd```
+```
 
 
 Monitor flux job to see that it was picked up:
