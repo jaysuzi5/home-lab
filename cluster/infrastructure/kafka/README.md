@@ -10,7 +10,19 @@ This will be a helm installation that will be tracked here, but will not be depl
 This will use storageClassName: nfs-client
 See nfs folder for setup of NFS which this installation is expecting
 
+### Sealed Secret
+```bash
+kubectl create secret generic kafka-user-credentials \
+  --namespace kafka \
+  --from-literal=username='user-name' \
+  --from-literal=password='your-strong-password' \
+  --dry-run=client -o yaml > temp.yaml
 
+kubeseal -f temp.yaml -o yaml > secret.yaml
+
+kubectl apply -f secret.yaml
+
+```
 
 
 ### GitOps Structure
@@ -20,6 +32,7 @@ deployed out side of flux as with a lot of the existing infrasture
 ```bash
 .
 ├── namespace.yaml          # define and created manually
+├── secret.yaml             # define and created manually
 └── kustomization.yaml      # defined as blank so no reconcilation will happen
 ```
 

@@ -1,31 +1,29 @@
-# kafka-values.yaml
 global:
   storageClass: "nfs-client"
 
-# KRaft Mode Configuration
 kraft:
   enabled: true
+  logRetentionHours: 168  # 7 days
 
-# Controller Configuration
 controllerReplicaCount: 3
 processRoles: "controller,broker"
 
-# Persistence Configuration
 persistence:
   enabled: true
   storageClass: "nfs-client"
-  size: 5Gi
+  size: 20Gi
   accessModes:
     - ReadWriteOnce
 
-# Authentication Configuration
 auth:
   clientProtocol: sasl
   interBrokerProtocol: sasl
   saslMechanisms: ["PLAIN"]
   saslAllowedMechanisms: ["PLAIN"]
+  existingSecret: "kafka-user-credentials" 
+  usernameKey: "username"
+  passwordKey: "password"
 
-# Resource Configuration
 resources:
   requests:
     memory: 2Gi
@@ -34,16 +32,30 @@ resources:
     memory: 4Gi
     cpu: 2000m
 
-# Controller Quorum Settings
 controller:
   quorum:
-    electionTimeoutMs: 10000  # Increased from default 1000ms
-    fetchTimeoutMs: 10000     # Increased from default 2000ms
+    electionTimeoutMs: 10000
+    fetchTimeoutMs: 10000
 
-# Networking Configuration
 service:
   type: ClusterIP
   ports:
     client: 9092
     internal: 9094
     controller: 9093
+
+affinity:
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+            - key: app.kubernetes.io/component
+              operator: In
+              values: ["kafka"]
+        topologyKey: kubernetes.io/hostname
+
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+    namespace: monitoring
