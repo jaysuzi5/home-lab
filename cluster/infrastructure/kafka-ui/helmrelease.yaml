@@ -28,3 +28,15 @@ spec:
           secretKeyRef:
             name: kafka-ui-secret
             key: KAFKA_PASSWORD
+    # Add these critical values
+    kafka:
+      clusters:
+        - name: "kafka-cluster"
+          bootstrapServers: "kafka.kafka.svc.cluster.local:9092"
+          properties:
+            security.protocol: SASL_PLAINTEXT
+            sasl.mechanism: PLAIN
+    # Optional but recommended
+    metrics:
+      enabled: true
+      kafkaClusterName: "kafka-cluster"
