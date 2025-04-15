@@ -21,7 +21,6 @@ kubectl create secret generic kafka-user-credentials \
 kubeseal -f temp.yaml -o yaml > secret.yaml
 
 kubectl apply -f secret.yaml
-
 ```
 
 
@@ -43,6 +42,11 @@ helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
 
 helm install kafka bitnami/kafka -n kafka -f values.yaml
+```
+
+to update:
+```bash
+helm upgrade kafka bitnami/kafka -n kafka -f values.yaml
 ```
 
 ### Monitor installation and debug issues
