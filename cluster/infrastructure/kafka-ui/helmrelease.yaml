@@ -19,7 +19,7 @@ spec:
   values:
     env:
       - name: LOG_LEVEL
-        value: "WARN"
+        value: "ERROR"
       - name: KAFKA_CLUSTERS_0_NAME
         value: "kafka-cluster"
       - name: KAFKA_CLUSTERS_0_BOOTSTRAP_SERVERS
