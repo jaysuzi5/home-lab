@@ -40,9 +40,13 @@ spec:
           properties:
             security.protocol: SASL_PLAINTEXT
             sasl.mechanism: PLAIN
-            sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="${KAFKA_USERNAME}" password="${KAFKA_PASSWORD}";      
+            sasl.jaas.config: |
+              org.apache.kafka.common.security.plain.PlainLoginModule required
+                username="${KAFKA_USERNAME}"
+                password="${KAFKA_PASSWORD}";
             client.dns.lookup: use_all_dns_ips
-            metadata.max.age.ms: 30000      
+            request.timeout.ms: 45000
+            socket.connection.setup.timeout.ms: 30000 
     # Optional but recommended
     metrics:
       enabled: true
