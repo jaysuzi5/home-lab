@@ -18,6 +18,16 @@ spec:
       name: kafka-ui-values
   values:
     env:
+    - name: KAFKA_USERNAME
+      valueFrom:
+        secretKeyRef:
+          name: kafka-ui-secret
+          key: KAFKA_USERNAME
+    - name: KAFKA_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: kafka-ui-secret
+          key: KAFKA_PASSWORD
     - name: LOG_LEVEL
       value: "DEBUG"
     - name: KAFKA_CLUSTERS_0_NAME
@@ -28,10 +38,8 @@ spec:
       value: "SASL_PLAINTEXT"
     - name: KAFKA_CLUSTERS_0_PROPERTIES_SASL_MECHANISM
       value: "PLAIN"
-    - name: KAFKA_CLUSTERS_0_PROPERTIES_SASL_USERNAME
-      value: "$KAFKA_USERNAME"                        
-    - name: KAFKA_CLUSTERS_0_PROPERTIES_SASL_PASSWORD 
-      value: "$KAFKA_PASSWORD"                        
+    - name: KAFKA_CLUSTERS_0_PROPERTIES_SASL_JAAS_CONFIG
+      value: 'org.apache.kafka.common.security.plain.PlainLoginModule required username="$KAFKA_USERNAME" password="$KAFKA_PASSWORD";'
     kafka:
       clusters:
         - name: kafka-cluster
