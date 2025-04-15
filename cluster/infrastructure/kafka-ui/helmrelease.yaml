@@ -37,15 +37,10 @@ spec:
         - name: kafka-cluster
           bootstrapServers: "kafka.kafka.svc.cluster.local:9092"
           properties:
-            security.protocol: SASL_PLAINTEXT 
+            security.protocol: SASL_PLAINTEXT
             sasl.mechanism: PLAIN
-            sasl.jaas.config: |
-              org.apache.kafka.common.security.plain.PlainLoginModule required
-                username="${KAFKA_USERNAME}"
-                password="${KAFKA_PASSWORD}";
-            request.timeout.ms: 60000
-            socket.connection.setup.timeout.max.ms: 60000
-            connections.max.idle.ms: 180000
+            sasl.username: ${KAFKA_USERNAME}
+            sasl.password: ${KAFKA_PASSWORD}
     metrics:
       enabled: true
       kafkaClusterName: "kafka-cluster"
