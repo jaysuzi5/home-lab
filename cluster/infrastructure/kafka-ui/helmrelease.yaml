@@ -13,9 +13,6 @@ spec:
         kind: HelmRepository
         name: kafka-ui
         namespace: flux-system
-  valuesFrom:
-    - kind: ConfigMap
-      name: kafka-ui-values
   values:
     env:
     - name: KAFKA_USERNAME
@@ -40,15 +37,5 @@ spec:
       value: "PLAIN"
     - name: KAFKA_CLUSTERS_0_PROPERTIES_SASL_JAAS_CONFIG
       value: "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$KAFKA_USERNAME\" password=\"$KAFKA_PASSWORD\";"
-    kafka:
-      clusters:
-        - name: kafka-cluster
-          bootstrapServers: "kafka.kafka.svc.cluster.local:9092"
-          properties:
-            security.protocol: SASL_PLAINTEXT
-            sasl.mechanism: PLAIN
-            sasl.username: ${KAFKA_USERNAME}
-            sasl.password: ${KAFKA_PASSWORD}
     metrics:
       enabled: true
-      kafkaClusterName: "kafka-cluster"
