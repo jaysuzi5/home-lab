@@ -20,9 +20,15 @@ auth:
   interBrokerProtocol: sasl
   saslMechanisms: ["PLAIN"]
   saslAllowedMechanisms: ["PLAIN"]
-  existingSecret: "kafka-user-credentials" 
+  existingSecret: "kafka-user-credentials"
   usernameKey: "username"
   passwordKey: "password"
+
+kraftConfigOverrides:
+  advertised.listeners: "CLIENT://kafka.kafka.svc.cluster.local:9092,CONTROLLER://kafka-controller-headless.kafka.svc.cluster.local:9093"
+  listener.security.protocol.map: "CONTROLLER:SASL_PLAINTEXT,CLIENT:SASL_PLAINTEXT"
+  listeners: "CLIENT://:9092,CONTROLLER://:9093"
+  inter.broker.listener.name: "CLIENT"
 
 resources:
   requests:
