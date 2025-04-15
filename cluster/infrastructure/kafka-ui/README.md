@@ -5,31 +5,29 @@ See more at:  https://github.com/provectus/kafka-ui
 
 
 ### GitOps Structure
-Using a GitOps installation via Flux/Kustomization.  Using a sealed secret for the UI user with basic authentication.
-
-Setting up the namespace and secret first manually, so this will NOT be part of the kustomaization file
+The following are stored here, but the kustomization.yaml is blank as this will be maintained in a consistent directory structue, but 
+deployed out side of flux as with a lot of the existing infrasture
 
 ```bash
 .
 ├── namespace.yaml          # define and created manually
-├── helmrelease.yaml          
-├── values.yaml          
-├── secret.yaml          
-├── kustomization_flux.yaml          # flux specific to control monitoring of the directory
-└── kustomization.yaml      
+├── values.yaml             # will use with the helm command
+└── kustomization.yaml      # defined as blank so no reconcilation will happen
 ```
 
-### Creating the sealed secret
+### heml installation
 
 ```bash
-kubectl create secret generic kafka-ui-secret \
-  --from-literal=KAFKA_USERNAME=your-user \
-  --from-literal=KAFKA_PASSWORD=your-password \
-  --namespace kafka-ui \
-  --dry-run=client -o yaml > temp.yaml
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo update
 
+helm install kafka bitnami/kafka -n kafka -f values.yaml
+```
 
-kubeseal --controller-namespace=kube-system --format yaml < temp.yaml > secret.yaml
+to update:
+```bash
+helm upgrade kafka bitnami/kafka -n kafka -f values.yaml
+```
 
 ```
 
