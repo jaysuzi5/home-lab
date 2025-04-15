@@ -25,7 +25,7 @@ spec:
       - name: KAFKA_CLUSTERS_0_BOOTSTRAP_SERVERS
         value: "kafka.kafka.svc.cluster.local:9092"
       - name: KAFKA_CLUSTERS_0_PROPERTIES_DEBUG
-        value: "security,metadata,cluster,request"
+        value: "security,metadata,cluster"
       - name: KAFKA_CLUSTERS_0_PROPERTIES_DEBUG
         value: "all"    
       - name: KAFKA_USERNAME
