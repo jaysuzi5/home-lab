@@ -16,18 +16,15 @@ persistence:
     - ReadWriteOnce
 
 auth:
-  clientProtocol: sasl
+  clientProtocol: plaintext
   interBrokerProtocol: sasl
   saslMechanisms: ["PLAIN"]
   saslAllowedMechanisms: ["PLAIN"]
-  existingSecret: "kafka-user-credentials"
-  usernameKey: "username"
-  passwordKey: "password"
 
 kraftConfigOverrides:
   advertised.listeners: "CLIENT://kafka.kafka.svc.cluster.local:9092,INTERNAL://kafka-controller-headless.kafka.svc.cluster.local:9094"
   listeners: "CLIENT://:9092,INTERNAL://:9094"
-  listener.security.protocol.map: "CLIENT:SASL_PLAINTEXT,INTERNAL:SASL_PLAINTEXT"
+  listener.security.protocol.map: "CLIENT:PLAINTEXT,INTERNAL:SASL_PLAINTEXT" 
   inter.broker.listener.name: "INTERNAL"
   controller.listener.names: "INTERNAL"
   advertised.host.name: "kafka.kafka.svc.cluster.local"
