@@ -12,51 +12,35 @@ deployed out side of flux as with a lot of the existing infrasture
 .
 ├── namespace.yaml          # define and created manually
 ├── values.yaml             # will use with the helm command
+
 └── kustomization.yaml      # defined as blank so no reconcilation will happen
 ```
 
 ### heml installation
 
 ```bash
-helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo add kafka-ui https://provectus.github.io/kafka-ui-charts
 helm repo update
 
-helm install kafka bitnami/kafka -n kafka -f values.yaml
+helm install kafka-ui kafka-ui/kafka-ui -n kafka-ui -f values.yaml
 ```
 
 to update:
 ```bash
-helm upgrade kafka bitnami/kafka -n kafka -f values.yaml
+helm upgrade kafka-ui kafka-ui/kafka-ui -n kafka-ui -f values.yaml
 ```
 
-```
-
-### Monitor installation and debug issues
-Validate that the reconcilliation started:
+if this does not pickup, you can do a restart
 ```bash
-flux logs
+kubectl -n kafka-ui rollout restart deployment kafka-ui
 ```
 
-See details of kustomization logs
+Results:
 ```bash
-flux logs --kind=Kustomization --name=flux-system -n flux-system  --tail=10
+1. Get the application URL by running these commands:
+  export POD_NAME=$(kubectl get pods --namespace kafka-ui -l "app.kubernetes.io/name=kafka-ui,app.kubernetes.io/instance=kafka-ui" -o jsonpath="{.items[0].metadata.name}")
+  echo "Visit http://127.0.0.1:8080 to use your application"
+  kubectl --namespace kafka-ui port-forward $POD_NAME 8080:8080
 ```
 
-See status of the reconcilliation:
-```bash
-kubectl get kustomization -n flux-system
-```
-
-
-### Validate Installation
-Check the pods
-```bash
-kubectl get pods -n kafka-ui
-```
-
-Check the services
-```bash
-kubectl get srv -n kafka-ui
-```
-
-Use the defined IP to connect.  Add to local /etc/hosts if desired
+Instead of using the port forwarding, I manually created the service.  See the service.yaml.
