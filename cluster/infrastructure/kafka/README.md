@@ -45,10 +45,18 @@ helm repo update
 helm install kafka bitnami/kafka -n kafka -f values.yaml
 ```
 
+
 to update:
 ```bash
-helm upgrade kafka bitnami/kafka -n kafka -f values.yaml
+helm upgrade kafka bitnami/kafka -n kafka -f values.yaml --reuse-values --force
 ```
+
+
+if this does not pickup, you can restart the stateful set
+```bash
+kubectl -n kafka rollout restart statefulset kafka-controller
+```
+
 
 ### Monitor installation and debug issues
 Validate that the reconcilliation started:
@@ -96,7 +104,7 @@ data-kafka-controller-2   Bound    pvc-def2a488-b1c8-4da4-8d3a-a5540358579d   8G
 ```
 
 
-# Check the client
+### Check the client
 
 Client Configuration: You'll need to configure clients with SASL credentials. Here's a sample client properties file:
 
@@ -119,4 +127,115 @@ Custom Credentials: To set your own credentials, add to values.yaml:
 auth:
   clientUser: myuser
   clientPassword: mypassword
+```
+
+
+### Test Python Application:
+
+Create a pod to run it in:
+
+```bash
+kubectl run kafka-tester \
+  --image=python:3.11-slim \
+  -i --tty --rm \
+  --namespace kafka \
+  -- bash
+```
+
+Install nano for editing
+```bash
+apt-get update
+apt-get install nano
+```
+
+Install confluent-kafka library
+```bash
+pip install confluent-kafka
+```
+
+
+Create a producer
+```bash
+from confluent_kafka import Producer
+import time
+import uuid
+
+# Kafka configuration
+conf = {
+    'bootstrap.servers': 'kafka.kafka.svc.cluster.local:9092'
+}
+
+producer = Producer(conf)
+topic = "test"
+MESSAGES = 100
+
+def delivery_report(err, msg):
+    if err is not None:
+        print(f"❌ Delivery failed: {err}")
+
+
+for i in range(MESSAGES):
+    message = {
+        "id": str(uuid.uuid4()),
+        "sequence": i,
+        "content": f"This is message #{i}"
+    }
+    producer.produce(topic, value=str(message), callback=delivery_report)
+    producer.poll(0)
+
+# Wait for any outstanding messages
+producer.flush()
+
+print(f'{MESSAGES} messages were published')
+
+```
+
+Create a consumer
+```bash
+from confluent_kafka import Consumer, KafkaException, KafkaError
+
+# Kafka configuration
+conf = {
+    'bootstrap.servers': 'kafka.kafka.svc.cluster.local:9092',
+    'group.id': 'python-consumer-group',
+    'auto.offset.reset': 'earliest'
+}
+
+consumer = Consumer(conf)
+
+topic = "test"
+consumer.subscribe([topic])
+
+# Function to process messages
+def consume_messages():
+    RETRIES_MAX = 5
+    retries = 0
+    messages = 0
+    try:
+        while True:
+            msg = consumer.poll(timeout=1.0)  # Wait for a message, timeout after 1 second
+            
+            if msg is None:  # No message available within timeout
+                if retries < RETRIES_MAX:
+                  retries += 1
+                  continue
+                else:
+                  break
+            if msg.error():
+                if msg.error().code() == KafkaError._PARTITION_EOF:
+                    print(f"End of partition reached: {msg.topic()} [{msg.partition()}] @ offset {msg.offset()}")
+                else:
+                    raise KafkaException(msg.error())
+            else:
+                messages += 1
+    except KeyboardInterrupt:
+        print("Consumer interrupted.")
+    finally:
+        consumer.close()
+        print(f'Consumed {messages} messages')
+
+# Start consuming messages
+consume_messages()
+
+
 ```
