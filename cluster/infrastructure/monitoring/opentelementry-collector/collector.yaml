@@ -21,6 +21,15 @@ spec:
           http:
             endpoint: "0.0.0.0:4318"
     processors:
+      transform/logs:
+        log_statements:
+          - context: log
+            statements:
+              - set(body) = EncodeJSON({
+                  "body": body,
+                  "attributes": attributes,
+                  "resource": resource
+                })
       batch:
     exporters:
       prometheus:
@@ -57,5 +66,5 @@ spec:
           exporters: [otlp]
         logs:
           receivers: [otlp]
-          processors: [batch]
-          exporters: [splunk_hec]
+          processors: [transform/logs]
+          exporters: [splunk_hec]        
