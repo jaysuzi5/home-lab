@@ -36,8 +36,6 @@ spec:
         sourcetype: "_json"
         index: "otel_logging"
         disable_compression: false
-        log_data_enabled: true
-        profiling_data_enabled: true
         timeout: 10s
         tls:
           insecure_skip_verify: true
