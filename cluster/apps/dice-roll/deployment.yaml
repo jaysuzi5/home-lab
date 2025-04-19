@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dice-roll
+  namespace: applications
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dice-roll
+  template:
+    metadata:
+      labels:
+        app: dice-roll
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: dice-roll
+          image: ghcr.io/jaysuzi5/diceroll:v0.1.1
+          ports:
+            - containerPort: 8080
+          env:
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "http://otel-collector-collector.monitoring.svc.cluster.local:4317"
+            - name: OTEL_SERVICE_NAME
+              value: "dice-roller"
+            - name: OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED
+              value: "true"
