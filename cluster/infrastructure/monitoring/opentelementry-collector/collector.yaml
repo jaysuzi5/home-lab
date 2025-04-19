@@ -35,6 +35,8 @@ spec:
         source: "otel"
         sourcetype: "otel:logs"
         index: "otel_logging"
+        log_data_enabled: true
+        profiling_data_enabled: true        
         disable_compression: false
         timeout: 10s
         tls:
