@@ -33,13 +33,14 @@ spec:
         token: "${SPLUNK_HEC_TOKEN}"
         endpoint: "https://splunk.splunk.svc.cluster.local:8088/services/collector"
         source: "otel"
-        sourcetype: "otel:logs"
+        sourcetype: "_json"
         index: "otel_logging"
-        disable_compression: false
+        disable_compression: true
+        log_data_enabled: true
+        profiling_data_enabled: true
         timeout: 10s
         tls:
           insecure_skip_verify: true
-
     service:
       telemetry:
         metrics:
