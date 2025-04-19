@@ -1,26 +1,6 @@
 global:
   storageClass: "nfs-client"
 
-kafka:
-  resources:
-    requests:
-      memory: 1024Mi
-      cpu: 500m
-    limits:
-      memory: 1024Mi
-      cpu: 750m
-  extraEnvVars:
-    - name: KAFKA_HEAP_OPTS
-      value: "-Xmx1024m -Xms1024m"
-    - name: KAFKA_CFG_LISTENERS
-      value: PLAINTEXT://:9092,CONTROLLER://:9093
-    - name: KAFKA_CFG_ADVERTISED_LISTENERS
-      value: PLAINTEXT://kafka.kafka.svc.cluster.local:9092
-  persistence:
-    enabled: true
-    storageClass: "nfs-client"
-    size: 6Gi
-
 controller:
   replicaCount: 3
   resources:
@@ -50,8 +30,13 @@ listeners:
     port: 9093
 
 metrics:
-  enabled: true
-  kafkaJmx:
+  jmx:
     enabled: true
+    kafkaJmxPort: 5555
   serviceMonitor:
     enabled: true
+    namespace: "monitoring"
+  prometheusRule:
+    enabled: true
+    namespace: "monitoring"
+

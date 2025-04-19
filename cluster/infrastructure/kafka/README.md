@@ -57,6 +57,11 @@ if this does not pickup, you can restart the stateful set
 kubectl -n kafka rollout restart statefulset kafka-controller
 ```
 
+I needed to update the label on the ServiceMonitor that was created so that Prometheus would pick it up.
+```bash
+kubectl label servicemonitor kafka-jmx-metrics release=prometheus-operator -n monitoring
+```
+
 
 ### Monitor installation and debug issues
 Validate that the reconcilliation started:
