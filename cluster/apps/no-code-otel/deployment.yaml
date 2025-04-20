@@ -19,10 +19,10 @@ spec:
           image: ghcr.io/jaysuzi5/no-code-otel:v0.1.1
           ports:
             - containerPort: 8080
-          env:
           envFrom:
             - configMapRef:
                 name: no-code-otel-config
+          env:
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
               value: "http://otel-collector-collector.monitoring.svc.cluster.local:4317"
             - name: OTEL_SERVICE_NAME
