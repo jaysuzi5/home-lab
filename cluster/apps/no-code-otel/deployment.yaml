@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: no-code-otel
+  namespace: applications
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: no-code-otel
+  template:
+    metadata:
+      labels:
+        app: no-code-otel
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: no-code-otel
+          image: ghcr.io/jaysuzi5/no-code-otel:v0.1.1
+          ports:
+            - containerPort: 8080
+          env:
+          envFrom:
+            - configMapRef:
+                name: no-code-otel-config
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "http://otel-collector-collector.monitoring.svc.cluster.local:4317"
+            - name: OTEL_SERVICE_NAME
+              value: "no-code-otel"
+            - name: OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED
+              value: "true"
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql-homelab-secret
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql-homelab-secret
+                  key: POSTGRES_USER
