@@ -9,7 +9,7 @@ See further details on the Python code:  https://github.com/jaysuzi5/dice-roll
 ```bash
 cluster/
   ├── apps/
-  │   ├── weather-app/
+  │   ├── dice-roll/
   │   │   ├── namespace.yaml
   │   │   ├── deployment.yaml
   │   │   ├── service.yaml
