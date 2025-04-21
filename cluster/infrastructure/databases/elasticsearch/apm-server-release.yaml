@@ -4,24 +4,16 @@ metadata:
   name: apm-server
   namespace: elasticsearch
 spec:
+  interval: 5m
   chart:
     spec:
       chart: apm-server
-      version: 8.5.1
+      version: 8.13.0
       sourceRef:
         kind: HelmRepository
         name: elastic
-        namespace: elasticsearch
-valuesFrom:
-  - kind: ConfigMap
-    name: apm-server-values
-    valuesKey: values.yaml
-  - kind: Secret
-    name: apm-server-token
-    valuesKey: secretToken
-  - kind: Secret
-    name: elasticsearch-master-credentials
-    valuesKey: username
-  - kind: Secret
-    name: elasticsearch-master-credentials
-    valuesKey: password
+        namespace: flux-system
+  valuesFrom:
+    - kind: ConfigMap
+      name: apm-server-values
+      valuesKey: values.yaml
