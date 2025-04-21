@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: elastic-otel
+  namespace: applications
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elastic-otel
+  template:
+    metadata:
+      labels:
+        app: elastic-otel
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: elastic-otel
+          image: ghcr.io/jaysuzi5/no-code-otel:v0.1.1
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: elastic-otel-config
+          env:
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "https://<your-elastic-apm-endpoint>:443"
+            - name: OTEL_SERVICE_NAME
+              value: "elastic-otel-weather"
+            - name: OTEL_EXPORTER_OTLP_HEADERS
+              valueFrom:
+                secretKeyRef:
+                  name: elastic-otel-secret
+                  key: OTEL_EXPORTER_OTLP_HEADERS
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: elastic-otel-secret
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: elastic-otel-secret
+                  key: POSTGRES_USER
