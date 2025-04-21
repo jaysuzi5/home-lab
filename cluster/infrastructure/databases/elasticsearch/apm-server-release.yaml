@@ -12,7 +12,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: elastic
-        namespace: flux-system
+        namespace: elasticsearch
   valuesFrom:
     - kind: ConfigMap
       name: apm-server-values
