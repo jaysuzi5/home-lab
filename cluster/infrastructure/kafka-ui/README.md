@@ -12,7 +12,6 @@ deployed out side of flux as with a lot of the existing infrasture
 .
 ├── namespace.yaml          # define and created manually
 ├── values.yaml             # will use with the helm command
-
 └── kustomization.yaml      # defined as blank so no reconcilation will happen
 ```
 
