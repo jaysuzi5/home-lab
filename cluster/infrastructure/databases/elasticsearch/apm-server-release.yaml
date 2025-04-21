@@ -16,4 +16,4 @@ spec:
   valuesFrom:
     - kind: ConfigMap
       name: apm-server-values
-      valuesKey: values.yaml
+      valuesKey: values.yaml      
