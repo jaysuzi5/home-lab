@@ -10,6 +10,8 @@ data:
       config: |
         apm-server:
           host: "0.0.0.0:8200"
+          ssl:
+            enabled: false
           auth:
             secret_token: "${secretToken}" 
           output.elasticsearch:
@@ -24,5 +26,13 @@ data:
             grpc:
               enabled: true
               host: "0.0.0.0:4317"
+        service:
+          ports:
+            - name: http
+              port: 8200
+              targetPort: 8200
+            - name: otlp-http
+              port: 4318
+              targetPort: 4318          
         setup.kibana:
           host: "http://kibana-kibana.elasticsearch.svc.cluster.local:5601"
