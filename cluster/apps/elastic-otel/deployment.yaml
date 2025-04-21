@@ -35,10 +35,10 @@ spec:
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: elastic-otel-secret
+                  name: postgresql-homelab-secret
                   key: POSTGRES_PASSWORD
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
-                  name: elastic-otel-secret
+                  name: postgresql-homelab-secret
                   key: POSTGRES_USER
