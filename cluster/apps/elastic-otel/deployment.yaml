@@ -24,11 +24,13 @@ spec:
                 name: elastic-otel-config
           env:
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
-              value: http://apm-server-apm-server.elasticsearch.svc.cluster.local:8200
+              value: "http://apm-server-apm-server.elasticsearch.svc.cluster.local:8200/v1/traces"
             - name: OTEL_EXPORTER_OTLP_PROTOCOL
-              value: http/protobuf
+              value: "http/protobuf"
             - name: OTEL_SERVICE_NAME
-              value: "elastic-otel-weather"
+              value: "elastic-otel"
+            - name: OTEL_TRACES_EXPORTER
+              value: "otlp"
             - name: OTEL_EXPORTER_OTLP_HEADERS
               valueFrom:
                 secretKeyRef:
