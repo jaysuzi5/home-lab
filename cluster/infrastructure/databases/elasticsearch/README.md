@@ -17,6 +17,8 @@ clusters/
             ├── elasticsearch-release.yaml
             ├── kibana-release.yaml
             ├── secret.yaml
+            ├── apm-server-release.yaml
+            ├── apm-server-values.yaml            
             ├── kustomization.yaml                        
             └── kustomization_flux.yaml
 ```
@@ -31,4 +33,4 @@ kubectl create secret generic elastic-credentials \
   kubeseal --format=yaml > elastic-secret.yaml
 ```
 
-
+Update:  Adding APM Server to test ElasticSearch with OpenTelemetry
