@@ -24,7 +24,9 @@ spec:
                 name: elastic-otel-config
           env:
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
-              value: "http://apm-server-apm-server.elasticsearch.svc.cluster.local:8200"
+              value: http://apm-server-apm-server.elasticsearch.svc.cluster.local:4318
+            - name: OTEL_EXPORTER_OTLP_PROTOCOL
+              value: http/protobuf
             - name: OTEL_SERVICE_NAME
               value: "elastic-otel-weather"
             - name: OTEL_EXPORTER_OTLP_HEADERS
