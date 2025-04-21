@@ -24,7 +24,7 @@ spec:
                 name: elastic-otel-config
           env:
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
-              value: "https://<your-elastic-apm-endpoint>:443"
+              value: "http://apm-server-apm-server.elasticsearch.svc.cluster.local:8200"
             - name: OTEL_SERVICE_NAME
               value: "elastic-otel-weather"
             - name: OTEL_EXPORTER_OTLP_HEADERS
