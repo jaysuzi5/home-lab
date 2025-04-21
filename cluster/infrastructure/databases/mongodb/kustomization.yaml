@@ -5,6 +5,9 @@ metadata:
   namespace: mongodb
 resources:
   - namespace.yaml
+  - secret.yaml
   - pvc.yaml
   - deployment.yaml
   - service.yaml
+  - mongo-express-deployment.yaml
+  - mongo-express-service.yaml
