@@ -11,10 +11,10 @@ data:
         apm-server:
           host: "0.0.0.0:8200"
           auth:
-            secret_token: "your-secret-token"
-        output.elasticsearch:
-          hosts: ["https://elasticsearch-master.elasticsearch.svc.cluster.local:9200"]
-          username: "elastic"
-          password: "your-password"
+            secret_token: "${secretToken}" 
+          output.elasticsearch:
+            hosts: ["https://elasticsearch-master.elasticsearch.svc.cluster.local:9200"]
+            username: "${username}"
+            password: "${password}"
         setup.kibana:
           host: "http://kibana-kibana.elasticsearch.svc.cluster.local:5601"

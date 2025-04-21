@@ -4,7 +4,6 @@ metadata:
   name: apm-server
   namespace: elasticsearch
 spec:
-  interval: 1h
   chart:
     spec:
       chart: apm-server
@@ -13,7 +12,16 @@ spec:
         kind: HelmRepository
         name: elastic
         namespace: elasticsearch
-  valuesFrom:
-    - kind: ConfigMap
-      name: apm-server-values
-      valuesKey: values.yaml
+valuesFrom:
+  - kind: ConfigMap
+    name: apm-server-values
+    valuesKey: values.yaml
+  - kind: Secret
+    name: apm-server-token
+    valuesKey: secretToken
+  - kind: Secret
+    name: elasticsearch-master-credentials
+    valuesKey: username
+  - kind: Secret
+    name: elasticsearch-master-credentials
+    valuesKey: password
