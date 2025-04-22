@@ -38,7 +38,7 @@ spec:
     exporters:
       elasticsearch/logs:
         endpoints: ["https://elasticsearch-master:9200"]
-        logs_index: "logs-test"
+        logs_index: "logs-test-new"
         user: "${ELASTICSEARCH_USERNAME}"
         password: "${ELASTICSEARCH_PASSWORD}"
         tls:
