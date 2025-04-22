@@ -5,7 +5,7 @@ metadata:
   namespace: elasticsearch
 spec:
   mode: deployment
-  image: otel/opentelemetry-collector-contrib:0.96.0
+  image: otel/opentelemetry-collector-contrib:0.96.0  # Pin to your version
   config: |
     receivers:
       otlp:
@@ -17,23 +17,21 @@ spec:
     processors:
       batch:
     exporters:
-      # For traces → APM Server
+      # For traces → APM Server (recommended)
       otlp/elastic:
         endpoint: "http://apm-server.elasticsearch.svc.cluster.local:8200"
         tls:
-          insecure: true
+          insecure: true  # Disable in prod!
 
-      # For logs/metrics → Elasticsearch
-      elasticsearch:
+      # For logs → Elasticsearch (legacy syntax for v0.96.0)
+      elasticsearch/logs:
         endpoints: ["http://elasticsearch-master.elasticsearch.svc.cluster.local:9200"]
-        logs:
-          index: "logs-{YYYY.MM.dd}"
-        traces:
-          index: "traces-{YYYY.MM.dd}"  # Optional, if not using APM Server
-        # Optional: Add auth if needed
-        # auth:
-        #   username: "elastic"
-        #   password: "${ELASTIC_PASSWORD}"
+        index: "logs-{YYYY.MM.dd}"  # Only supports a single index
+
+      # For metrics → Elasticsearch (same as logs)
+      elasticsearch/metrics:
+        endpoints: ["http://elasticsearch-master.elasticsearch.svc.cluster.local:9200"]
+        index: "metrics-{YYYY.MM.dd}"
 
     service:
       telemetry:
@@ -44,12 +42,12 @@ spec:
         metrics:
           receivers: [otlp]
           processors: [batch]
-          exporters: [elasticsearch]  # Metrics use the default index
+          exporters: [elasticsearch/metrics]  # Metrics to dedicated index
         traces:
           receivers: [otlp]
           processors: [batch]
-          exporters: [otlp/elastic]   # Traces to APM Server
+          exporters: [otlp/elastic]  # Traces to APM Server
         logs:
           receivers: [otlp]
           processors: [batch]
-          exporters: [elasticsearch]  # Logs to Elasticsearch
+          exporters: [elasticsearch/logs]  # Logs to dedicated index
