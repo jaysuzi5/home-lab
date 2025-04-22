@@ -60,4 +60,3 @@ spec:
           receivers: [otlp]
           processors: [batch]
           exporters: [elasticsearch/logs]
-```
