@@ -25,30 +25,7 @@ data:
         cpu: "500m"
         memory: "2Gi"
 
-    extraVolumes:
-      - name: elastic-certificates
-        secret:
-          secretName: elastic-certificates
-          items:
-            - key: elastic-certificates.p12
-              path: elastic-certificates.p12
-            - key: elastic-stack-ca.p12
-              path: elastic-stack-ca.p12
-
-    extraVolumeMounts:
-      - name: elastic-certificates
-        mountPath: /usr/share/elasticsearch/config/certs
-        readOnly: true
-
     esConfig:
       elasticsearch.yml: |
         xpack.security.enabled: true
-        xpack.security.transport.ssl.enabled: true
-        xpack.security.transport.ssl.verification_mode: certificate
-        xpack.security.transport.ssl.key: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
-        xpack.security.transport.ssl.certificate: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
-        xpack.security.transport.ssl.certificate_authorities: [ "/usr/share/elasticsearch/config/certs/elastic-stack-ca.p12" ]
-        xpack.security.http.ssl.enabled: true
-        xpack.security.http.ssl.key: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
-        xpack.security.http.ssl.certificate: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
-        xpack.security.http.ssl.certificate_authorities: [ "/usr/share/elasticsearch/config/certs/elastic-stack-ca.p12" ]
+
