@@ -44,7 +44,6 @@ spec:
         tls:
           ca_file: "/etc/elasticsearch/certs/ca.crt"
         timeout: 60s
-        log_level: debug
       otlp/elastic:
         endpoint: "http://apm-server-apm-server.elasticsearch.svc.cluster.local:8200"
         tls:
@@ -52,6 +51,8 @@ spec:
         timeout: 60s
     service:
       telemetry:
+        logs:
+          level: debug
         metrics:
           level: detailed
           address: "0.0.0.0:8889"
