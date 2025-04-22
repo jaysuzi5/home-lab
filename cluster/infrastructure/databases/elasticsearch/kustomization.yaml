@@ -11,3 +11,4 @@ resources:
   - kibana-release.yaml
   - apm-server-values.yaml
   - apm-server-release.yaml
+  - collector.yaml

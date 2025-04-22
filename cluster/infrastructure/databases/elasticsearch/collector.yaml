@@ -1,0 +1,53 @@
+apiVersion: opentelemetry.io/v1alpha1
+kind: OpenTelemetryCollector
+metadata:
+  name: otel-collector-elastic
+  namespace: elasticsearch 
+spec:
+  mode: deployment
+  image: otel/opentelemetry-collector-contrib:0.96.0 
+  config: |
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: "0.0.0.0:4317"
+          http:
+            endpoint: "0.0.0.0:4318"
+    processors:
+      batch:
+    exporters:
+      # For traces → APM Server
+      otlp/elastic:
+        endpoint: "http://apm-server.elasticsearch.svc.cluster.local:8200"
+        tls:
+          insecure: true  # Disable in prod!
+      
+      # For logs/metrics → Elasticsearch
+      elasticsearch:
+        endpoints: ["http://elasticsearch-master.elasticsearch.svc.cluster.local:9200"]
+        logs_index: "logs-{YYYY.MM.dd}"
+        metrics_index: "metrics-{YYYY.MM.dd}"
+        # Optional: Add auth if Elasticsearch requires it
+        # auth:
+        #   username: "elastic"
+        #   password: "${ELASTIC_PASSWORD}"
+
+    service:
+      telemetry:
+        metrics:
+          level: detailed
+          address: "0.0.0.0:8889"
+      pipelines:
+        metrics:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [elasticsearch]  # Metrics to Elasticsearch
+        traces:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [otlp/elastic]   # Traces to APM Server
+        logs:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [elasticsearch]  # Logs to Elasticsearch
