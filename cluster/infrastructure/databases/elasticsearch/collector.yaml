@@ -1,3 +1,4 @@
+```yaml
 apiVersion: opentelemetry.io/v1alpha1
 kind: OpenTelemetryCollector
 metadata:
@@ -38,7 +39,7 @@ spec:
     exporters:
       elasticsearch/logs:
         endpoints: ["https://elasticsearch-master:9200"]
-        logs_index: "logs-{YYYY.MM.dd}"
+        logs_index: "logs-test"
         user: "${ELASTICSEARCH_USERNAME}"
         password: "${ELASTICSEARCH_PASSWORD}"
         tls:
@@ -69,3 +70,4 @@ spec:
           receivers: [otlp]
           processors: [batch]
           exporters: [elasticsearch/logs]
+```
