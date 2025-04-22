@@ -5,7 +5,7 @@ metadata:
   namespace: elasticsearch
 data:
   values.yaml: |
-    replicas: 2
+    replicas: 1
 
     volumeClaimTemplate:
       accessModes: ["ReadWriteOnce"]
@@ -17,15 +17,8 @@ data:
     persistence:
       enabled: true
 
-    resources:
-      requests:
-        cpu: "300m"
-        memory: "1Gi"
-      limits:
-        cpu: "500m"
-        memory: "2Gi"
-
     esConfig:
       elasticsearch.yml: |
-        xpack.security.enabled: true
-
+        xpack.security.enabled: false
+        xpack.security.transport.ssl.enabled: false
+        xpack.security.http.ssl.enabled: false
