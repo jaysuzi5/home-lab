@@ -38,7 +38,6 @@ spec:
         endpoint: "http://apm-server-apm-server.elasticsearch.svc.cluster.local:8200"
         tls:
           insecure: true
-        protocol: http
         timeout: 30s
     service:
       telemetry:
