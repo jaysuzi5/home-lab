@@ -4,7 +4,6 @@ metadata:
   name: elastic-otel
   namespace: applications
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: elastic-otel
@@ -13,29 +12,34 @@ spec:
       labels:
         app: elastic-otel
     spec:
-      restartPolicy: Always
       containers:
-        - name: elastic-otel
-          image: ghcr.io/jaysuzi5/no-code-otel:v0.1.1
-          ports:
-            - containerPort: 8080
-          envFrom:
-            - configMapRef:
-                name: elastic-otel-config
-          env:
-            - name: OTEL_EXPORTER_OTLP_ENDPOINT
-              value: "http://otel-collector-elastic-collector.elasticsearch.svc.cluster.local:4317"          
-            - name: OTEL_SERVICE_NAME
-              value: "elastic-no-code-otel"
-            - name: OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED
-              value: "true"
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: postgresql-homelab-secret
-                  key: POSTGRES_PASSWORD
-            - name: POSTGRES_USER
-              valueFrom:
-                secretKeyRef:
-                  name: postgresql-homelab-secret
-                  key: POSTGRES_USER
+      - name: elastic-otel
+        image: ghcr.io/jaysuzi5/no-code-otel:v0.1.1
+        ports:
+        - containerPort: 8080
+        env:
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: "http://otel-collector-elastic-collector.elasticsearch.svc.cluster.local:4318"
+        - name: OTEL_EXPORTER_OTLP_PROTOCOL
+          value: "http/protobuf"
+        - name: OTEL_LOGS_EXPORTER
+          value: "otlp"
+        - name: OTEL_SERVICE_NAME
+          value: "elastic-no-code-otel"
+        - name: OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED
+          value: "true"
+        - name: OTEL_LOG_LEVEL
+          value: "debug"
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: POSTGRES_PASSWORD
+              name: postgresql-homelab-secret
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              key: POSTGRES_USER
+              name: postgresql-homelab-secret
+        envFrom:
+        - configMapRef:
+            name: elastic-otel-config
