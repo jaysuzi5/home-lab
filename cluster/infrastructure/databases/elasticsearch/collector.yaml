@@ -29,16 +29,20 @@ spec:
       batch:
     exporters:
       elasticsearch/logs:
-        endpoints: ["http://elasticsearch-master:9200"]
+        endpoints: ["https://elasticsearch-master:9200"]
         logs_index: "logs-{YYYY.MM.dd}"
         user: "${ELASTICSEARCH_USERNAME}"
         password: "${ELASTICSEARCH_PASSWORD}"
-        timeout: 30s
+        tls:
+          insecure: true
+        timeout: 60s
+        bulk_max_size: 1000
+        flush_interval: 5s
       otlp/elastic:
         endpoint: "http://apm-server-apm-server.elasticsearch.svc.cluster.local:8200"
         tls:
           insecure: true
-        timeout: 30s
+        timeout: 60s
     service:
       telemetry:
         metrics:
