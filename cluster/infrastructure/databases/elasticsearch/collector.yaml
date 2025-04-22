@@ -5,7 +5,7 @@ metadata:
   namespace: elasticsearch
 spec:
   mode: deployment
-  image: otel/opentelemetry-collector-contrib:0.97.0
+  image: otel/opentelemetry-collector-contrib:0.124.1
   config: |
     receivers:
       otlp:
@@ -17,17 +17,9 @@ spec:
     processors:
       batch:
     exporters:
-      # Elasticsearch Logs Exporter
       elasticsearch/logs:
-        endpoints: ["http://elasticsearch-master:9200"]
-        index: "logs-{YYYY.MM.dd}"
-        
-      # Elasticsearch Metrics Exporter
-      elasticsearch/metrics:
-        endpoints: ["http://elasticsearch-master:9200"]
-        index: "metrics-{YYYY.MM.dd}"
-        
-      # APM Server Trace Exporter
+          endpoints: ["http://elasticsearch-master:9200"]
+          logs_index: "logs-{YYYY.MM.dd}"
       otlp/elastic:
         endpoint: "http://apm-server.elasticsearch.svc.cluster.local:8200"
         tls:
@@ -41,7 +33,7 @@ spec:
         metrics:
           receivers: [otlp]
           processors: [batch]
-          exporters: [elasticsearch/metrics]
+          exporters: [otlp/elastic]
         traces:
           receivers: [otlp]
           processors: [batch]
