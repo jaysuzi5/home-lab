@@ -5,7 +5,7 @@ metadata:
   namespace: elasticsearch
 spec:
   mode: deployment
-  image: otel/opentelemetry-collector-contrib:0.124.1
+  image: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib:0.124.1
   config: |
     receivers:
       otlp:
@@ -18,8 +18,8 @@ spec:
       batch:
     exporters:
       elasticsearch/logs:
-          endpoints: ["http://elasticsearch-master:9200"]
-          logs_index: "logs-{YYYY.MM.dd}"
+        endpoints: ["http://elasticsearch-master:9200"]
+        logs_index: "logs-{YYYY.MM.dd}"
       otlp/elastic:
         endpoint: "http://apm-server.elasticsearch.svc.cluster.local:8200"
         tls:
