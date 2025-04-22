@@ -17,6 +17,14 @@ spec:
         secretKeyRef:
           name: elasticsearch-master-credentials
           key: password
+  volumes:
+    - name: elasticsearch-ca
+      secret:
+        secretName: elasticsearch-master-certs
+  volumeMounts:
+    - name: elasticsearch-ca
+      mountPath: "/etc/elasticsearch/certs"
+      readOnly: true
   config: |
     receivers:
       otlp:
@@ -34,7 +42,7 @@ spec:
         user: "${ELASTICSEARCH_USERNAME}"
         password: "${ELASTICSEARCH_PASSWORD}"
         tls:
-          insecure: true
+          ca_file: "/etc/elasticsearch/certs/ca.crt"
         timeout: 60s
       otlp/elastic:
         endpoint: "http://apm-server-apm-server.elasticsearch.svc.cluster.local:8200"
