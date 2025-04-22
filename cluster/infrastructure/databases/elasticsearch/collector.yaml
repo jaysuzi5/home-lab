@@ -1,3 +1,4 @@
+```yaml
 apiVersion: opentelemetry.io/v1alpha1
 kind: OpenTelemetryCollector
 metadata:
@@ -36,8 +37,6 @@ spec:
         tls:
           insecure: true
         timeout: 60s
-        bulk_max_size: 1000
-        flush_interval: 5s
       otlp/elastic:
         endpoint: "http://apm-server-apm-server.elasticsearch.svc.cluster.local:8200"
         tls:
@@ -61,3 +60,4 @@ spec:
           receivers: [otlp]
           processors: [batch]
           exporters: [elasticsearch/logs]
+```
