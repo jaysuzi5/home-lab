@@ -59,18 +59,19 @@ spec:
         mapping:
           mode: "ecs"
       
-      otlphttp/apm:
-        endpoint: "http://apm-server-apm-server.elasticsearch.svc.cluster.local:8200"
+      otlp/traces:
+        endpoint: "http://apm-server-apm-server.elasticsearch.svc.cluster.local:8200/v1/traces"
         tls:
           insecure: true
         headers:
           Authorization: "Bearer ${APM_SECRET_TOKEN}"
-        timeout: 30s
-        retry_on_failure:
-          enabled: true
-          initial_interval: 5s
-          max_interval: 30s
-          max_elapsed_time: 300s
+
+      otlp/metrics:
+        endpoint: "http://apm-server-apm-server.elasticsearch.svc.cluster.local:8200/v1/metrics"
+        tls:
+          insecure: true
+        headers:
+          Authorization: "Bearer ${APM_SECRET_TOKEN}"
     
     service:
       telemetry:
@@ -83,11 +84,11 @@ spec:
         metrics:
           receivers: [otlp]
           processors: [batch]
-          exporters: [otlphttp/apm]
+          exporters: [otlp/metrics]
         traces:
           receivers: [otlp]
           processors: [batch]
-          exporters: [otlphttp/apm]
+          exporters: [otlp/traces]
         logs:
           receivers: [otlp]
           processors: [batch]
