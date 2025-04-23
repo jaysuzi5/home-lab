@@ -9,6 +9,7 @@ resources:
   - kibana-values.yaml
   - elasticsearch-release.yaml
   - kibana-release.yaml
+  - apm-server-secret.yaml
   - apm-server-values.yaml
   - apm-server-release.yaml
   - collector.yaml
