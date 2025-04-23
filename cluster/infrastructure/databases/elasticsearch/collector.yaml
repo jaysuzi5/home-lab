@@ -52,7 +52,15 @@ spec:
         endpoint: "http://apm-server-apm-server.elasticsearch.svc.cluster.local:8200"
         tls:
           insecure: true
+        traces_endpoint: "/v1/traces"
+        metrics_endpoint: "/v1/metrics"
+        logs_endpoint: "/v1/logs"
         timeout: 60s
+        retry_on_failure:
+          enabled: true
+          initial_interval: 5s
+          max_interval: 30s
+          max_elapsed_time: 300s
     service:
       telemetry:
         logs:
