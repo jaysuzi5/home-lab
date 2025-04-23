@@ -36,6 +36,8 @@ spec:
     processors:
       batch:
     exporters:
+      debug:
+        verbosity: detailed
       elasticsearch/logs:
         endpoints: ["https://elasticsearch-master:9200"]
         logs_index: "logs-test-new"
@@ -44,6 +46,8 @@ spec:
         tls:
           ca_file: "/etc/elasticsearch/certs/ca.crt"
         timeout: 60s
+        mapping:
+           mode: "ecs"  # Using Elastic Common Schema
       otlp/elastic:
         endpoint: "http://apm-server-apm-server.elasticsearch.svc.cluster.local:8200"
         tls:
@@ -68,4 +72,4 @@ spec:
         logs:
           receivers: [otlp]
           processors: [batch]
-          exporters: [elasticsearch/logs]
+          exporters: [debug, elasticsearch/logs]
