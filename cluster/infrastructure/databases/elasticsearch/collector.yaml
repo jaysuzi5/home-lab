@@ -21,7 +21,7 @@ spec:
       valueFrom:
         secretKeyRef:
           name: apm-elasticsearch-secrets
-          key: password
+          key: secretToken
   volumes:
     - name: elasticsearch-ca
       secret:
@@ -38,11 +38,16 @@ spec:
             endpoint: "0.0.0.0:4317"
           http:
             endpoint: "0.0.0.0:4318"
+    
     processors:
       batch:
+        timeout: 5s
+        send_batch_size: 1000
+    
     exporters:
       debug:
         verbosity: detailed
+      
       elasticsearch/logs:
         endpoints: ["https://elasticsearch-master:9200"]
         logs_index: "logs-test-new"
@@ -52,8 +57,9 @@ spec:
           ca_file: "/etc/elasticsearch/certs/ca.crt"
         timeout: 60s
         mapping:
-           mode: "ecs"  # Using Elastic Common Schema
-      otlp/elastic:
+          mode: "ecs"
+      
+      otlphttp/apm:
         endpoint: "http://apm-server-apm-server.elasticsearch.svc.cluster.local:8200"
         tls:
           insecure: true
@@ -65,10 +71,7 @@ spec:
           initial_interval: 5s
           max_interval: 30s
           max_elapsed_time: 300s
-        sending_queue:
-          enabled: true
-          num_consumers: 4
-          queue_size: 100
+    
     service:
       telemetry:
         logs:
@@ -80,11 +83,11 @@ spec:
         metrics:
           receivers: [otlp]
           processors: [batch]
-          exporters: [otlp/elastic]
+          exporters: [otlphttp/apm]
         traces:
           receivers: [otlp]
           processors: [batch]
-          exporters: [otlp/elastic]
+          exporters: [otlphttp/apm]
         logs:
           receivers: [otlp]
           processors: [batch]
