@@ -10,12 +10,17 @@ spec:
     - name: ELASTICSEARCH_USERNAME
       valueFrom:
         secretKeyRef:
-          name: elasticsearch-master-credentials
+          name: apm-elasticsearch-secrets
           key: username
     - name: ELASTICSEARCH_PASSWORD
       valueFrom:
         secretKeyRef:
-          name: elasticsearch-master-credentials
+          name: apm-elasticsearch-secrets
+          key: password
+    - name: APM_SECRET_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: apm-elasticsearch-secrets
           key: password
   volumes:
     - name: elasticsearch-ca
@@ -52,15 +57,18 @@ spec:
         endpoint: "http://apm-server-apm-server.elasticsearch.svc.cluster.local:8200"
         tls:
           insecure: true
-        traces_endpoint: "/v1/traces"
-        metrics_endpoint: "/v1/metrics"
-        logs_endpoint: "/v1/logs"
-        timeout: 60s
+        headers:
+          Authorization: "Bearer ${APM_SECRET_TOKEN}"
+        timeout: 30s
         retry_on_failure:
           enabled: true
           initial_interval: 5s
           max_interval: 30s
           max_elapsed_time: 300s
+        sending_queue:
+          enabled: true
+          num_consumers: 4
+          queue_size: 100
     service:
       telemetry:
         logs:
