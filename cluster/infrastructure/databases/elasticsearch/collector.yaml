@@ -17,11 +17,6 @@ spec:
         secretKeyRef:
           name: apm-elasticsearch-secrets
           key: password
-    - name: APM_SECRET_TOKEN
-      valueFrom:
-        secretKeyRef:
-          name: apm-elasticsearch-secrets
-          key: secretToken
   volumes:
     - name: elasticsearch-ca
       secret:
@@ -48,26 +43,18 @@ spec:
       debug:
         verbosity: detailed
       
-      elasticsearch/logs:
+      elasticsearch:
         endpoints: ["https://elasticsearch-master:9200"]
-        logs_index: "logs-test-new"
         user: "${ELASTICSEARCH_USERNAME}"
         password: "${ELASTICSEARCH_PASSWORD}"
         tls:
           ca_file: "/etc/elasticsearch/certs/ca.crt"
         timeout: 60s
+        logs_index: "logs-otel-{YYYY.MM.dd}"
+        traces_index: "traces-otel-{YYYY.MM.dd}"
+        metrics_index: "metrics-otel-{YYYY.MM.dd}"
         mapping:
           mode: "ecs"
-      
-      otlphttp/apm:
-        endpoint: "http://apm-server-apm-server.elasticsearch.svc.cluster.local:8200"
-        tls:
-          insecure: true
-        headers:
-          Authorization: "Bearer ${APM_SECRET_TOKEN}"
-        traces_endpoint: "/v1/traces"
-        metrics_endpoint: "/v1/metrics"
-        timeout: 30s
     
     service:
       telemetry:
@@ -80,12 +67,12 @@ spec:
         metrics:
           receivers: [otlp]
           processors: [batch]
-          exporters: [otlphttp/apm]
+          exporters: [debug, elasticsearch]
         traces:
           receivers: [otlp]
           processors: [batch]
-          exporters: [otlphttp/apm]
+          exporters: [debug, elasticsearch]
         logs:
           receivers: [otlp]
           processors: [batch]
-          exporters: [debug, elasticsearch/logs]
+          exporters: [debug, elasticsearch]
