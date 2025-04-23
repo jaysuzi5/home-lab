@@ -17,6 +17,11 @@ spec:
         secretKeyRef:
           name: apm-elasticsearch-secrets
           key: password
+    - name: APM_SECRET_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: apm-elasticsearch-secrets
+          key: secretToken
   volumes:
     - name: elasticsearch-ca
       secret:
@@ -55,6 +60,12 @@ spec:
         metrics_index: "metrics-otel"
         mapping:
           mode: "ecs"
+
+      elasticsearch/apm:
+        apm_server_url: "http://apm-server-apm-server.elasticsearch.svc.cluster.local:8200"
+        secret_token: "${APM_SECRET_TOKEN}"
+        tls:
+          insecure: true          
     
     service:
       telemetry:
@@ -71,7 +82,7 @@ spec:
         traces:
           receivers: [otlp]
           processors: [batch]
-          exporters: [debug, elasticsearch]
+          exporters: [elasticsearch/apm]
         logs:
           receivers: [otlp]
           processors: [batch]
