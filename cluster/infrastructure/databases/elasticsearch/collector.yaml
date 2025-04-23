@@ -61,11 +61,12 @@ spec:
         mapping:
           mode: "ecs"
 
-      elasticsearch/apm:
-        apm_server_url: "http://apm-server-apm-server.elasticsearch.svc.cluster.local:8200"
-        secret_token: "${APM_SECRET_TOKEN}"
+      otlphttp/apm:
+        endpoint: "http://apm-server-apm-server.elasticsearch.svc.cluster.local:8200"
         tls:
-          insecure: true          
+          insecure: true
+        headers:
+          Authorization: "Bearer ${APM_SECRET_TOKEN}"
     
     service:
       telemetry:
@@ -78,11 +79,11 @@ spec:
         metrics:
           receivers: [otlp]
           processors: [batch]
-          exporters: [debug, elasticsearch]
+          exporters: [debug, elasticsearch, otlphttp/apm]
         traces:
           receivers: [otlp]
           processors: [batch]
-          exporters: [elasticsearch/apm]
+          exporters: [debug, elasticsearch, otlphttp/apm]
         logs:
           receivers: [otlp]
           processors: [batch]
