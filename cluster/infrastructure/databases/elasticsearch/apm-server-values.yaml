@@ -21,10 +21,11 @@ data:
           enabled: true
           host: "0.0.0.0:8200"
           endpoint: "0.0.0.0:8200"
+          secret_token: "${SECRET_TOKEN}"
       rum:
         enabled: false
       secretToken: "${SECRET_TOKEN}"
-
+      
     output.elasticsearch:
       hosts: ["http://elasticsearch-master:9200"]
       username: "${ELASTICSEARCH_USERNAME}"
