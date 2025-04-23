@@ -43,6 +43,13 @@ spec:
       batch:
         timeout: 5s
         send_batch_size: 1000
+      transform/metrics:
+        metric_statements:
+          - context: metric
+            statements:
+              - set(attributes["service.name"], resource.attributes["service.name"])
+              - keep_metrics(metric, name == "http.server.duration" && metric.type == "Sum")
+              - convert_sum_to_gauge(metric, name == "http.server.duration")
     
     exporters:
       debug:
@@ -67,6 +74,12 @@ spec:
           insecure: true
         headers:
           Authorization: "Bearer ${APM_SECRET_TOKEN}"
+        timeout: 30s
+        retry_on_failure:
+          enabled: true
+          initial_interval: 5s
+          max_interval: 30s
+          max_elapsed_time: 120s
     
     service:
       telemetry:
@@ -78,7 +91,7 @@ spec:
       pipelines:
         metrics:
           receivers: [otlp]
-          processors: [batch]
+          processors: [batch, transform/metrics]
           exporters: [debug, elasticsearch, otlphttp/apm]
         traces:
           receivers: [otlp]
