@@ -50,9 +50,9 @@ spec:
         tls:
           ca_file: "/etc/elasticsearch/certs/ca.crt"
         timeout: 60s
-        logs_index: "logs-otel-{YYYY.MM.dd}"
-        traces_index: "traces-otel-{YYYY.MM.dd}"
-        metrics_index: "metrics-otel-{YYYY.MM.dd}"
+        logs_index: "logs-otel"
+        traces_index: "traces-otel"
+        metrics_index: "metrics-otel"
         mapping:
           mode: "ecs"
     
