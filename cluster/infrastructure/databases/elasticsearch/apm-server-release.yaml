@@ -17,3 +17,20 @@ spec:
     - kind: ConfigMap
       name: apm-values
       valuesKey: values.yaml
+  values:
+    extraEnvs:
+      - name: ELASTICSEARCH_USERNAME
+        valueFrom:
+          secretKeyRef:
+            name: apm-elasticsearch-secrets
+            key: username
+      - name: ELASTICSEARCH_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: apm-elasticsearch-secrets
+            key: password
+      - name: SECRET_TOKEN
+        valueFrom:
+          secretKeyRef:
+            name: apm-elasticsearch-secrets
+            key: secretToken

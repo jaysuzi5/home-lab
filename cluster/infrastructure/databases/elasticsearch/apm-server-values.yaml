@@ -7,18 +7,26 @@ data:
   values.yaml: |
     elasticsearch:
       hosts: ["http://elasticsearch-master:9200"]
-      username: ""
-      password: ""
+      username: "${ELASTICSEARCH_USERNAME}"
+      password: "${ELASTICSEARCH_PASSWORD}"
       protocol: "http"
 
     kibana:
-      enabled: false
+      enabled: true
 
     apm-server:
       host: "0.0.0.0:8200"
-      auth:
-        anonymous:
+      otlp:
+        http:
           enabled: true
+          host: "0.0.0.0:8200"
+          endpoint: "0.0.0.0:8200"
+      rum:
+        enabled: false
+      secretToken: "${SECRET_TOKEN}"
 
     output.elasticsearch:
+      hosts: ["http://elasticsearch-master:9200"]
+      username: "${ELASTICSEARCH_USERNAME}"
+      password: "${ELASTICSEARCH_PASSWORD}"
       protocol: "http"
