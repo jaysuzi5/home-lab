@@ -22,14 +22,6 @@ spec:
         secretKeyRef:
           name: apm-elasticsearch-secrets
           key: secretToken
-  volumes:
-    - name: elasticsearch-ca
-      secret:
-        secretName: elasticsearch-master-certs
-  volumeMounts:
-    - name: elasticsearch-ca
-      mountPath: "/etc/elasticsearch/certs"
-      readOnly: true
   config: |
     receivers:
       otlp:
@@ -41,8 +33,8 @@ spec:
     
     processors:
       batch:
-        timeout: 5s
-        send_batch_size: 1000
+        timeout: 1s
+        send_batch_size: 10
     
     exporters:
       debug:
@@ -83,8 +75,8 @@ spec:
         traces:
           receivers: [otlp]
           processors: [batch]
-          exporters: [otlp]
+          exporters: [debug, otlp]
         logs:
           receivers: [otlp]
           processors: [batch]
-          exporters: [debug, elasticsearch]
+          exporters: [elasticsearch]
