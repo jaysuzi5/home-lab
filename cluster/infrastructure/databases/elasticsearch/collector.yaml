@@ -34,24 +34,13 @@ spec:
     receivers:
       otlp:
         protocols:
-          grpc:
-            endpoint: "0.0.0.0:4317"
-          http:
-            endpoint: "0.0.0.0:4318"
+          grpc: {}
+          http: {}
     
     processors:
       batch:
         timeout: 5s
         send_batch_size: 1000
-      transform:
-        metric_statements:
-          - context: metric
-            statements:
-              - set(attributes["service.name"], resource.attributes["service.name"])
-              - set(attributes["telemetry.sdk.name"], resource.attributes["telemetry.sdk.name"])
-              - set(attributes["telemetry.sdk.language"], resource.attributes["telemetry.sdk.language"])
-              - merge(attributes, resource.attributes)
-              - convert_sum_to_gauge where metric.name == "http.server.duration"
     
     exporters:
       debug:
@@ -70,18 +59,12 @@ spec:
         mapping:
           mode: "ecs"
 
-      otlphttp/apm:
+      otlp:
         endpoint: "http://apm-server-apm-server.elasticsearch.svc.cluster.local:8200"
         tls:
           insecure: true
         headers:
-          Authorization: "Bearer ${APM_SECRET_TOKEN}"
-        timeout: 30s
-        retry_on_failure:
-          enabled: true
-          initial_interval: 5s
-          max_interval: 30s
-          max_elapsed_time: 120s
+          "Authorization": "Bearer ${APM_SECRET_TOKEN}"
     
     service:
       telemetry:
@@ -94,11 +77,11 @@ spec:
         metrics:
           receivers: [otlp]
           processors: [batch, transform]
-          exporters: [debug, elasticsearch, otlphttp/apm]
+          exporters: [otlp]
         traces:
           receivers: [otlp]
           processors: [batch]
-          exporters: [debug, elasticsearch, otlphttp/apm]
+          exporters: [otlp]
         logs:
           receivers: [otlp]
           processors: [batch]
