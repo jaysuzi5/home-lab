@@ -76,7 +76,7 @@ spec:
       pipelines:
         metrics:
           receivers: [otlp]
-          processors: [batch, transform]
+          processors: [batch]
           exporters: [otlp]
         traces:
           receivers: [otlp]
