@@ -43,13 +43,15 @@ spec:
       batch:
         timeout: 5s
         send_batch_size: 1000
-      transform/metrics:
+      transform:
         metric_statements:
           - context: metric
             statements:
               - set(attributes["service.name"], resource.attributes["service.name"])
-              - keep_metrics(metric, name == "http.server.duration" && metric.type == "Sum")
-              - convert_sum_to_gauge(metric, name == "http.server.duration")
+              - set(attributes["telemetry.sdk.name"], resource.attributes["telemetry.sdk.name"])
+              - set(attributes["telemetry.sdk.language"], resource.attributes["telemetry.sdk.language"])
+              - merge(attributes, resource.attributes)
+              - convert_sum_to_gauge where metric.name == "http.server.duration"
     
     exporters:
       debug:
@@ -91,7 +93,7 @@ spec:
       pipelines:
         metrics:
           receivers: [otlp]
-          processors: [batch, transform/metrics]
+          processors: [batch, transform]
           exporters: [debug, elasticsearch, otlphttp/apm]
         traces:
           receivers: [otlp]
