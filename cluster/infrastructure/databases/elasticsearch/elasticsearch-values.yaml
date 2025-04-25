@@ -22,6 +22,5 @@ data:
         xpack.security.enabled: false
         xpack.security.transport.ssl.enabled: false
         xpack.security.http.ssl.enabled: false
-        xpack.security.transport.ssl.enabled: false
         network.host: 0.0.0.0
         http.port: 9200
