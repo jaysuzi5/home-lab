@@ -5,18 +5,15 @@ metadata:
   namespace: elasticsearch
 data:
   values.yaml: |
-    replicas: 2
-
+    replicas: 1
     volumeClaimTemplate:
       accessModes: ["ReadWriteOnce"]
       storageClassName: nfs-client
       resources:
         requests:
           storage: 10Gi
-
     persistence:
       enabled: true
-
     esConfig:
       elasticsearch.yml: |
         xpack.security.enabled: false
