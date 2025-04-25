@@ -17,6 +17,7 @@ data:
     apm-server:
       host: "0.0.0.0:8200"
       otlp:
+        enabled: true
         http:
           enabled: true
           host: "0.0.0.0:8200"
