@@ -4,7 +4,7 @@ metadata:
   name: elasticsearch
   namespace: elasticsearch
 spec:
-  interval: 1h
+  interval: 1m
   chart:
     spec:
       chart: elasticsearch
