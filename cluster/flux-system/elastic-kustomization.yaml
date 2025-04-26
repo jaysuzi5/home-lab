@@ -5,7 +5,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1m
-  path: ./cluster/infrastructure/databases/elastic 
+  path: ./cluster/infrastructure/databases/elasticsearch 
   prune: true
   sourceRef:
     kind: GitRepository
