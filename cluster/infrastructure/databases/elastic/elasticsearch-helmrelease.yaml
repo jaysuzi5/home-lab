@@ -4,9 +4,6 @@ metadata:
   name: elasticsearch
   namespace: elastic
 spec:
-  dependsOn:
-    - name: elastic-credentials
-      namespace: elastic
   interval: 5m
   chart:
     spec:
