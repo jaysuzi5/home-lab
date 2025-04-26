@@ -4,7 +4,7 @@ metadata:
   name: apm-server
   namespace: elasticsearch
 spec:
-  interval: 1h
+  interval: 10m
   chart:
     spec:
       chart: apm-server
