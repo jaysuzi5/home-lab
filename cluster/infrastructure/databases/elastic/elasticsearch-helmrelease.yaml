@@ -51,6 +51,38 @@ spec:
         # Add these for better NFS performance
         bootstrap.memory_lock: false
         cluster.routing.allocation.disk.threshold_enabled: false
+    readinessProbe:
+      httpGet:
+        path: /
+        port: 9200
+        scheme: HTTPS
+        httpHeaders:
+        - name: Authorization
+          valueFrom:
+            secretKeyRef:
+              name: elastic-credentials
+              key: password
+              optional: false
+      initialDelaySeconds: 60
+      periodSeconds: 10
+      timeoutSeconds: 5
+      failureThreshold: 3
+    livenessProbe:
+      httpGet:
+        path: /
+        port: 9200
+        scheme: HTTPS
+        httpHeaders:
+        - name: Authorization
+          valueFrom:
+            secretKeyRef:
+              name: elastic-credentials
+              key: password  
+              optional: false
+      initialDelaySeconds: 120
+      periodSeconds: 10
+      timeoutSeconds: 5
+      failureThreshold: 3
     extraEnvs:
       - name: ELASTIC_PASSWORD
         valueFrom:
