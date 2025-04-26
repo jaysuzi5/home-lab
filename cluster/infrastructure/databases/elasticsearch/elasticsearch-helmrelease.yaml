@@ -20,10 +20,6 @@ spec:
       elasticsearch.yml: |
         xpack.security.enabled: false
         xpack.security.transport.ssl.enabled: false
-        node.store.allow_mmap: false
-        discovery.type: zen-disco 
-        discovery.seed_hosts: ["elasticsearch-master-headless"] 
-        cluster.initial_master_nodes: ["elasticsearch-master-0", "elasticsearch-master-1"]
 
     esJavaOpts: "-Xms512m -Xmx512m"
 
