@@ -8,84 +8,55 @@ spec:
   chart:
     spec:
       chart: elasticsearch
-      version: 7.17.3
+      version: 8.18.0
       sourceRef:
         kind: HelmRepository
         name: elastic
         namespace: flux-system
       interval: 1m
   values:
-    imageTag: "7.17.3"
     replicas: 1
-    minimumMasterNodes: 1
-    esJavaOpts: "-Xmx1g -Xms1g" 
+
+    esConfig:
+      elasticsearch.yml: |
+        xpack.security.enabled: true
+        xpack.security.transport.ssl.enabled: true
+        xpack.security.transport.ssl.verification_mode: certificate
+        xpack.security.transport.ssl.key: /usr/share/elasticsearch/config/certs/tls.key
+        xpack.security.transport.ssl.certificate: /usr/share/elasticsearch/config/certs/tls.crt
+        xpack.security.transport.ssl.certificate_authorities: [ "/usr/share/elasticsearch/config/certs/ca.crt" ]
+        node.store.allow_mmap: false
+
+    esJavaOpts: "-Xms512m -Xmx512m"
+
+    extraVolumes:
+      - name: elastic-certs
+        secret:
+          secretName: elastic-certificates
+
+    extraVolumeMounts:
+      - name: elastic-certs
+        mountPath: /usr/share/elasticsearch/config/certs
+        readOnly: true
+
+    secret:
+      enabled: false
+
+    security:
+      authentication:
+        enabled: true
+
     resources:
       requests:
         cpu: "250m"
-        memory: "1.5Gi"
+        memory: "1Gi"
       limits:
         cpu: "500m"
         memory: "2Gi"
+
     volumeClaimTemplate:
       accessModes: ["ReadWriteOnce"]
       storageClassName: nfs-client
       resources:
         requests:
           storage: 10Gi
-    secretMounts:
-      - name: elastic-certificates
-        secretName: elastic-certificates
-        path: /usr/share/elasticsearch/config/certs
-    esConfig:
-      elasticsearch.yml: |
-        xpack.security.enabled: true
-        xpack.security.transport.ssl.enabled: true
-        xpack.security.transport.ssl.verification_mode: certificate
-        xpack.security.transport.ssl.key: /usr/share/elasticsearch/config/certs/elasticsearch.key
-        xpack.security.transport.ssl.certificate: /usr/share/elasticsearch/config/certs/elasticsearch.crt
-        xpack.security.transport.ssl.certificate_authorities: /usr/share/elasticsearch/config/certs/ca.crt
-        xpack.security.http.ssl.enabled: true
-        xpack.security.http.ssl.key: /usr/share/elasticsearch/config/certs/elasticsearch.key
-        xpack.security.http.ssl.certificate: /usr/share/elasticsearch/config/certs/elasticsearch.crt
-        xpack.security.http.ssl.certificate_authorities: /usr/share/elasticsearch/config/certs/ca.crt
-        # Add these for better NFS performance
-        bootstrap.memory_lock: false
-        cluster.routing.allocation.disk.threshold_enabled: false
-    readinessProbe:
-      httpGet:
-        path: /
-        port: 9200
-        scheme: HTTPS
-        httpHeaders:
-        - name: Authorization
-          valueFrom:
-            secretKeyRef:
-              name: elastic-credentials
-              key: password
-              optional: false
-      initialDelaySeconds: 60
-      periodSeconds: 10
-      timeoutSeconds: 5
-      failureThreshold: 3
-    livenessProbe:
-      httpGet:
-        path: /
-        port: 9200
-        scheme: HTTPS
-        httpHeaders:
-        - name: Authorization
-          valueFrom:
-            secretKeyRef:
-              name: elastic-credentials
-              key: password  
-              optional: false
-      initialDelaySeconds: 120
-      periodSeconds: 10
-      timeoutSeconds: 5
-      failureThreshold: 3
-    extraEnvs:
-      - name: ELASTIC_PASSWORD
-        valueFrom:
-          secretKeyRef:
-            name: elastic-credentials
-            key: password
