@@ -1,0 +1,64 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: elasticsearch
+  namespace: elastic
+spec:
+  dependsOn:
+    - name: elastic-credentials
+      namespace: elastic
+  interval: 5m
+  chart:
+    spec:
+      chart: elasticsearch
+      version: 7.17.3
+      sourceRef:
+        kind: HelmRepository
+        name: elastic
+        namespace: flux-system
+      interval: 1m
+  values:
+    imageTag: "7.17.3"
+    replicas: 3
+    minimumMasterNodes: 2
+    esJavaOpts: "-Xmx1g -Xms1g" 
+    resources:
+      requests:
+        cpu: "500m"
+        memory: "1Gi"
+      limits:
+        cpu: "500m"
+        memory: "1Gi"
+    volumeClaimTemplate:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: nfs-client
+      resources:
+        requests:
+          storage: 10Gi
+    secretMounts:
+      - name: elastic-certificates
+        secretName: elastic-certificates
+        path: /usr/share/elasticsearch/config/certs
+    esConfig:
+      elasticsearch.yml: |
+        xpack.security.enabled: true
+        xpack.security.transport.ssl.enabled: true
+        xpack.security.transport.ssl.verification_mode: certificate
+        xpack.security.transport.ssl.key: /usr/share/elasticsearch/config/certs/elasticsearch.key
+        xpack.security.transport.ssl.certificate: /usr/share/elasticsearch/config/certs/elasticsearch.crt
+        xpack.security.transport.ssl.certificate_authorities: /usr/share/elasticsearch/config/certs/ca.crt
+        xpack.security.http.ssl.enabled: true
+        xpack.security.http.ssl.key: /usr/share/elasticsearch/config/certs/elasticsearch.key
+        xpack.security.http.ssl.certificate: /usr/share/elasticsearch/config/certs/elasticsearch.crt
+        xpack.security.http.ssl.certificate_authorities: /usr/share/elasticsearch/config/certs/ca.crt
+        # Add these for better NFS performance
+        bootstrap.memory_lock: false
+        cluster.routing.allocation.disk.threshold_enabled: false
+    extraEnvs:
+      - name: ELASTIC_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: elastic-credentials
+            key: password
+      - name: ES_JAVA_OPTS
+        value: "-Xms1g -Xmx1g"

@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: elastic
+
+resources:
+  - elasticsearch-helmrepo.yaml
+  - helmrepository.yaml
+  - elasticsearch-values.yaml
+  - kibana-values.yaml
+  - elasticsearch-release.yaml
+  - kibana-release.yaml
+  - apm-server-secret.yaml
+  - apm-server-values.yaml
+  - apm-server-release.yaml
+  - collector.yaml
