@@ -5,13 +5,15 @@ metadata:
   namespace: elasticsearch
 data:
   values.yaml: |
-    replicas: 3
+    replicas: 2
     volumeClaimTemplate:
       accessModes: ["ReadWriteOnce"]
       storageClassName: nfs-client
       resources:
         requests:
           storage: 10Gi
+          cpu: "500m"
+          memory: "1.5Gi"
     persistence:
       enabled: true
     esConfig:
