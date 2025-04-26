@@ -16,8 +16,8 @@ spec:
       interval: 1m
   values:
     imageTag: "7.17.3"
-    replicas: 3
-    minimumMasterNodes: 2
+    replicas: 1
+    minimumMasterNodes: 1
     esJavaOpts: "-Xmx1g -Xms1g" 
     resources:
       requests:
@@ -57,5 +57,3 @@ spec:
           secretKeyRef:
             name: elastic-credentials
             key: password
-      - name: ES_JAVA_OPTS
-        value: "-Xms1g -Xmx1g"
