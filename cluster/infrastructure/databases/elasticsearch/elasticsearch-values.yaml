@@ -5,7 +5,7 @@ metadata:
   namespace: elasticsearch
 data:
   values.yaml: |
-    replicas: 1
+    replicas: 2
     volumeClaimTemplate:
       accessModes: ["ReadWriteOnce"]
       storageClassName: nfs-client
