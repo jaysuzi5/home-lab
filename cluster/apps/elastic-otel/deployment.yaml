@@ -11,6 +11,8 @@ spec:
     metadata:
       labels:
         app: elastic-otel
+      annotations:
+            kubernetes.io/change-cause: "Updated OTEL endpoint at 2025-04-28 5:53 PM"        
     spec:
       containers:
       - name: elastic-otel
