@@ -1,0 +1,89 @@
+replicaCount: 1
+
+apmConfig:
+  apm-server.yml: |
+    apm-server:
+      host: "0.0.0.0:8200"
+      ssl:
+        enabled: true
+        certificate: "/usr/share/apm-server/config/certs/tls.crt"
+        key: "/usr/share/apm-server/config/certs/tls.key"
+        certificate_authorities: ["/usr/share/apm-server/config/certs/ca.crt"]
+        client_authentication: "optional"
+    otlp:
+        grpc:
+          enabled: true
+          host: "0.0.0.0:8200"
+          timeout: 120s
+          keepalive:
+            max_connection_idle: 300s
+            max_connection_age: 3600s
+            time: 30s
+            timeout: 10s
+    output.elasticsearch:
+      enabled: true
+      hosts: ["https://elasticsearch-master:9200"]
+      protocol: "https"
+      username: "${ELASTICSEARCH_USERNAME}"
+      password: "${ELASTICSEARCH_PASSWORD}"
+      ssl:
+        enabled: true
+        certificate_authorities:
+          - /usr/share/apm-server/config/certs/ca.crt
+        verification_mode: certificate
+    output.kibana:
+      enabled: false
+    queue: {}
+
+secretMounts:
+  - name: "elastic-certificates"
+    secretName: "elastic-certificates"
+    path: "/usr/share/apm-server/config/certs"
+    defaultMode: 0755
+
+extraEnvs:
+  - name: "ELASTICSEARCH_USERNAME"
+    valueFrom:
+      secretKeyRef:
+        name: "elastic-credentials"
+        key: "username"
+  - name: "ELASTICSEARCH_PASSWORD"
+    valueFrom:
+      secretKeyRef:
+        name: "elastic-credentials"
+        key: "password"
+
+resources:
+  requests:
+    cpu: "100m"
+    memory: "512Mi"
+  limits:
+    cpu: "500m"
+    memory: "1Gi"
+
+service:
+  type: LoadBalancer
+  port: 8200
+
+# Configure liveness and readiness probes
+livenessProbe:
+  httpGet:
+    scheme: HTTPS
+    path: /
+    port: 8200
+  initialDelaySeconds: 30
+  timeoutSeconds: 5
+  periodSeconds: 10
+  successThreshold: 1
+  failureThreshold: 3
+
+readinessProbe:
+  httpGet:
+    scheme: HTTPS
+    path: /
+    port: 8200
+  initialDelaySeconds: 30
+  timeoutSeconds: 5
+  periodSeconds: 10
+  successThreshold: 1
+  failureThreshold: 3
