@@ -18,46 +18,36 @@ spec:
         - name: weather-collector
           image: ghcr.io/jaysuzi5/weather-collector:v0.2.9
           envFrom:
-          - configMapRef:
-              name: weather-config
+            - configMapRef:
+                name: weather-config
           env:
-          - name: OTEL_EXPORTER_OTLP_ENDPOINT
-            value: "http://otel-collector-elasticsearch.elasticsearch.svc.cluster.local:4318"
-          - name: OTEL_EXPORTER_OTLP_PROTOCOL
-            value: "http/protobuf"
-          - name: OTEL_LOGS_EXPORTER
-            value: "otlp"
-          - name: OTEL_SERVICE_NAME
-            value: "elastic-no-code-otel"
-          - name: OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED
-            value: "true"
-          - name: OTEL_LOG_LEVEL
-            value: "debug"
-          - name: OPENWEATHER_API_KEY
-            valueFrom:
-              secretKeyRef:
-                name: weather-secrets
-                key: OPENWEATHER_API_KEY
-          - name: POSTGRES_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: weather-secrets
-                key: POSTGRES_PASSWORD
-          - name: POSTGRES_USER
-            valueFrom:
-              secretKeyRef:
-                name: weather-secrets
-                key: POSTGRES_USER
-          - name: LATITUDE
-            valueFrom:
-              secretKeyRef:
-                name: weather-secrets
-                key: LATITUDE
-          - name: LONGITUDE
-            valueFrom:
-              secretKeyRef:
-                name: weather-secrets
-                key: LONGITUDE
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "http://otel-collector-collector.monitoring.svc.cluster.local:4317"
+            - name: OPENWEATHER_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: weather-secrets
+                  key: OPENWEATHER_API_KEY
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: weather-secrets
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: weather-secrets
+                  key: POSTGRES_USER
+            - name: LATITUDE
+              valueFrom:
+                secretKeyRef:
+                  name: weather-secrets
+                  key: LATITUDE
+            - name: LONGITUDE
+              valueFrom:
+                secretKeyRef:
+                  name: weather-secrets
+                  key: LONGITUDE
       volumes:
         - name: otel-config
           configMap:
