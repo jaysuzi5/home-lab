@@ -4,3 +4,4 @@ metadata:
   name: elasticsearch
   namespace: elasticsearch
 resources:
+  - collector.yaml 
