@@ -23,6 +23,8 @@ spec:
           env:
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
               value: "http://otel-collector-elastic.elasticsearch.svc.cluster.local:4317"
+            - name: OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED
+              value: "true"              
             - name: OPENWEATHER_API_KEY
               valueFrom:
                 secretKeyRef:
