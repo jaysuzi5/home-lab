@@ -1,0 +1,117 @@
+apmConfig:
+  apm-server.yml: |
+    apm-server:
+      host: "0.0.0.0:8200"
+      # auth:
+      #   secret_token: '${APM_SECRET_TOKEN}'
+    queue: {}
+    output.elasticsearch:
+      hosts: ["https://elasticsearch-master:9200"]
+      protocol: https
+      username: '${ELASTICSEARCH_USERNAME}'
+      password: '${ELASTICSEARCH_PASSWORD}'
+      ssl.certificate_authorities:
+        - /usr/share/apm-server/config/certs/ca.crt
+    logging:
+      level: debug
+      to_files: false
+
+replicas: 1
+
+extraEnvs:
+  - name: "ELASTICSEARCH_USERNAME"
+    valueFrom:
+      secretKeyRef:
+        name: elasticsearch-master-credentials
+        key: username
+  - name: "ELASTICSEARCH_PASSWORD"
+    valueFrom:
+      secretKeyRef:
+        name: elasticsearch-master-credentials
+        key: password
+  - name: "APM_SECRET_TOKEN"
+    value: "4a8e9f3d2b7c6e5f4a8e9f3d2b7c6e5f"
+
+secretMounts:
+  - name: elastic-certs
+    secretName: elasticsearch-master-certs
+    path: /usr/share/apm-server/config/certs
+
+extraContainers: ""
+extraInitContainers: ""
+envFrom: []
+hostAliases: []
+image: "docker.elastic.co/apm/apm-server"
+imageTag: "8.5.1"
+imagePullPolicy: "IfNotPresent"
+imagePullSecrets: []
+managedServiceAccount: true
+podAnnotations: {}
+labels: {}
+podSecurityContext:
+  fsGroup: 1000
+  runAsUser: 1000
+  runAsGroup: 0
+securityContext:
+  privileged: false
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 0
+livenessProbe:
+  httpGet:
+    path: /
+    port: http
+  initialDelaySeconds: 30
+  failureThreshold: 3
+  periodSeconds: 10
+  timeoutSeconds: 5
+readinessProbe:
+  httpGet:
+    path: /
+    port: http
+  initialDelaySeconds: 30
+  failureThreshold: 3
+  periodSeconds: 10
+  timeoutSeconds: 5
+resources:
+  requests:
+    cpu: "100m"
+    memory: "100Mi"
+  limits:
+    cpu: "1000m"
+    memory: "512Mi"
+serviceAccount: ""
+serviceAccountAnnotations: {}
+terminationGracePeriod: 30
+tolerations: []
+nodeSelector: {}
+affinity: {}
+priorityClassName: ""
+updateStrategy:
+  type: "RollingUpdate"
+nameOverride: ""
+fullnameOverride: ""
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  averageCpuUtilization: 50
+ingress:
+  enabled: false
+  className: "nginx"
+  pathtype: ImplementationSpecific
+  annotations: {}
+  path: /
+  hosts:
+    - chart-example.local
+  tls: []
+service:
+  type: ClusterIP
+  loadBalancerIP: ""
+  port: 8200
+  nodePort: ""
+  annotations: {}
+lifecycle:
+  postStart:
+    exec:
+      command: ["/bin/sh", "-c", "printenv > /proc/1/fd/1"]

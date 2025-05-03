@@ -1,125 +1,109 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: otel-collector-elasticsearch
-  namespace: elasticsearch
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: otel-collector-elasticsearch
-  template:
-    metadata:
-      labels:
-        app: otel-collector-elasticsearch
-    spec:
-      containers:
-        - name: otel-collector
-          image: otel/opentelemetry-collector-contrib:latest
-          args:
-            - --config=/conf/otel-collector.yaml
-          env:
-            - name: ELASTICSEARCH_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: elastic-credentials
-                  key: username
-            - name: ELASTICSEARCH_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: elastic-credentials
-                  key: password
-          volumeMounts:
-            - name: config
-              mountPath: /conf
-            - name: elastic-certificates
-              mountPath: /certs
-          resources:
-            requests:
-              cpu: "100m"
-              memory: "512Mi"
-            limits:
-              cpu: "500m"
-              memory: "1Gi"
-          livenessProbe: null
-          readinessProbe: null
-      volumes:
-        - name: config
-          configMap:
-            name: otel-collector-config
-        - name: elastic-certificates
-          secret:
-            secretName: elastic-certificates
-            defaultMode: 0755
----
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: otel-collector-config
+  name: otel-collector-elastic-config
   namespace: elasticsearch
 data:
-  otel-collector.yaml: |
-    extensions:
-      health_check:
-        endpoint: "0.0.0.0:13133"
-        path: "/health"
+  otel-config.yaml: |
     receivers:
       otlp:
         protocols:
           grpc:
-            endpoint: "0.0.0.0:4317"
+            endpoint: 0.0.0.0:4317
           http:
-            endpoint: "0.0.0.0:4318"
+            endpoint: 0.0.0.0:4318
     processors:
       batch:
         timeout: 5s
         send_batch_size: 1000
+      memory_limiter:
+        check_interval: 1s
+        limit_mib: 400
+        spike_limit_mib: 100
     exporters:
-      otlp:
-        endpoint: "apm-server-apm-server:8200"
-        tls:
-          ca_file: "/certs/ca.crt"
-          insecure_skip_verify: true
-        compression: gzip
-        keepalive:
-          time: 10s
-          timeout: 5s
-          permit_without_stream: true
+      otlphttp:
+        endpoint: http://apm-server-apm-server.elasticsearch.svc.cluster.local:8200
+        traces_endpoint: http://apm-server-apm-server.elasticsearch.svc.cluster.local:8200/v1/traces
+        metrics_endpoint: http://apm-server-apm-server.elasticsearch.svc.cluster.local:8200/v1/metrics
+        logs_endpoint: http://apm-server-apm-server.elasticsearch.svc.cluster.local:8200/v1/logs
     service:
-      telemetry:
-        logs:
-          level: debug
-      extensions: [health_check]
       pipelines:
         traces:
           receivers: [otlp]
-          processors: [batch]
-          exporters: [otlp]
+          processors: [memory_limiter, batch]
+          exporters: [otlphttp]
         metrics:
           receivers: [otlp]
-          processors: [batch]
-          exporters: [otlp]
+          processors: [memory_limiter, batch]
+          exporters: [otlphttp]
         logs:
           receivers: [otlp]
-          processors: [batch]
-          exporters: [otlp]
+          processors: [memory_limiter, batch]
+          exporters: [otlphttp]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: otel-collector-elastic
+  namespace: elasticsearch
+  labels:
+    app: otel-collector-elastic
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: otel-collector-elastic
+  template:
+    metadata:
+      labels:
+        app: otel-collector-elastic
+    spec:
+      containers:
+      - name: otel-collector
+        image: otel/opentelemetry-collector-contrib:0.111.0
+        command:
+        - /otelcol-contrib
+        - --config=/conf/otel-config.yaml
+        volumeMounts:
+        - name: config
+          mountPath: /conf
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+          requests:
+            cpu: "100m"
+            memory: "256Mi"
+        ports:
+        - containerPort: 4317 # OTLP gRPC
+        - containerPort: 4318 # OTLP HTTP
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: OTEL_SERVICE_NAME
+          value: otel-collector-elastic
+      volumes:
+      - name: config
+        configMap:
+          name: otel-collector-elastic-config
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: otel-collector-elasticsearch
+  name: otel-collector-elastic
   namespace: elasticsearch
 spec:
   selector:
-    app: otel-collector-elasticsearch
+    app: otel-collector-elastic
   ports:
-    - name: otlp-grpc
-      port: 4317
-      protocol: TCP
-    - name: otlp-http
-      port: 4318
-      protocol: TCP
-    - name: health
-      port: 13133
-      protocol: TCP
+  - name: otlp-grpc
+    protocol: TCP
+    port: 4317
+    targetPort: 4317
+  - name: otlp-http
+    protocol: TCP
+    port: 4318
+    targetPort: 4318
   type: ClusterIP
