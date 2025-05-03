@@ -22,17 +22,7 @@ spec:
                 name: weather-config
           env:
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
-              value: "http://otel-collector-elastic.elasticsearch.svc.cluster.local:4318"
-            - name: OTEL_EXPORTER_OTLP_PROTOCOL
-              value: "http/protobuf"
-            - name: OTEL_LOGS_EXPORTER
-              value: "otlp"
-            - name: OTEL_SERVICE_NAME
-              value: "weather-collector"
-            - name: OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED
-              value: "true"
-            - name: OTEL_LOG_LEVEL
-              value: "debug"
+              value: "http://otel-collector-collector.monitoring.svc.cluster.local:4317"
             - name: OPENWEATHER_API_KEY
               valueFrom:
                 secretKeyRef:
