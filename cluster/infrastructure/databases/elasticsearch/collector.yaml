@@ -14,12 +14,6 @@ data:
             endpoint: 0.0.0.0:4318
     processors:
       batch:
-        timeout: 5s
-        send_batch_size: 1000
-      memory_limiter:
-        check_interval: 1s
-        limit_mib: 400
-        spike_limit_mib: 100
     exporters:
       otlphttp:
         endpoint: http://apm-server-apm-server.elasticsearch.svc.cluster.local:8200
@@ -30,15 +24,15 @@ data:
       pipelines:
         traces:
           receivers: [otlp]
-          processors: [memory_limiter, batch]
+          processors: [batch]
           exporters: [otlphttp]
         metrics:
           receivers: [otlp]
-          processors: [memory_limiter, batch]
+          processors: [batch]
           exporters: [otlphttp]
         logs:
           receivers: [otlp]
-          processors: [memory_limiter, batch]
+          processors: [batch]
           exporters: [otlphttp]
 ---
 apiVersion: apps/v1
