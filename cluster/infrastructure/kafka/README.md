@@ -46,6 +46,13 @@ helm install kafka bitnami/kafka -n kafka -f values.yaml
 ```
 
 
+If full cleaneup is needed
+```bash
+helm uninstall kafka -n kafka               
+kubectl delete pvc -n kafka --all
+kubectl delete namespace kafka
+```
+
 to update:
 ```bash
 helm upgrade kafka bitnami/kafka -n kafka -f values.yaml --reuse-values --force
