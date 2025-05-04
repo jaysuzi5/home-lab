@@ -44,12 +44,12 @@ spec:
           valueFrom:
             secretKeyRef:
               key: ELASTIC_PASSWORD
-              name: postgresql-homelab-secret
+              name: elasticsearch-credentials
         - name: ELASTIC_USER
           valueFrom:
             secretKeyRef:
               key: ELASTIC_USER
-              name: postgresql-homelab-secret
+              name: elasticsearch-credentials
         envFrom:
         - configMapRef:
             name: elastic-otel-config
