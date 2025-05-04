@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: elastic-otel
-        image: ghcr.io/jaysuzi5/no-code-otel:v0.2.7
+        image: ghcr.io/jaysuzi5/no-code-otel:v0.2.8
         ports:
         - containerPort: 8080
         env:
