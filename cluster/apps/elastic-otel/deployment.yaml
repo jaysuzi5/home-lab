@@ -11,12 +11,10 @@ spec:
     metadata:
       labels:
         app: elastic-otel
-      annotations:
-            kubernetes.io/change-cause: "Updated OTEL endpoint at 2025-04-28 5:53 PM"        
     spec:
       containers:
       - name: elastic-otel
-        image: ghcr.io/jaysuzi5/no-code-otel:v0.2.2
+        image: ghcr.io/jaysuzi5/no-code-otel:v0.2.3
         ports:
         - containerPort: 8080
         env:
