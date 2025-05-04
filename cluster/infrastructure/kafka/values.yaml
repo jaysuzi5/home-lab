@@ -2,7 +2,7 @@ global:
   storageClass: "nfs-client"
 
 controller:
-  replicaCount: 3
+  replicaCount: 1
   resources:
     requests:
       memory: 1024Mi
@@ -29,14 +29,14 @@ listeners:
     name: CONTROLLER
     port: 9093
 
-metrics:
-  jmx:
-    enabled: true
-    kafkaJmxPort: 5555
-  serviceMonitor:
-    enabled: true
-    namespace: "monitoring"
-  prometheusRule:
-    enabled: true
-    namespace: "monitoring"
+# metrics:
+#   jmx:
+#     enabled: true
+#     kafkaJmxPort: 5555
+#   serviceMonitor:
+#     enabled: true
+#     namespace: "monitoring"
+#   prometheusRule:
+#     enabled: true
+#     namespace: "monitoring"
 
