@@ -4,6 +4,7 @@ metadata:
   name: no-code-otel
   namespace: flux-system
 resources:
+  - elastic_secret.yaml
   - secret.yaml
   - configmap.yaml
   - deployment.yaml
