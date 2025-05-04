@@ -43,12 +43,12 @@ spec:
         - name: ELASTIC_PASSWORD
           valueFrom:
             secretKeyRef:
-              key: ELASTIC_PASSWORD
+              key: password
               name: elasticsearch-credentials
         - name: ELASTIC_USER
           valueFrom:
             secretKeyRef:
-              key: ELASTIC_USER
+              key: username
               name: elasticsearch-credentials
         envFrom:
         - configMapRef:
