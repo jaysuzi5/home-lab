@@ -16,15 +16,22 @@ spec:
       restartPolicy: Always
       containers:
         - name: weather-collector
-          image: ghcr.io/jaysuzi5/weather-collector:v0.2.10
+          image: ghcr.io/jaysuzi5/weather-collector:v0.2.11
           envFrom:
             - configMapRef:
                 name: weather-config
           env:
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
-              value: "http://otel-collector-elastic.elasticsearch.svc.cluster.local:4317"
+              value: "http://otel-collector-elastic.elasticsearch.svc.cluster.local:4318"
+            - name: OTEL_EXPORTER_OTLP_PROTOCOL
+              value: "http/protobuf"
+            - name: OTEL_LOGS_EXPORTER
+              value: "otlp"
+            - name: OTEL_SERVICE_NAME
+              value: "weather-app-no-code"
             - name: OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED
-              value: "true"              
+              value: "true"
+            - name: OTEL_LOG_LEVEL    
             - name: OPENWEATHER_API_KEY
               valueFrom:
                 secretKeyRef:
