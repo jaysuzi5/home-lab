@@ -15,13 +15,14 @@ data:
     processors:
       batch:
     exporters:
-      elastic:
+      elasticsearch/logs:
         endpoints: ["https://elasticsearch-master.elasticsearch.svc.cluster.local:9200"]
-        user: ${ELASTIC_USER}
-        password: ${ELASTIC_PASSWORD}
+        auth:
+          user: ${ELASTIC_USER}
+          password: ${ELASTIC_PASSWORD}
         tls:
-          insecure: true  # skip TLS verification
-        logs_index: otel-logs
+          insecure_skip_verify: true  # skip TLS verification
+        logs_index: "otel-logs"
       otlphttp:
         endpoint: http://apm-server-apm-server.elasticsearch.svc.cluster.local:8200
         traces_endpoint: http://apm-server-apm-server.elasticsearch.svc.cluster.local:8200/v1/traces
@@ -40,7 +41,7 @@ data:
         logs:
           receivers: [otlp]
           processors: [batch]
-          exporters: [elastic]
+          exporters: [elasticsearch/logs]
 ---
 apiVersion: apps/v1
 kind: Deployment
