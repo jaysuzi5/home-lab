@@ -15,6 +15,12 @@ data:
     processors:
       batch:
     exporters:
+      elasticsearch:
+        endpoints: ["https://elasticsearch-master.elasticsearch.svc.cluster.local:9200"]
+        username: ${ELASTIC_USER}
+        password: ${ELASTIC_PASSWORD}
+        insecure: true  # skip TLS verification
+        index: otel-logs   
       otlphttp:
         endpoint: http://apm-server-apm-server.elasticsearch.svc.cluster.local:8200
         traces_endpoint: http://apm-server-apm-server.elasticsearch.svc.cluster.local:8200/v1/traces
@@ -33,7 +39,7 @@ data:
         logs:
           receivers: [otlp]
           processors: [batch]
-          exporters: [otlphttp]
+          exporters: [elasticsearch]
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -78,6 +84,16 @@ spec:
               fieldPath: metadata.name
         - name: OTEL_SERVICE_NAME
           value: otel-collector-elastic
+        - name: ELASTIC_USER
+          valueFrom:
+            secretKeyRef:
+              name: elasticsearch-master-credentials
+              key: username
+        - name: ELASTIC_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: elasticsearch-master-credentials
+              key: password          
       volumes:
       - name: config
         configMap:
