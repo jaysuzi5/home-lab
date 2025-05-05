@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: elastic-otel
-        image: ghcr.io/jaysuzi5/no-code-otel:v0.2.15
+        image: ghcr.io/jaysuzi5/no-code-otel:v0.2.16
         ports:
         - containerPort: 8080
         env:
@@ -28,8 +28,10 @@ spec:
           value: "elastic-no-code-otel"
         - name: OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED
           value: "true"
-        # - name: OTEL_LOG_LEVEL
-        #   value: "debug"
+        - name: OTEL_LOG_LEVEL
+          value: "debug"
+        - name: APP_LOG_LEVEL
+          value: "DEBUG"          
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
