@@ -15,14 +15,6 @@ data:
     processors:
       batch:
     exporters:
-      elasticsearch:
-        endpoints: ["https://elasticsearch-master.elasticsearch.svc.cluster.local:9200"]
-        logs_index: "otel-logs"
-        auth:
-          username: "${ELASTIC_USER}"
-          password: "${ELASTIC_PASSWORD}"
-        tls:
-          insecure_skip_verify: true  # Disable TLS verification (for testing)
       otlphttp:
         endpoint: http://apm-server-apm-server.elasticsearch.svc.cluster.local:8200
         traces_endpoint: http://apm-server-apm-server.elasticsearch.svc.cluster.local:8200/v1/traces
@@ -41,7 +33,7 @@ data:
         logs:
           receivers: [otlp]
           processors: [batch]
-          exporters: [elasticsearch]
+          exporters: [otlphttp]
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -62,8 +54,7 @@ spec:
     spec:
       containers:
       - name: otel-collector
-        # image: otel/opentelemetry-collector-contrib:0.111.0
-        image: otel/opentelemetry-collector-contrib:0.96.0
+        image: otel/opentelemetry-collector-contrib:0.111.0
         command:
         - /otelcol-contrib
         - --config=/conf/otel-config.yaml
