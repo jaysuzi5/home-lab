@@ -5,6 +5,7 @@ metadata:
   namespace: flux-system
 resources:
   - elastic_secret.yaml
+  - mongodb_secret.yaml
   - secret.yaml
   - configmap.yaml
   - deployment.yaml
