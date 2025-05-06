@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: elastic-otel
-        image: ghcr.io/jaysuzi5/no-code-otel:v0.3.1
+        image: ghcr.io/jaysuzi5/no-code-otel:v0.3.2
         ports:
         - containerPort: 8080
         env:
@@ -68,7 +68,7 @@ spec:
           value: "mongodb.mongodb.svc.cluster.local:27017"
         - name: KAFKA_SERVER
           value: "kafka.kafka.svc.cluster.local:9092"
-        - name: RANDOM_SERVER_URL
+        - name: RANDOM_SERVICE_URL
           value: "http://elastic-otel.local/random"
         envFrom:
         - configMapRef:
