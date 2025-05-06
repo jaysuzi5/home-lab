@@ -28,10 +28,8 @@ spec:
           value: "elastic-no-code-otel"
         - name: OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED
           value: "true"
-        - name: OTEL_LOG_LEVEL
-          value: "error"
         - name: APP_LOG_LEVEL
-          value: "ERROR"          
+          value: "INFO"          
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
