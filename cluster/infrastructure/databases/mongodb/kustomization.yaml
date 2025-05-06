@@ -9,5 +9,6 @@ resources:
   - pvc.yaml
   - deployment.yaml
   - service.yaml
+  - service-mongodb.yaml
   - mongo-express-deployment.yaml
   - mongo-express-service.yaml

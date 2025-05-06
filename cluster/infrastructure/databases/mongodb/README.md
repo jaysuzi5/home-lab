@@ -15,6 +15,7 @@ clusters/
             ├── pvc.yaml
             ├── deployment.yaml
             ├── service.yaml
+            ├── service-mongodb.yaml
             ├── kustomization.yaml                        
             └── kustomization_flux.yaml
 ```
