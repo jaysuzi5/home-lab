@@ -29,9 +29,9 @@ spec:
         - name: OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED
           value: "true"
         - name: OTEL_LOG_LEVEL
-          value: "debug"
+          value: "error"
         - name: APP_LOG_LEVEL
-          value: "INFO"          
+          value: "ERROR"          
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
