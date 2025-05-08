@@ -67,8 +67,8 @@ spec:
           value: "mongodb.mongodb.svc.cluster.local:27017"
         - name: KAFKA_SERVER
           value: "kafka.kafka.svc.cluster.local:9092"
-        - name: RANDOM_SERVICE_URL
-          value: "http://elastic-otel.applications.svc.cluster.local/random"
+        - name: AUTHENTICATION_URL
+          value: "http://elastic-otel.applications.svc.cluster.local/authenticate"
         envFrom:
         - configMapRef:
             name: elastic-otel-config
