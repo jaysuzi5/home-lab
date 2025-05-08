@@ -49,6 +49,12 @@ kubectl delete pvc -n elasticsearch --all
 kubectl delete namespace elasticsearch
 ```
 
+Run a dry run on the upgrade
+```bash
+helm upgrade --dry-run --debug elasticsearch elastic/elasticsearch -f elasticsearch_values.yml  --namespace elasticsearch --set imageTag=8.17.10 
+```
+
+
 
 
 {
