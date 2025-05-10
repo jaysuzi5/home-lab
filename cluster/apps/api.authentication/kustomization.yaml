@@ -5,3 +5,4 @@ metadata:
   namespace: otel-test
 resources:
   - deployment.yaml
+  - service.yaml
