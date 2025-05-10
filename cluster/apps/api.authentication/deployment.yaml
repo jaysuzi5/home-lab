@@ -30,5 +30,7 @@ spec:
           value: "true"
         - name: APP_LOG_LEVEL
           value: "INFO"          
+        - name: REDIS_HOST
+          value: "redis-master.redis.svc.cluster.local"
         - name: MEMBER_MANAGEMENT_URL
           value: "http://member.otel-test.svc.cluster.local/members"
