@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: login
-        image: ghcr.io/jaysuzi5/api.login:v0.1.1
+        image: ghcr.io/jaysuzi5/api.login:v0.1.2
         ports:
         - containerPort: 8080
         env:
