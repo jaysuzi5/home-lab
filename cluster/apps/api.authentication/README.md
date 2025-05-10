@@ -23,6 +23,7 @@ cluster/
   │   ├── api.authentication/
   │   │   ├── deployment.yaml
   │   │   ├── kustomization-flux.yaml
-  │   │   └── kustomization.yaml
+  │   │   ├── kustomization.yaml  
+  │   │   └── service.yaml
   │   │   
 ```
