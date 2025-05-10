@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: member
+  namespace: otel-test
+spec:
+  selector:
+    matchLabels:
+      app: member
+  template:
+    metadata:
+      labels:
+        app: member
+    spec:
+      containers:
+      - name: member
+        image: ghcr.io/jaysuzi5/api.member:v0.1.1
+        ports:
+        - containerPort: 8080
+        env:
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: "http://otel-collector-elastic.elasticsearch.svc.cluster.local:4318"
+        - name: OTEL_EXPORTER_OTLP_PROTOCOL
+          value: "http/protobuf"
+        - name: OTEL_LOGS_EXPORTER
+          value: "otlp"
+        - name: OTEL_SERVICE_NAME
+          value: "api.login"
+        - name: OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED
+          value: "true"
+        - name: APP_LOG_LEVEL
+          value: "INFO"          
+        - name: POSTGRES_HOST
+          value: "192.168.86.200"
+        - name: POSTGRES_PORT
+          value: "30000"
+        - name: POSTGRES_DB
+          value: "homelab"
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: POSTGRES_PASSWORD
+              name: postgresql-homelab-secret
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              key: POSTGRES_USER
+              name: postgresql-homelab-secret
