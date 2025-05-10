@@ -4,7 +4,7 @@ metadata:
   name: authentication
   namespace: otel-test
 spec:
-  type: Cluster
+  type: ClusterIP
   selector:
     app: authentication
   ports:
