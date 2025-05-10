@@ -4,7 +4,7 @@ metadata:
   name: login
   namespace: flux-system
 spec:
-  targetNamespace: applications
+  targetNamespace: otel-test
   interval: 1m0s
   path: "./apps/api.login"
   prune: true
