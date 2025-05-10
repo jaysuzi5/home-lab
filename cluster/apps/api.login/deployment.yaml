@@ -31,4 +31,4 @@ spec:
         - name: APP_LOG_LEVEL
           value: "INFO"          
         - name: AUTHENTICATION_URL
-          value: "http://elastic-otel.applications.svc.cluster.local/authenticate"
+          value: "http://authentication.otel-test.svc.cluster.local/authenticate"
