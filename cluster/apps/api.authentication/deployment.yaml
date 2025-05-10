@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authentication
+  namespace: otel-test
+spec:
+  selector:
+    matchLabels:
+      app: authentication
+  template:
+    metadata:
+      labels:
+        app: authentication
+    spec:
+      containers:
+      - name: authentication
+        image: ghcr.io/jaysuzi5/api.authentication:v0.1.1
+        ports:
+        - containerPort: 8080
+        env:
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: "http://otel-collector-elastic.elasticsearch.svc.cluster.local:4318"
+        - name: OTEL_EXPORTER_OTLP_PROTOCOL
+          value: "http/protobuf"
+        - name: OTEL_LOGS_EXPORTER
+          value: "otlp"
+        - name: OTEL_SERVICE_NAME
+          value: "api.login"
+        - name: OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED
+          value: "true"
+        - name: APP_LOG_LEVEL
+          value: "INFO"          
+        - name: MEMBER_MANAGEMENT_URL
+          value: "http://elastic-otel.applications.svc.cluster.local/authenticate"
