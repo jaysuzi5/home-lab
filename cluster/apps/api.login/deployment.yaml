@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: api.login
+  name: login
   namespace: applications
 spec:
   selector:
     matchLabels:
-      app: api.login
+      app: login
   template:
     metadata:
       labels:
-        app: api.login
+        app: login
     spec:
       containers:
-      - name: api.login
+      - name: login
         image: ghcr.io/jaysuzi5/api.login:v0.1.1
         ports:
         - containerPort: 8080
