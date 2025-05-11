@@ -46,3 +46,17 @@ spec:
             secretKeyRef:
               key: POSTGRES_USER
               name: postgresql-homelab-secret
+        - name: MONGODB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: mongodb-credentials
+        - name: MONGODB_USER
+          valueFrom:
+            secretKeyRef:
+              key: username
+              name: mongodb-credentials
+        - name: MONGODB_HOST
+          value: "mongodb.mongodb.svc.cluster.local:27017"
+        - name: KAFKA_SERVER
+          value: "kafka.kafka.svc.cluster.local:9092"
