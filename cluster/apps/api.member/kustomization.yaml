@@ -4,6 +4,7 @@ metadata:
   name: member
   namespace: otel-test
 resources:
+  - mongo_secret.yaml
   - postgresql_secret.yaml
   - deployment.yaml
   - service.yaml
