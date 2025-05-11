@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: authentication
-        image: ghcr.io/jaysuzi5/api.authentication:v0.1.1
+        image: ghcr.io/jaysuzi5/api.authentication:v0.2.0
         ports:
         - containerPort: 8080
         env:
@@ -34,3 +34,5 @@ spec:
           value: "redis-master.redis.svc.cluster.local"
         - name: MEMBER_MANAGEMENT_URL
           value: "http://member.otel-test.svc.cluster.local/members"
+        - name: KAFKA_SERVER
+          value: "kafka.kafka.svc.cluster.local:9092"
