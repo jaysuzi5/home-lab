@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: member
-        image: ghcr.io/jaysuzi5/api.member:v0.1.2
+        image: ghcr.io/jaysuzi5/api.member:v0.2.0
         ports:
         - containerPort: 8080
         env:
