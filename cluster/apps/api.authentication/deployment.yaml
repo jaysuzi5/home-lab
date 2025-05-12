@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: authentication
-        image: ghcr.io/jaysuzi5/api.authentication:v0.3.1
+        image: ghcr.io/jaysuzi5/api.authentication:v0.3.2
         ports:
         - containerPort: 8080
         env:
