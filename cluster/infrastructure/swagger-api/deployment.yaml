@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: swagger-editor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: swagger-editor
+  template:
+    metadata:
+      labels:
+        app: swagger-editor
+    spec:
+      containers:
+        - name: swagger-editor
+          image: swaggerapi/swagger-editor
+          ports:
+            - containerPort: 8080
