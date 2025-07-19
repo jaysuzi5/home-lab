@@ -32,13 +32,6 @@ Additional Documentation for CloudNativePG:  https://cloudnative-pg.io/documenta
 └── kustomization_flux.yaml
 ```
 
-Note:  I created the superuser secret ahead of time with the following command:
-
-kubectl create secret generic postgresql-cluster-superuser \     
-  --from-literal=username=postgres \
-  --from-literal=password=<<password>> \
-  -n postgresql-backstage
-secret/postgresql-cluster-superuser created
 
 Note: Flux is having issues trying to reconcile storage class, so it is just here for documentation incase I need to
 create it again, but it is set to skip and is not included in the kustomization file.
