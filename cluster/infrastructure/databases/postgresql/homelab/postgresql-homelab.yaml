@@ -12,6 +12,8 @@ spec:
     initdb:
       database: homelab
       owner: jcurtis
+      superuserSecret:
+        name: postgresql-cluster-superuser      
 ---
 apiVersion: v1
 kind: Service
