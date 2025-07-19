@@ -58,3 +58,12 @@ helm install backstage backstage/backstage \
   -n backstage \
   -f values.yaml
 ```
+
+
+
+kubectl run backstage-migrate \
+  --rm -i -t \
+  --image=ghcr.io/backstage/backstage:latest \
+  --restart=Never \
+  -n backstage \
+  -- /bin/sh
