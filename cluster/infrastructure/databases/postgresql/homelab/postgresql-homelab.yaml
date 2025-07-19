@@ -8,12 +8,12 @@ spec:
   storage:
     storageClass: "nfs-client"
     size: 10Gi
+  superuserSecret:
+    name: postgresql-cluster-superuser    
   bootstrap:
     initdb:
       database: homelab
       owner: jcurtis
-      superuserSecret:
-        name: postgresql-cluster-superuser      
 ---
 apiVersion: v1
 kind: Service
