@@ -29,5 +29,4 @@ spec:
       targetPort: 5432
       nodePort: 30001
   selector:
-    cnpg.io/cluster: postgresql-cluster
-    cnpg.io/instanceRole: primary
+    cnpg.io/cluster: postgresql-backstage
