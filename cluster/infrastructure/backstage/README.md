@@ -15,6 +15,14 @@ cluster/
 ```
 
 
+namespace for backstage:  backstage
+database details:
+   host: 192.168.86.200
+   port: 30001
+   username: from backstage-secrets
+   password: from backstage-secrets
+  
+
 Created a secrets file with the values encoded
 ```bash
 apiVersion: v1
@@ -28,6 +36,7 @@ data:
   POSTGRES_USER: <base64-encoded-postgres-user>
 ```
 
+
 encoded the values with:
 ```bash
 echo -n "<actual value>" | base64 
@@ -35,7 +44,17 @@ echo -n "<actual value>" | base64
 
 Then sealed the secret with:
 ```bash
-kubeseal --cert sealed-secrets-cert.pem -o yaml < secret.yaml > sealed-secret.yaml
+kubeseal --controller-namespace kube-system --format yaml < temp.yaml > sealed-postgres-secret.yaml
 ```
 
 
+I then installed backstage via helm:
+
+```bash
+helm repo add backstage https://backstage.github.io/charts
+helm repo update
+
+helm install backstage backstage/backstage \
+  -n backstage \
+  -f values.yaml
+```
