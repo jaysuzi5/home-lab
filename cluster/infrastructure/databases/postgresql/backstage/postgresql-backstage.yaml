@@ -1,0 +1,33 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgresql-backstage
+  namespace: postgresql-backstage
+spec:
+  instances: 3
+  storage:
+    storageClass: "nfs-client"
+    size: 10Gi
+  superuserSecret:
+    name: postgresql-cluster-superuser    
+  bootstrap:
+    initdb:
+      database: backstage
+      owner: jcurtis
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgresql-cluster-external
+  namespace: postgresql-backstage
+  labels:
+    app: postgresql-cluster
+spec:
+  type: NodePort
+  ports:
+    - port: 5432
+      targetPort: 5432
+      nodePort: 30001
+  selector:
+    cnpg.io/cluster: postgresql-cluster
+    cnpg.io/instanceRole: primary
