@@ -21,8 +21,10 @@ spec:
         ports:
         - containerPort: 7007
         env:
-          - name: LOG_LEVEL
-            value: "debug"        
+          - name: APP_CONFIG_app_baseUrl
+            value: "https://backstage.home/"        
+          - name: APP_CONFIG_backend_baseUrl
+            value: "https://backstage.home/"        
           - name: PATH
             value: "/opt/venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
           - name: POSTGRES_HOST
