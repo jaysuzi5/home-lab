@@ -4,3 +4,4 @@ namespace: backstage
 resources:
 - namespace.yaml
 - secrets.yaml
+- deployment.yaml
