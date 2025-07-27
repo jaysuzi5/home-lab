@@ -24,9 +24,11 @@ metadata:
     app: postgresql-cluster
 spec:
   type: NodePort
+  selector:
+    cnpg.io/cluster: postgresql-backstage
+    cnpg.io/instanceRole: primary
   ports:
     - port: 5432
       targetPort: 5432
       nodePort: 30001
-  selector:
-    cnpg.io/cluster: postgresql-backstage
+      protocol: TCP
