@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: backstage
-        image: jaysuzi5/backstage:v2
+        image: jaysuzi5/backstage:v3
         ports:
         - containerPort: 7007
         env:
