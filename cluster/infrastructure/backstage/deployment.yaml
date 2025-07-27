@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backstage
+  namespace: backstage
   labels:
     app: backstage
 spec:
@@ -16,7 +17,7 @@ spec:
     spec:
       containers:
       - name: backstage
-        image: jaysuzi5/python-app:v1
+        image: jaysuzi5/backstage:v1
         ports:
         - containerPort: 7007
       env:
@@ -57,6 +58,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: backstage
+  namespace: backstage
 spec:
   selector:
     app: backstage
@@ -69,6 +71,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: backstage
+  namespace: backstage
 spec:
   ingressClassName: nginx
   rules:
