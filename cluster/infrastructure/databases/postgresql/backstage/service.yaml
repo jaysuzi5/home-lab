@@ -1,38 +1,17 @@
 apiVersion: v1
 kind: Service
 metadata:
-  annotations:
-    meta.helm.sh/release-name: pg-exporter
-    meta.helm.sh/release-namespace: default
-  creationTimestamp: "2025-03-30T20:49:39Z"
+  name: postgresql-cluster-external
+  namespace: postgresql-backstage
   labels:
-    app: prometheus-postgres-exporter
-    app.kubernetes.io/managed-by: Helm
-    chart: prometheus-postgres-exporter-6.10.0
-    heritage: Helm
-    release: pg-exporter
-  name: pg-exporter-prometheus-postgres-exporter
-  namespace: default
-  resourceVersion: "774222"
-  uid: eb8f3ddf-f7a5-4ffb-a20f-ebfb42a06ad1
+    app: postgresql-cluster
 spec:
-  clusterIP: 10.99.216.53
-  clusterIPs:
-  - 10.99.216.53
-  internalTrafficPolicy: Cluster
-  ipFamilies:
-  - IPv4
-  ipFamilyPolicy: SingleStack
-  ports:
-  - name: http
-    port: 9187
-    protocol: TCP
-    targetPort: 9187
-    nodePort: 30918  # Explicitly defining nodePort
-  selector:
-    app: prometheus-postgres-exporter
-    release: pg-exporter
-  sessionAffinity: None
   type: NodePort
-status:
-  loadBalancer: {}
+  selector:
+    cnpg.io/cluster: postgresql-backstage
+    cnpg.io/instanceRole: primary 
+  ports:
+    - port: 5432
+      targetPort: 5432
+      nodePort: 30001
+      protocol: TCP
