@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backstage
+  labels:
+    app: backstage
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backstage
+  template:
+    metadata:
+      labels:
+        app: backstage
+    spec:
+      containers:
+      - name: backstage
+        image: jaysuzi5/python-app:v1
+        ports:
+        - containerPort: 7007
+      env:
+        - name: PATH
+          value: "/opt/venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+        - name: POSTGRES_HOST
+          value: postgresql-backstage-rw.postgresql-backstage.svc.cluster.local
+        - name: POSTGRES_PORT
+          value: 5432
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: backstage-secrets
+              key: POSTGRES_USER
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: backstage-secrets
+              key: POSTGRES_PASSWORD
+        - name: AUTH_GITHUB_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: backstage-secrets
+              key: AUTH_GITHUB_CLIENT_ID
+        - name: AUTH_GITHUB_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: backstage-secrets
+              key: AUTH_GITHUB_CLIENT_SECRET
+        - name: GITHUB_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: backstage-secrets
+              key: GITHUB_TOKEN              
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backstage
+spec:
+  selector:
+    app: backstage
+  ports:
+    - protocol: TCP
+      port: 7007
+      targetPort: 7007
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: backstage
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: backstage.home
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: backstage
+              port:
+                number: 7007
