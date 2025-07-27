@@ -26,7 +26,7 @@ spec:
           - name: POSTGRES_HOST
             value: postgresql-backstage-rw.postgresql-backstage.svc.cluster.local
           - name: POSTGRES_PORT
-            value: 5432
+            value: "5432"
           - name: POSTGRES_USER
             valueFrom:
               secretKeyRef:
