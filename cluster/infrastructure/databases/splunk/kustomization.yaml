@@ -3,3 +3,4 @@ kind: Kustomization
 namespace: splunk
 resources:
   - namespace.yaml
+  - pvc.yaml
