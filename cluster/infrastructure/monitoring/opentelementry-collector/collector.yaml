@@ -44,8 +44,6 @@ spec:
         metrics:
           level: detailed
           address: "0.0.0.0:8889"
-        logs:
-          level: "debug"          
       pipelines:
         metrics:
           receivers: [otlp]
