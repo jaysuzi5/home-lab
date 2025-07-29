@@ -6,8 +6,6 @@ metadata:
 spec:
   mode: deployment
   image: otel/opentelemetry-collector-contrib:0.96.0
-  args:
-    - "--set=log-level=debug"
   env:
     - name: SPLUNK_HEC_TOKEN
       valueFrom:
