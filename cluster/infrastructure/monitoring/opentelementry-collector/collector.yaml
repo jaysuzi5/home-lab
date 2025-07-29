@@ -57,3 +57,4 @@ spec:
           receivers: [otlp]
           processors: [batch]
           exporters: [splunk_hec]
+          level: debug
