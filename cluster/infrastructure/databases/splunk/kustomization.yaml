@@ -3,6 +3,3 @@ kind: Kustomization
 namespace: splunk
 resources:
   - namespace.yaml
-  - pvc.yaml
-  - deployment.yaml
-  - service.yaml
