@@ -4,3 +4,4 @@ namespace: splunk
 resources:
   - namespace.yaml
   - pvc.yaml
+  - secret.yaml
