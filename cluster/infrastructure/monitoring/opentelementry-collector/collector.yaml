@@ -5,13 +5,15 @@ metadata:
   namespace: monitoring
 spec:
   mode: deployment
-  image: otel/opentelemetry-collector-contrib:0.96.0  # Pin a specific version
+  image: otel/opentelemetry-collector-contrib:0.96.0
+  args:
+    - "--set=log-level=debug"
   env:
-  - name: SPLUNK_HEC_TOKEN
-    valueFrom:
-      secretKeyRef:
-        name: otel-collector-secrets
-        key: SPLUNK_HEC_TOKEN
+    - name: SPLUNK_HEC_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: otel-collector-secrets
+          key: SPLUNK_HEC_TOKEN
   config: |
     receivers:
       otlp:
@@ -57,4 +59,3 @@ spec:
           receivers: [otlp]
           processors: [batch]
           exporters: [splunk_hec]
-          level: debug
