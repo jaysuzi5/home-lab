@@ -39,6 +39,8 @@ spec:
         timeout: 10s
         tls:
           insecure_skip_verify: true
+      debug:
+        verbosity: detailed          
     service:
       telemetry:
         metrics:
@@ -58,4 +60,4 @@ spec:
         logs:
           receivers: [otlp]
           processors: [batch]
-          exporters: [splunk_hec]
+          exporters: [splunk_hec, debug]
