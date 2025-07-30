@@ -17,26 +17,16 @@ spec:
       containers:
         - name: weather-collector
           image: ghcr.io/jaysuzi5/weather-collector:v0.3.2
-          command:
-            - "opentelemetry-instrument"
-            - "--logs_exporter"
-            - "otlp"
-            - "--traces_exporter"
-            - "otlp"
-            - "python"
-            - "/app/src/weather-collector.py"
           envFrom:
             - configMapRef:
                 name: weather-config
           env:
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
-              value: "http://otel-collector-collector.monitoring.svc.cluster.local:4318"  # Use HTTP
-            - name: OTEL_LOGS_EXPORTER
-              value: "otlp"
-            - name: OTEL_LOG_LEVEL
-              value: "debug"  # Enable debug logging for OTEL SDK
-            - name: PYTHONUNBUFFERED
-              value: "1"  # Ensure unbuffered output
+              value: "http://otel-collector-collector.monitoring.svc.cluster.local:4317"
+            - name: OTEL_SERVICE_NAME
+              value: "weather-collector"
+            - name: OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED
+              value: "true"
             - name: OPENWEATHER_API_KEY
               valueFrom:
                 secretKeyRef:
