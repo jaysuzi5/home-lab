@@ -30,7 +30,7 @@ spec:
         tls:
           insecure: true
       splunk_hec:
-        token: "CC40F38D-15A9-4068-8C25-240540CEA27A"
+        token: "${SPLUNK_HEC_TOKEN}"
         endpoint: "https://splunk.splunk.svc.cluster.local:8088/services/collector"
         source: "otel"
         sourcetype: "otel:logs"
