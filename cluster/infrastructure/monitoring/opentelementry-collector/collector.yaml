@@ -12,6 +12,11 @@ spec:
         secretKeyRef:
           name: otel-collector-secrets
           key: SPLUNK_HEC_TOKEN
+  command:
+    - "/bin/sh"
+    - "-c"
+    - "echo SPLUNK_HEC_TOKEN=$SPLUNK_HEC_TOKEN; /otelcol-contrib --config=/conf/collector.yaml"
+
   config: |
     receivers:
       otlp:
