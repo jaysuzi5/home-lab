@@ -6,17 +6,6 @@ metadata:
 spec:
   mode: deployment
   image: otel/opentelemetry-collector-contrib:0.96.0
-  env:
-    - name: SPLUNK_HEC_TOKEN
-      valueFrom:
-        secretKeyRef:
-          name: otel-collector-secrets
-          key: SPLUNK_HEC_TOKEN
-  command:
-    - "/bin/sh"
-    - "-c"
-    - "echo SPLUNK_HEC_TOKEN=$SPLUNK_HEC_TOKEN; /otelcol-contrib --config=/conf/collector.yaml"
-
   config: |
     receivers:
       otlp:
@@ -35,7 +24,7 @@ spec:
         tls:
           insecure: true
       splunk_hec:
-        token: "${SPLUNK_HEC_TOKEN/\\n/}"
+        token_file: "/etc/otel/secrets/SPLUNK_HEC_TOKEN"  # File-based token
         endpoint: "https://splunk.splunk.svc.cluster.local:8088/services/collector"
         source: "otel"
         sourcetype: "otel:logs"
@@ -66,3 +55,7 @@ spec:
           receivers: [otlp]
           processors: [batch]
           exporters: [splunk_hec, debug]
+  podAnnotations:
+    sidecar.opentelemetry.io/inject: "true"
+    opentelemetry.io/volume-mounts: '{"splunk-secret":{"mountPath":"/etc/otel/secrets","readOnly":true}}'
+    opentelemetry.io/volumes: '{"splunk-secret":{"secret":{"secretName":"otel-collector-secrets"}}}'
