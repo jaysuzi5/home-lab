@@ -16,7 +16,7 @@ spec:
       restartPolicy: Always
       containers:
         - name: weather-collector
-          image: ghcr.io/jaysuzi5/weather-collector:v0.3.2
+          image: ghcr.io/jaysuzi5/weather-collector:v0.3.4
           envFrom:
             - configMapRef:
                 name: weather-config
