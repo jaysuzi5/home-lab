@@ -57,7 +57,7 @@ spec:
               secretKeyRef:
                 name: backstage-secrets
                 key: GITHUB_TOKEN              
-          - name: GITHUB_TOKEN
+          - name: GRAFANA_TOKEN
             valueFrom:
               secretKeyRef:
                 name: backstage-secrets
