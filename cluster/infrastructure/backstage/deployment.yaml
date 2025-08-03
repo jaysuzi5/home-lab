@@ -18,6 +18,7 @@ spec:
       containers:
       - name: backstage
         image: jaysuzi5/backstage:v4
+        imagePullPolicy: Always 
         ports:
         - containerPort: 7007
         env:
