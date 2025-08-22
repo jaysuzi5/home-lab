@@ -17,4 +17,4 @@ spec:
               service:
                 name: otel-collector-collector
                 port:
-                  number: 4317
+                  number: 4318   # HTTP endpoint
