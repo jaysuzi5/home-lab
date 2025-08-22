@@ -4,7 +4,7 @@ metadata:
   name: otel-collector-ingress
   namespace: monitoring
   annotations:
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
 spec:
   ingressClassName: nginx
   rules:
@@ -17,4 +17,4 @@ spec:
               service:
                 name: otel-collector-collector
                 port:
-                  number: 4318
+                  number: 4317   # gRPC endpoint
