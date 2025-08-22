@@ -8,7 +8,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: home.com   # DNS or /etc/hosts entry to your ingress controller
+    - host: otel.home.com   # DNS or /etc/hosts entry to your ingress controller
       http:
         paths:
           - path: /
