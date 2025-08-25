@@ -4,6 +4,6 @@ metadata:
   name: dice-role
   namespace: flux-system
 resources:
-  - namespace.yaml
   - deployment.yaml
-  - service.yaml
+  - service.yaml  
+  - ingress.yaml
