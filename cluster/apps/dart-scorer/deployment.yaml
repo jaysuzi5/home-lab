@@ -17,6 +17,7 @@ spec:
     spec:
       containers:
       - name: dart-scorer
-        image: jaysuzi5/dart-scorer:latest   # <--- updated
+        image: jaysuzi5/dart-scorer:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
