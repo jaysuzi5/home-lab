@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dart-scorer
+  namespace: applications
+  labels:
+    app: dart-scorer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dart-scorer
+  template:
+    metadata:
+      labels:
+        app: dart-scorer
+    spec:
+      containers:
+      - name: dart-scorer
+        image: jaysuzi5/dart-scorer:latest   # <--- updated
+        ports:
+        - containerPort: 80
