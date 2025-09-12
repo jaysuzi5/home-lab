@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: emporia-collector
-        image: jaysuzi5/dart-scorer:latest
+        image: jaysuzi5/emporia-collector:latest
         env:
         - name: USERNAME
           valueFrom:
