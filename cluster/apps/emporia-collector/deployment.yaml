@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: emporia-collector
+  namespace: emporia-collector
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: emporia-collector
+  template:
+    metadata:
+      labels:
+        app: emporia-collector
+    spec:
+      containers:
+      - name: emporia-collector
+        image: jaysuzi5/dart-scorer:latest
+        env:
+        - name: USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: emporia-collector-secret
+              key: USERNAME
+        - name: PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: emporia-collector-secret
+              key: PASSWORD
+        - name: CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: emporia-collector-secret
+              key: CLIENT_ID
