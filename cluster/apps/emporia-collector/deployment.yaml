@@ -16,6 +16,7 @@ spec:
       containers:
       - name: emporia-collector
         image: jaysuzi5/emporia-collector:latest
+        imagePullPolicy: Always
         env:
         - name: USERNAME
           valueFrom:
