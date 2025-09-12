@@ -1,29 +1,35 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: argoproj.io/v1alpha1
+kind: CronWorkflow
 metadata:
-  name: emporia-collector
-  namespace: emporia-collector
+  name: emporia-collector-cron
+  namespace: emporia-collector   # run in the same namespace as your secret
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: emporia-collector
-  template:
-    metadata:
-      labels:
-        app: emporia-collector
-    spec:
-      containers:
-      - name: emporia-collector
+  schedule: "*/30 * * * *"   # every 30 minutes
+  concurrencyPolicy: "Forbid"   # don’t overlap runs
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  workflowSpec:
+    entrypoint: run-emporia
+    templates:
+    - name: run-emporia
+      container:
         image: jaysuzi5/emporia-collector:latest
         imagePullPolicy: Always
+        command: ["opentelemetry-instrument"]
+        args:
+          - "--logs_exporter"
+          - "otlp"
+          - "--traces_exporter"
+          - "otlp"
+          - "python"
+          - "/app/src/emporia-collector.py"
         env:
         - name: OTEL_EXPORTER_OTLP_ENDPOINT
           value: "http://otel-collector-collector.monitoring.svc.cluster.local:4317"
         - name: OTEL_SERVICE_NAME
           value: "emporia-collector"
         - name: OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED
-          value: "true"        
+          value: "true"
         - name: USERNAME
           valueFrom:
             secretKeyRef:
