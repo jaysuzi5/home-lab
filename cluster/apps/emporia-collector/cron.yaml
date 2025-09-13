@@ -14,6 +14,8 @@ spec:
           - name: emporia-collector
             image: jaysuzi5/emporia-collector:latest
             env:
+            - name: LOG_LEVEL
+              value: DEBUG
             - name: API_URL
               value: "http://emporia.dev.svc.cluster.local:5001/api/v1/emporia/"
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
