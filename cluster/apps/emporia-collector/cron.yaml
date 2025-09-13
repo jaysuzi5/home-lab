@@ -1,47 +1,39 @@
-apiVersion: argoproj.io/v1alpha1
-kind: CronWorkflow
+apiVersion: batch/v1
+kind: CronJob
 metadata:
   name: emporia-collector-cron
-  namespace: emporia-collector   # run in the same namespace as your secret
+  namespace: emporia-collector
 spec:
-  schedule: "*/30 * * * *"   # every 30 minutes
-  concurrencyPolicy: "Forbid"   # don’t overlap runs
-  successfulJobsHistoryLimit: 3
-  failedJobsHistoryLimit: 3
-  workflowSpec:
-    entrypoint: run-emporia
-    templates:
-    - name: run-emporia
-      container:
-        image: jaysuzi5/emporia-collector:latest
-        imagePullPolicy: Always
-        command: ["opentelemetry-instrument"]
-        args:
-          - "--logs_exporter"
-          - "otlp"
-          - "--traces_exporter"
-          - "otlp"
-          - "python"
-          - "/app/src/emporia-collector.py"
-        env:
-        - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          value: "http://otel-collector-collector.monitoring.svc.cluster.local:4317"
-        - name: OTEL_SERVICE_NAME
-          value: "emporia-collector"
-        - name: OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED
-          value: "true"
-        - name: USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: emporia-collector-secret
-              key: USERNAME
-        - name: PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: emporia-collector-secret
-              key: PASSWORD
-        - name: CLIENT_ID
-          valueFrom:
-            secretKeyRef:
-              name: emporia-collector-secret
-              key: CLIENT_ID
+  schedule: "*/10 * * * *"   # every 30 minutes
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+          - name: emporia-collector
+            image: jaysuzi5/emporia-collector:latest
+            env:
+            - name: API_URL
+              value: "http://emporia.dev.svc.cluster.local:5001/api/v1/emporia/"
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "http://otel-collector-collector.monitoring.svc.cluster.local:4317"
+            - name: OTEL_SERVICE_NAME
+              value: "emporia-collector"
+            - name: OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED
+              value: "true"
+            - name: USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: emporia-collector-secret
+                  key: USERNAME
+            - name: PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: emporia-collector-secret
+                  key: PASSWORD
+            - name: CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: emporia-collector-secret
+                  key: CLIENT_ID
