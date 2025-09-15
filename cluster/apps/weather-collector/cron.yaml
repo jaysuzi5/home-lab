@@ -1,26 +1,21 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: batch/v1
+kind: CronJob
 metadata:
-  name: weather-collector
-  namespace: weather-app
+  name: weather-collector-cron
+  namespace: collector
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: weather-collector
-  template:
-    metadata:
-      labels:
-        app: weather-collector
+  schedule: "*/10 * * * *"   # every 30 minutes
+  jobTemplate:
     spec:
-      restartPolicy: Always
-      containers:
-        - name: weather-collector
-          image: ghcr.io/jaysuzi5/weather-collector:v0.3.4
-          envFrom:
-            - configMapRef:
-                name: weather-config
-          env:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+          - name: weather-collector
+            image: jaysuzi5/weather-collector:latest
+            env:
+            - name: LOG_LEVEL
+              value: DEBUG
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
               value: "http://otel-collector-collector.monitoring.svc.cluster.local:4317"
             - name: OTEL_SERVICE_NAME
@@ -31,32 +26,34 @@ spec:
               value: "http://api.openweathermap.org/data/2.5/"
             - name: CREATE_TABLES
               value: "false"
+            - name: POSTGRES_HOST
+              value: "192.168.86.200"
+            - name: POSTGRES_PORT
+              value: "30000"
+            - name: POSTGRES_DB
+              value: "homelab"
             - name: OPENWEATHER_API_KEY
               valueFrom:
                 secretKeyRef:
-                  name: weather-secrets
+                  name: weather-collector-secrets
                   key: OPENWEATHER_API_KEY
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: weather-secrets
+                  name: weather-collector-secrets
                   key: POSTGRES_PASSWORD
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
-                  name: weather-secrets
+                  name: weather-collector-secrets
                   key: POSTGRES_USER
             - name: LATITUDE
               valueFrom:
                 secretKeyRef:
-                  name: weather-secrets
+                  name: weather-collector-secrets
                   key: LATITUDE
             - name: LONGITUDE
               valueFrom:
                 secretKeyRef:
-                  name: weather-secrets
+                  name: weather-collector-secrets
                   key: LONGITUDE
-      volumes:
-        - name: otel-config
-          configMap:
-            name: otel-collector-config

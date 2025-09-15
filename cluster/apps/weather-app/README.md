@@ -60,7 +60,7 @@ echo -n "<actual value>" | base64
 
 Then sealed the secret with:
 ```bash
-kubeseal --cert sealed-secrets-cert.pem -o yaml < secret.yaml > sealed-secret.yaml
+kubeseal --cert sealed-secrets-cert.pem -o yaml < temp.yaml > secret.yaml 
 ```
 
 
