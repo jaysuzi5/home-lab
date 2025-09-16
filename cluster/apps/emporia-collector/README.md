@@ -27,3 +27,26 @@ cluster/
   │   │   
 ```
 
+Created a secrets file with the values encoded
+```bash
+apiVersion: v1
+kind: Secret
+metadata:
+  name: emporia-collector-secrets
+  namespace: collector
+type: Opaque
+data:
+  CLIENT_ID: <base64-encoded-emporia-client_id>
+  PASSWORD: <base64-encoded-emporia-password>
+  USERNAME: <base64-encoded-emporia-username>
+```
+
+encoded the values with:
+```bash
+echo -n "<actual value>" | base64 
+```
+
+Then sealed the secret with:
+```bash
+kubeseal --cert sealed-secrets-cert.pem -o yaml < temp.yaml > secret.yaml 
+```

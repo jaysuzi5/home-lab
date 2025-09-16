@@ -4,7 +4,7 @@ metadata:
   name: emporia-collector
   namespace: flux-system
 spec:
-  targetNamespace: emporia-collector
+  targetNamespace: collector
   interval: 1m0s
   path: "./apps/emporia-collector"
   prune: true

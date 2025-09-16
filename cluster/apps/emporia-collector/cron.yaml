@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: emporia-collector-cron
-  namespace: emporia-collector
+  namespace: collector
 spec:
   schedule: "*/10 * * * *"   # every 30 minutes
   jobTemplate:
