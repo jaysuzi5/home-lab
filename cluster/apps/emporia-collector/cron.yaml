@@ -4,7 +4,7 @@ metadata:
   name: emporia-collector-cron
   namespace: collector
 spec:
-  schedule: "*/10 * * * *"   # every 30 minutes
+  schedule: "*/10 * * * *"   # every 10 minutes
   jobTemplate:
     spec:
       template:

@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: network-collector-cron
+  namespace: collector
+spec:
+  schedule: "*/10 * * * *"   # every 10 minutes
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+          - name: network-collector
+            image: jaysuzi5/network-collector:latest
+            env:
+            - name: LOG_LEVEL
+              value: DEBUG
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "http://otel-collector-collector.monitoring.svc.cluster.local:4317"
+            - name: OTEL_SERVICE_NAME
+              value: "emporia-collector"
+            - name: OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED
+              value: "true"
