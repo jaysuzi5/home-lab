@@ -1,0 +1,33 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: enphase-collector-cron
+  namespace: collector
+spec:
+  schedule: "0 */4 * * *"   # every 4 hours
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: cronjob-sa   # must have secret read/write RBAC
+          restartPolicy: Never
+          containers:
+          - name: enphase-collector
+            image: jaysuzi5/enphase-collector:latest
+            env:
+            - name: LOG_LEVEL
+              value: DEBUG
+            - name: ENPHASE_BASE_URL
+              value: "https://api.enphaseenergy.com/"
+            - name: ENPHASE_API_URL
+              value: "api/v4/systems/{SYSTEM_ID}/"
+            - name: LOCAL_API_BASE_URL
+              value: "http://enphase.dev.svc.cluster.local:5001/api/v1/enphase/"
+            - name: SYSTEM_ID
+              value: "3592815"
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "http://otel-collector-collector.monitoring.svc.cluster.local:4317"
+            - name: OTEL_SERVICE_NAME
+              value: "emporia-collector"
+            - name: OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED
+              value: "true"
