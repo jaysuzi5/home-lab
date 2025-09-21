@@ -8,7 +8,7 @@ This is a simple python application to get basic synology information and logs i
 
 cluster/
   ├── apps/
-  │   ├── weather-app/
+  │   ├── synology-collector/
   │   │   ├── cron.yaml
   │   │   ├── namespace.yaml
   │   │   ├── kustomization.yaml

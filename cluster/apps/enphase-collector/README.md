@@ -23,7 +23,7 @@ will be storing the data in.  See that repo for additional details. https://gith
 
 cluster/
   ├── apps/
-  │   ├── weather-app/
+  │   ├── enphase-collector/
   │   │   ├── cron.yaml
   │   │   ├── namespace.yaml
   │   │   ├── service-account.yaml  

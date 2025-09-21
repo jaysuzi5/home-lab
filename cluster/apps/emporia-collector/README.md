@@ -18,7 +18,7 @@ https://pypi.org/project/pyemvue/0.9.5/
 
 cluster/
   ├── apps/
-  │   ├── weather-app/
+  │   ├── emporia-collector/
   │   │   ├── cron.yaml
   │   │   ├── namespace.yaml
   │   │   ├── secrets.yaml

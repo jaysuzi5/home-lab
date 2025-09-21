@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: homelab-hub
+  namespace: homelab-hub
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: homelab-hub
+  template:
+    metadata:
+      labels:
+        app: homelab-hub
+    spec:
+      containers:
+        - name: homelab-hub
+          image: jaysuzi5/homelab-hub:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: homelab-config
+            - secretRef:
+                name: homelab-hub-secrets
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"

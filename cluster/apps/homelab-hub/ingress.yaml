@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: homelab-hub-ingress
+  namespace: homelab-hub
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: homelab-hub.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: homelab-hub
+            port:
+              number: 8000

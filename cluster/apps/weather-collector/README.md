@@ -1,16 +1,9 @@
-# emporia-collector
-This is a simple collector that pulls data from the Emporia APIs and loads it to a local database through 
-a call to a local API.  The process will pull the current day and previous days daily metrics once an hour.  Future 
-enhancements could reduce the number of pulls from the previous day, however, this will do a full day overlap to
-ensure that no records are missed.  
+# weather-collector
+This is a simple application that makes two calls to the OpenWeather weather API for a given location. The first call 
+gets the current weather details while the second call gets a 5-day forecast.  Some logic is applied to the data and
+then saved to a PostgreSQL database.  This mainly serves as a test application that I can use to work with Kubernetes 
+and Docker.  I will use this to practice DevOps using Flux to sync changes to my homelab.  
 
-This project is very specific to my Home Lab setup and uses a defined local API that is defined in a separate project. 
-The API provides CRUD operations around my local PostgreSQL collection of this data.  More details can be found at: https://github.com/jaysuzi5-organization/emporia
-
-This code is heavily borrowed from PyEmVue but simplified specific to my needs.  PyEmVue was not working for me with 
-Python 3.12 and instead of running an older version, I pulled out or rewrote some portion to work for my needs.  I 
-STRONGLY recommend using their version as it is a much more robust solution.
-https://pypi.org/project/pyemvue/0.9.5/
 
 ## Project Structure
 
@@ -18,7 +11,7 @@ https://pypi.org/project/pyemvue/0.9.5/
 
 cluster/
   ├── apps/
-  │   ├── weather-app/
+  │   ├── weather-collector/
   │   │   ├── cron.yaml
   │   │   ├── namespace.yaml
   │   │   ├── secrets.yaml
