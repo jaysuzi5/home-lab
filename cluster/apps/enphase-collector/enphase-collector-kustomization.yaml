@@ -6,7 +6,7 @@ metadata:
 spec:
   targetNamespace: collector
   interval: 1m0s
-  path: "./apps/emporia-collector"
+  path: "./apps/enphase-collector"
   prune: true
   sourceRef:
     kind: GitRepository
