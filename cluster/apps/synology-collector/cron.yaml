@@ -1,0 +1,40 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: synology-collector-cron
+  namespace: collector
+spec:
+  schedule: "*/10 * * * *"   # every 10 minutes
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+          - name: synology-collector
+            image: jaysuzi5/synology-collector:latest
+            env:
+            - name: LOG_LEVEL
+              value: DEBUG
+            - name: LOCAL_API_BASE_URL
+              value: "http://synology.dev.svc.cluster.local:5001/api/v1/synology/"              
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "http://otel-collector-collector.monitoring.svc.cluster.local:4317"
+            - name: OTEL_SERVICE_NAME
+              value: "synology-collector"
+            - name: OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED
+              value: "true"
+            - name: NAS_IP
+              value: "192.168.86.210"
+            - name: NAS_PORT
+              value: "5000"
+            - name: NAS_USER
+              valueFrom:
+                secretKeyRef:
+                  name: synology-collector-secrets
+                  key: NAS_USER
+            - name: NAS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: synology-collector-secrets
+                  key: NAS_PASSWORD
