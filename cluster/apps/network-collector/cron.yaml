@@ -16,6 +16,8 @@ spec:
             env:
             - name: LOG_LEVEL
               value: DEBUG
+            - name: LOCAL_API_BASE_URL
+              value: "http://network.dev.svc.cluster.local:5001/api/v1/network/"              
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
               value: "http://otel-collector-collector.monitoring.svc.cluster.local:4317"
             - name: OTEL_SERVICE_NAME
