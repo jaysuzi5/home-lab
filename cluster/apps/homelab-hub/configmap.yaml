@@ -7,7 +7,7 @@ data:
   DB_NAME: "homelab-hub"
   DB_HOST: "192.168.86.200"
   DB_PORT: "30002"
-  SPLUNK_HOST: "splunk.home"
+  SPLUNK_HOST: "splunk.splunk.svc.cluster.local"
   SPLUNK_PORT: "8089"
   NETWORK_URL: "http://network.dev.svc.cluster.local:5001/api/v1/network?page=1&limit=1"
   ENPHASE_API_SEARCH_URL: "http://enphase.dev.svc.cluster.local:5001/api/v1/enphase/summary"

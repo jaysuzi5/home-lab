@@ -13,6 +13,7 @@ spec:
       labels:
         app: homelab-hub
     spec:
+      serviceAccountName: homelab-hub
       containers:
         - name: homelab-hub
           image: jaysuzi5/homelab-hub:latest
