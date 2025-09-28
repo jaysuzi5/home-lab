@@ -24,15 +24,7 @@ This documents the machine setup prior and high level details detaisl for settin
 Edit network config and server name
 
     nmcli connection show
-    sudo nmcli connection modify "eno1" ipv4.method manual ipv4.addresses 192.168.86.200/24 ipv4.gateway 192.168.86.1 ipv4.dns 8.8.8.8,8.8.4.4
-    sudo nmcli connection modify "eno1" ipv6.method disabled
-    sudo nmcli connection down "eno1"
-    sudo nmcli connection up "eno1"
-
-
-
-    nmcli connection show
-    sudo nmcli connection modify "eno1" ipv4.method manual ipv4.addresses 192.168.86.202/24 ipv4.gateway 192.168.86.1 ipv4.dns 8.8.8.8,8.8.4.4
+    sudo nmcli connection modify "eno1" ipv4.method manual ipv4.addresses 192.168.86.203/24 ipv4.gateway 192.168.86.1 ipv4.dns 8.8.8.8,8.8.4.4
     sudo nmcli connection modify "eno1" ipv6.method disabled
     sudo nmcli connection down "eno1"
     sudo nmcli connection up "eno1"
@@ -50,7 +42,7 @@ Using IPs 200, 201, and 202
 
 Ensure your router or /etc/hosts maps names to IPs for easier access:
 
-    192.168.86.200  8s-controller
+    192.168.86.200  k8s-controller
     192.168.86.201  k8s-worker1
     192.168.86.202  k8s-worker2
 

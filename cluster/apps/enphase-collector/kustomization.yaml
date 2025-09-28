@@ -4,6 +4,5 @@ metadata:
   name: emporia-collector
   namespace: flux-system
 resources:
-  - namespace.yaml
   - service-account.yaml
   - cron.yaml
