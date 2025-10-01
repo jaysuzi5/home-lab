@@ -166,125 +166,147 @@ Copy the file to the config:
         Port 22
 
 
-Make sure files have the proper permissions
 
-    chmod 600 ~/.ssh/id_rsa
-    chmod 644 ~/.ssh/id_rsa.pub
-    chmod 644 ~/.ssh/config
+# Connecting a Node:
 
-</li>
-<li>Set alias for kubectl
+1. System Preparation
+```bash
+# Update system
+sudo dnf update -y
 
-    echo "alias k='kubectl'" >> ~/.bashrc
-    source ~/.bashrc
-</li>
-</ol>
-</li>
-<li>Install Kubernetes Dashboard</li>
-<ol>
-<li>Deployment
-    kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
-</li>
-<li>Set Admin account
+# Install basic dependencies
+sudo dnf install -y curl wget vim git telnet net-tools
 
-    kubectl create serviceaccount dashboard-admin-sa
-    kubectl create clusterrolebinding dashboard-admin-sa --clusterrole=cluster-admin --serviceaccount=default:dashboard-admin-sa
-</li>
-<li>Retrieve the token for the admin
+# Disable SELinux (temporarily for k8s) or set to permissive
+sudo setenforce 0
+sudo sed -i 's/^SELINUX=enforcing/SELINUX=permissive/' /etc/selinux/config
 
-    kubectl get secret $(kubectl get serviceaccount dashboard-admin-sa -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" | base64 --decode
-</li>
-<li>Start up the dashboard
+# Disable swap
+sudo swapoff -a
+sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
 
-    kubectl proxy
-</li>
+# Configure firewall (if enabled)
+sudo systemctl stop firewalld
+sudo systemctl disable firewalld
+```
 
-Note: This may be redone once I get GitOps fully running
-</ol>
-<li>Install Flux to start GitOps Management
-<ol>
-<li>Install Flux CLI on the conroller:
+2. Configure System Parameters
+```bash
+# Load required kernel modules
+sudo modprobe overlay
+sudo modprobe br_netfilter
 
+# Set sysctl parameters
+cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
+net.bridge.bridge-nf-call-iptables  = 1
+net.bridge.bridge-nf-call-ip6tables = 1
+net.ipv4.ip_forward                 = 1
+EOF
 
-Note: Having compatibility issues with latest Flux and CentOS Kubernetes which is v1.28.15 as the latest, so I want to force an install of v2.4.0
+sudo sysctl --system
+```
 
+3. Install Container Runtime (containerd)
+```bash
+# Install containerd
+sudo dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+sudo dnf install -y containerd.io
 
-    curl -LO https://github.com/fluxcd/flux2/releases/download/v2.4.0/flux_2.4.0_linux_amd64.tar.gz
-    tar -xzf flux_2.4.0_linux_amd64.tar.gz
-    sudo mv flux /usr/local/bin/
+# Configure containerd
+sudo mkdir -p /etc/containerd
+containerd config default | sudo tee /etc/containerd/config.toml
 
-</li>
+# Set systemd cgroup driver
+sudo sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
 
-<li>Flux install
-
-    flux install --namespace=flux-system
-</li>
-
-<li>Verify that it is running
-
-    kubectl get pods -n flux-system
-</li>
-
-<li>Bootstrap Flux
-
-    flux bootstrap github \
-    --owner=jaysuzi5 \
-    --repository=home-lab \
-    --branch=main \
-    --path=cluster \
-    --personal
+# Start containerd
+sudo systemctl enable --now containerd
+```
 
 
-</li>
-<li>Check Flux
+4. Install Kubernetes Components
+```bash
+# Add Kubernetes repo
+cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
+[kubernetes]
+name=Kubernetes
+baseurl=https://pkgs.k8s.io/core:/stable:/v1.30/rpm/
+enabled=1
+gpgcheck=1
+gpgkey=https://pkgs.k8s.io/core:/stable:/v1.30/rpm/repodata/repomd.xml.key
+EOF
 
-    flux check
+# Install kubelet, kubeadm, kubectl
+sudo dnf install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
 
-    kubectl get pods -n flux-system
-</li>
+# Enable kubelet
+sudo systemctl enable --now kubelet
+Join the Cluster
+```
 
-<li>Create my first application which will be nodejs-whoami.  See yamls under cluster/apps/nodejs
+5. Get Join Command from Control Plane
+On your existing control plane node:
 
-Note: This may be removed at some point or at least renamed as this was just to test that the setup was working.
-</li>
-</ol>
-</li>
-<li>
-At this point, a secrets manager will be important.  Since I will be pushing all of my deployments to GitHub, I cannot maintain raw secrets in these files, nor is that best practice even locally.  I have decided to try Sealed Secret as it seems like an easy solution that integrates well with Kubernetes.
-<ol>
-<li>Install Sealed Secret:
+```bash
+# Create new token if needed
+kubeadm token create --print-join-command
 
-    kubectl apply -f https://github.com/bitnami-labs/sealed-secrets/releases/latest/download/controller.yaml
-</li>
-<li>Verify installation
+# Or check existing tokens
+kubeadm token list
+```
 
-    kubectl get pods -n kube-system | grep sealed-secrets
-</li>
-<li>Install kubeseal CLI
+6. Join the Node
+On your new node, run the join command from step 5:
 
-    wget https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.18.0/kubeseal-0.18.0-linux-amd64.tar.gz
-    tar -xvzf kubeseal-0.18.0-linux-amd64.tar.gz kubeseal
-    sudo install -m 755 kubeseal /usr/local/bin/kubeseal
-</li>
-<li>Verify installation
+```bash
+# Example (use the actual command from your control plane)
+sudo kubeadm join <CONTROL_PLANE_IP>:6443 \
+  --token <TOKEN> \
+  --discovery-token-ca-cert-hash sha256:<HASH>
+Post-Join Verification
+```
 
-    kubeseal --version
-</li>
-<li>Create a Kubrenetes secret
+7. Verify Node Status
+From your control plane:
 
-    kubectl create secret generic api-secret --from-literal=API_KEY="my-secret-api-key" --dry-run=client -o yaml > api-secret.yaml
-</li>
-<li>Encrypt the secret with kubeseal
+```bash
+# Check node status
+kubectl get nodes
 
-    kubeseal < api-secret.yaml --format=yaml > sealed-api-secret.yaml
-</li>
-<li>Apply the sealed secret to Kubernetes
+# Check system pods on new node
+kubectl get pods -A -o wide | grep <new-node-name>
 
-    kubectl apply -f sealed-api-secret.yaml
-</li>
-<li>Retrieve the sealed secret from sealed-api-secret.yaml and use in your deployment</li>
-</ol>
-</li>
-<li>At this time it would be good to create another Clonezilla clone of your cluster.
-</li>
-</ol>
+# Verify kube-proxy is running
+kubectl get pods -n kube-system -l k8s-app=kube-proxy
+```
+
+8. Network Plugin Verification
+Since you're using Flannel:
+
+```bash
+# Check flannel pod is running on new node
+kubectl get pods -n kube-flannel -o wide
+
+# Verify network connectivity
+kubectl run test-nginx --image=nginx --restart=Never
+kubectl get pods test-nginx -o wide
+Optional: Node Labels and Taints
+```
+
+9. Configure Node (if needed)
+```bash
+# Add worker label if not present
+kubectl label node <node-name> node-role.kubernetes.io/worker=worker
+
+# Add any custom labels
+kubectl label node <node-name> <key>=<value>
+```
+
+10. Add nfs tools
+
+```bash
+sudo yum install -y nfs-utils
+sudo mount -t nfs 192.168.86.210:/volume2/k8s-data /mnt
+sudo exportfs -ra
+sudo systemctl restart nfs-server
+```
