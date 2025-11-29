@@ -48,9 +48,3 @@ stringData:
   refresh_token: <<refresh_token_value>>
   last_updated: "2025-09-18T00:00:00Z"
 ```
-
-encoded the values with:
-```bash
-echo -n "<actual value>" | base64 
-```
-

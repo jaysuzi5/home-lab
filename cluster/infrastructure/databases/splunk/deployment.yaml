@@ -20,10 +20,12 @@ spec:
             - containerPort: 8000
             - containerPort: 8088
           env:
+            - name: SPLUNK_GENERAL_TERMS
+              value: "--accept-sgt-current-at-splunk-com"
             - name: SPLUNK_START_ARGS
               value: "--accept-license"
-            - name: SPLUNK_GENERAL_TERMS
-              value: "--accept-sgt-current-at-splunk-com"          
+            - name: SPLUNK_LICENSE_URI
+              value: "file:///opt/splunk/etc/licenses/free"
             - name: SPLUNK_PASSWORD
               valueFrom:
                 secretKeyRef:
