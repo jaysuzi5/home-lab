@@ -13,9 +13,10 @@ spec:
       labels:
         app: splunk
     spec:
+      terminationGracePeriodSeconds: 120
       containers:
         - name: splunk
-          image: splunk/splunk:latest
+          image: splunk/splunk:9.2.1
           ports:
             - containerPort: 8000
             - containerPort: 8088
@@ -24,13 +25,18 @@ spec:
               value: "--accept-sgt-current-at-splunk-com"
             - name: SPLUNK_START_ARGS
               value: "--accept-license"
-            - name: SPLUNK_LICENSE_URI
-              value: "file:///opt/splunk/etc/licenses/free"
             - name: SPLUNK_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: splunk-secret
                   key: SPLUNK_PASSWORD
+          resources:
+            requests:
+              cpu: "1"
+              memory: "2Gi"
+            limits:
+              cpu: "2"
+              memory: "4Gi"
           volumeMounts:
             - name: splunk-storage
               mountPath: /opt/splunk/var
