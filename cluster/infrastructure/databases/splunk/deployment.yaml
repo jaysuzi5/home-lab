@@ -14,6 +14,7 @@ spec:
         app: splunk
     spec:
       terminationGracePeriodSeconds: 120
+
       containers:
         - name: splunk
           image: splunk/splunk:9.2.1
@@ -30,6 +31,7 @@ spec:
                 secretKeyRef:
                   name: splunk-secret
                   key: SPLUNK_PASSWORD
+
           resources:
             requests:
               cpu: "1"
@@ -37,10 +39,21 @@ spec:
             limits:
               cpu: "2"
               memory: "4Gi"
+
           volumeMounts:
-            - name: splunk-storage
-              mountPath: /opt/splunk/var
+            # HOT + KV Store + runtime (FAST, LOCAL)
+            - name: splunk-hot
+              mountPath: /opt/splunk/var/lib/splunk
+
+            # WARM/COLD buckets only (PERSISTENT, NFS)
+            - name: splunk-cold
+              mountPath: /opt/splunk/var/lib/splunk/colddb
+
       volumes:
-        - name: splunk-storage
+        # Local fast storage for HOT buckets and kvstore
+        - name: splunk-hot
+          emptyDir: {}
+        # Existing NFS PVC for WARM/COLD
+        - name: splunk-cold
           persistentVolumeClaim:
             claimName: splunk-pvc
