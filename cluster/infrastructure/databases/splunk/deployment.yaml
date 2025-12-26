@@ -15,11 +15,11 @@ spec:
     spec:
       terminationGracePeriodSeconds: 120
       nodeSelector:
-        kubernetes.io/hostname: k8s-worker2 
-      securityContext:  
-        runAsUser: 999
-        runAsGroup: 999
-        fsGroup: 999
+        kubernetes.io/hostname: k8s-worker2
+      securityContext:
+        runAsUser: 41812
+        runAsGroup: 41812
+        fsGroup: 41812
       containers:
         - name: splunk
           image: splunk/splunk:9.2.1

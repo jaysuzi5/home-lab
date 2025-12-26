@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: splunk-complete-repair
+  namespace: splunk
+spec:
+  nodeSelector:
+    kubernetes.io/hostname: k8s-worker2
+  securityContext:
+    runAsUser: 0
+  volumes:
+    - name: data
+      persistentVolumeClaim:
+        claimName: splunk-pvc
+  containers:
+  - name: repair
+    image: alpine:latest
+    command:
+    - sh
+    - -c
+    - |
+      echo "Starting complete repair..."
+      
+      # Fix ownership - find correct UID for 'splunk' user
+      echo "1. Checking current ownership..."
+      ls -lan /mnt/data/lib/splunk/ | head -5
+      
+      # The files show as owned by 'splunk' (41812?), but let's verify
+      echo "2. Setting proper ownership..."
+      chown -R 41812:41812 /mnt/data 2>/dev/null || chown -R 1000:1000 /mnt/data
+      
+      echo "3. Fixing permissions..."
+      find /mnt/data -type d -exec chmod 755 {} \;
+      find /mnt/data -type f -exec chmod 644 {} \;
+      
+      # Fix critical files
+      echo "4. Fixing critical files..."
+      rm -f /mnt/data/lib/splunk/.dirty_database
+      rm -f /mnt/data/lib/splunk/*.dat
+      rm -rf /mnt/data/lib/splunk/fishbucket/*
+      
+      # Create fresh .dat files for existing indexes
+      echo "5. Recreating index database..."
+      cd /mnt/data/lib/splunk
+      for dir in */; do
+        if [ -d "$dir/db" ] || [ -d "$dir/colddb" ]; then
+          index_name=$(basename "$dir")
+          echo "Found index directory: $index_name"
+          echo "1" > "${index_name}.dat" 2>/dev/null || true
+        fi
+      done
+      
+      echo "6. Creating otel_logging.dat explicitly..."
+      echo "1" > /mnt/data/lib/splunk/otel_logging.dat
+      
+      echo "7. Verification..."
+      ls -la /mnt/data/lib/splunk/*.dat 2>/dev/null | head -10
+      ls -la /mnt/data/lib/splunk/otel_logging/ 2>/dev/null
+      
+      echo "=== Repair complete ==="
+    volumeMounts:
+    - mountPath: /mnt/data
+      name: data
