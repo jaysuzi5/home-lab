@@ -16,28 +16,9 @@ spec:
       terminationGracePeriodSeconds: 120
       nodeSelector:
         kubernetes.io/hostname: k8s-worker2
-      initContainers:
-      - name: setup-ownership
-        image: alpine:latest
-        securityContext:
-          runAsUser: 0
-        command:
-        - sh
-        - -c
-        - |
-          # Pre-set ownership so Splunk doesn't need to
-          chown -R 41812:41812 /opt/splunk/var
-          chmod -R 755 /opt/splunk/var
-          echo "Ownership pre-set"
-        volumeMounts:
-        - name: splunk-storage
-          mountPath: /opt/splunk/var
       containers:
         - name: splunk
           image: splunk/splunk:9.2.1
-          # Start as root to let Ansible do its setup, then switch
-          securityContext:
-            runAsUser: 0
           ports:
             - containerPort: 8000
             - containerPort: 8088

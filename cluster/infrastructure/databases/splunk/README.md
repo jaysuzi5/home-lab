@@ -64,3 +64,10 @@ http://splunk.local:30080
 
 ### Next Steps:
 I need to setup a scheduled backup and define a location to back up the files.
+
+
+### OTEL Setup:
+1. Create index otel_logging. Settings -> Data -> Indices
+2. Create HEC Token. Settings -> Data Input -> HTTP Event Collector
+    2a. Global Settings -> All Tokens → Enabled
+3. Update secret for OTEL Collector

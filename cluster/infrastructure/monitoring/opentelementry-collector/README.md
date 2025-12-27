@@ -30,3 +30,7 @@ data:
 ```bash
 kubeseal --controller-namespace kube-system --format yaml < temp.yaml > secret.yaml
 ```
+
+
+
+85adc306-aa08-430c-9db9-410f7e9697ae
