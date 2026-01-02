@@ -1,0 +1,34 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgresql
+  namespace: postgresql
+spec:
+  instances: 3
+  storage:
+    storageClass: "nfs-client"
+    size: 10Gi
+  superuserSecret:
+    name: postgresql
+  bootstrap:
+    initdb:
+      database: postgres
+      owner: jcurtis
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgresql-cluster-external
+  namespace: postgresql
+  labels:
+    app: postgresql-cluster
+spec:
+  type: NodePort
+  selector:
+    cnpg.io/cluster: postgresql
+    cnpg.io/instanceRole: primary
+  ports:
+    - port: 5432
+      targetPort: 5432
+      nodePort: 30004
+      protocol: TCP
