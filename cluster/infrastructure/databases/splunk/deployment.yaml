@@ -13,25 +13,40 @@ spec:
       labels:
         app: splunk
     spec:
-      terminationGracePeriodSeconds: 120
-      nodeSelector:
-        kubernetes.io/hostname: k8s-worker2
+      securityContext:
+        fsGroup: 41812
       containers:
         - name: splunk
-          image: splunk/splunk:9.2.1
+          image: splunk/splunk:latest
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8000
+              name: web
             - containerPort: 8088
+              name: hec
+            - containerPort: 8089
+              name: mgmt
+            - containerPort: 9997
+              name: forwarder
           env:
-            - name: SPLUNK_GENERAL_TERMS
-              value: "--accept-sgt-current-at-splunk-com"
             - name: SPLUNK_START_ARGS
               value: "--accept-license"
             - name: SPLUNK_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: splunk-secret
-                  key: SPLUNK_PASSWORD
+                  key: SPLUNK_PASSWORD            
+            - name: SPLUNK_HEC_TOKEN
+              value: "dev-hec-token"
+            - name: SPLUNK_ROLE
+              value: "splunk_standalone"
+            - name: SPLUNK_LICENSE_URI
+              value: "Free"
+          volumeMounts:
+            - name: splunk-storage
+              mountPath: /opt/splunk/var
+            - name: splunk-etc
+              mountPath: /opt/splunk/etc
           resources:
             requests:
               cpu: "500m"
@@ -39,10 +54,10 @@ spec:
             limits:
               cpu: "1"
               memory: "2Gi"
-          volumeMounts:
-            - name: splunk-storage
-              mountPath: /opt/splunk/var
       volumes:
         - name: splunk-storage
+          persistentVolumeClaim:
+            claimName: splunk-pvc
+        - name: splunk-etc
           persistentVolumeClaim:
             claimName: splunk-pvc
