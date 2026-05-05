@@ -53,10 +53,12 @@ spec:
             - name: SPLUNK_LICENSE_URI
               value: "Free"
           volumeMounts:
-            - name: splunk-storage
+            - name: splunk-data
               mountPath: /opt/splunk/var
-            - name: splunk-etc
+              subPath: var
+            - name: splunk-data
               mountPath: /opt/splunk/etc
+              subPath: etc
           resources:
             requests:
               cpu: "500m"
@@ -65,9 +67,6 @@ spec:
               cpu: "1"
               memory: "2Gi"
       volumes:
-        - name: splunk-storage
-          persistentVolumeClaim:
-            claimName: splunk-pvc
-        - name: splunk-etc
+        - name: splunk-data
           persistentVolumeClaim:
             claimName: splunk-pvc

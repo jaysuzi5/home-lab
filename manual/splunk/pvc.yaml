@@ -7,7 +7,6 @@ spec:
   accessModes:
     - ReadWriteMany
   storageClassName: nfs-client
-  volumeName: pvc-37beb555-b9b6-4f96-b916-4521c61c7136
   resources:
     requests:
       storage: 10Gi
