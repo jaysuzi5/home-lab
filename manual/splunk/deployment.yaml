@@ -13,6 +13,16 @@ spec:
       labels:
         app: splunk
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values:
+                      - k8s-worker1
+                      - k8s-worker2
       securityContext:
         fsGroup: 41812
       containers:
@@ -35,7 +45,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: splunk-secret
-                  key: SPLUNK_PASSWORD            
+                  key: SPLUNK_PASSWORD
             - name: SPLUNK_HEC_TOKEN
               value: "dev-hec-token"
             - name: SPLUNK_ROLE

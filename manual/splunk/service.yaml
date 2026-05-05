@@ -4,7 +4,7 @@ metadata:
   name: splunk
   namespace: splunk
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: splunk
   ports:
@@ -12,19 +12,15 @@ spec:
       protocol: TCP
       port: 8000
       targetPort: 8000
-      nodePort: 30080
     - name: hec
       protocol: TCP
       port: 8088
       targetPort: 8088
-      nodePort: 30088
     - name: mgmt
       protocol: TCP
       port: 8089
       targetPort: 8089
-      nodePort: 30089
     - name: forwarder
       protocol: TCP
       port: 9997
       targetPort: 9997
-      nodePort: 30997
