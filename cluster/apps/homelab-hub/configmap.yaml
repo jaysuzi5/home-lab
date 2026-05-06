@@ -19,3 +19,5 @@ data:
   DJANGO_DEBUG: "True"
   DJANGO_ALLOWED_HOSTS: "django.home.lab,127.0.0.1,localhost"
   OTLP_ENDPOINT: "http://otel-collector-collector.monitoring.svc.cluster.local:4318"
+  AWS_STORAGE_BUCKET_NAME: "homelab-hub-media"
+  AWS_S3_REGION_NAME: "us-east-1"
