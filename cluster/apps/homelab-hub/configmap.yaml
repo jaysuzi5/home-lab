@@ -18,3 +18,4 @@ data:
   FORECAST_URL: "http://forecast.dev.svc.cluster.local:5001/api/v1/forecast/latest"
   DJANGO_DEBUG: "True"
   DJANGO_ALLOWED_HOSTS: "django.home.lab,127.0.0.1,localhost"
+  OTLP_ENDPOINT: "http://otel-collector-collector.monitoring.svc.cluster.local:4318"
