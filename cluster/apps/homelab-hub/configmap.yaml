@@ -21,3 +21,5 @@ data:
   OTLP_ENDPOINT: "http://otel-collector-collector.monitoring.svc.cluster.local:4318"
   AWS_STORAGE_BUCKET_NAME: "homelab-hub-media"
   AWS_S3_REGION_NAME: "us-east-1"
+  TEMPO_URL: "http://tempo.monitoring.svc.cluster.local:3100"
+  PROMETHEUS_URL: "http://prometheus-operator-kube-p-prometheus.monitoring.svc.cluster.local:9090"
