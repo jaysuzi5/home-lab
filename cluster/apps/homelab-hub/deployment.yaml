@@ -16,6 +16,16 @@ spec:
         kubectl.kubernetes.io/restartedAt: "2026-05-06T14:00:00Z"  
     spec:
       serviceAccountName: homelab-hub
+      initContainers:
+        - name: migrate
+          image: jaysuzi5/homelab-hub:latest
+          imagePullPolicy: Always
+          command: ["python", "manage.py", "migrate", "--noinput"]
+          envFrom:
+            - configMapRef:
+                name: homelab-config
+            - secretRef:
+                name: homelab-hub-secrets
       containers:
         - name: homelab-hub
           image: jaysuzi5/homelab-hub:latest
