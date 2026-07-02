@@ -16,6 +16,16 @@ spec:
         kubectl.kubernetes.io/restartedAt: "2026-05-06T14:00:00Z"  
     spec:
       serviceAccountName: homelab-hub
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              preference:
+                matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values:
+                      - k8s-worker2
       initContainers:
         - name: migrate
           image: jaysuzi5/homelab-hub:latest

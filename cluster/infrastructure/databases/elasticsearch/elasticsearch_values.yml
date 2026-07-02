@@ -178,7 +178,17 @@ antiAffinity: "hard"
 
 # This is the node affinity settings as defined in
 # https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#node-affinity-beta-feature
-nodeAffinity: {}
+# Soft-prefer the higher-CPU/memory worker2. Hard pod anti-affinity (above) still forces
+# the two replicas onto different hosts, so one master lands on worker2, the other elsewhere.
+nodeAffinity:
+  preferredDuringSchedulingIgnoredDuringExecution:
+    - weight: 100
+      preference:
+        matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              - k8s-worker2
 
 # The default is to deploy all pods serially. By setting this to parallel all pods are started at
 # the same time when bootstrapping the cluster
