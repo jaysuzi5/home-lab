@@ -5,9 +5,6 @@ metadata:
   namespace: postgresql-homelab-hub
 spec:
   instances: 3
-  affinity:
-    nodeSelector:
-      kubernetes.io/hostname: k8s-worker2
   storage:
     storageClass: "nfs-client"
     size: 10Gi
